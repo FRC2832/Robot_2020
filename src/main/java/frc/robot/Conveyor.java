@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motion.SetValueMotionProfile;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
@@ -18,20 +20,23 @@ public final class Conveyor{
     infraredCovayor2 = table.getInfraredConvayer2();
     infraredCovayor3 = table.getInfraredConvayer3();
 
-        public void ballcount() {
-            if (infraredCovayor1 < 1){
-                return hello;
-            }
-            return null;
-        }
+
     }
 
-    public static class hello {
-        public static void main(String[] args) {
-            System.out.println("On");
+    public String ballCount(DigitalInput dI) {
+        if (dI.get()){
+            return "On";
         }
+        return "Off";
+        
     }
    
+    public Boolean movement(DigitalInput dI){
+        if (dI.get()){
+            return SetValueMotionProfile();
+
+        }
+    }
     
 
 }

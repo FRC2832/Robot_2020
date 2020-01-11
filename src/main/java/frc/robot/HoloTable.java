@@ -44,6 +44,9 @@ public final class HoloTable {
         conveyorBottom = new WPI_TalonSRX(1);
         conveyorBottom.setInverted(true);
         convayerMotors = new SpeedControllerGroup(conveyorTop, conveyorBottom);
+        infraredConvayor1 = new DigitalInput(1);
+        infraredConvayor2 = new DigitalInput(2);
+        infraredConvayor3 = new DigitalInput(3);
     }
 
     public static HoloTable getInstance() {
