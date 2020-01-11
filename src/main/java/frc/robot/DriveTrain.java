@@ -1,3 +1,5 @@
+package frc.robot;
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,13 +7,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain extends Subsystem {
+  private HoloTable holo = HoloTable.getInstance();
   private WPI_TalonSRX driveTurn;
   private CANSparkMax leftFront; 
 	private CANSparkMax rightFront;
@@ -22,15 +27,16 @@ public class DriveTrain extends SubsystemBase{
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    driveTurn = HoloTable.getDriveTurn();
-    leftFront = HoloTable.getDriveLeftFront();
-    rightFront = HoloTable.getDriveRightFront();
-    leftRear= HoloTable.getDriveLeftRear();
-    rightRear = HoloTable.getDriveRightRear();
+    driveTurn = holo.getDriveTurn();
+    leftFront = holo.getDriveLeftFront();
+    rightFront = holo.getDriveRightFront();
+    leftRear= holo.getDriveLeftRear();
+    rightRear = holo.getDriveRightRear();
   }
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
   }
 
@@ -38,4 +44,10 @@ public class DriveTrain extends SubsystemBase{
     //WRITE STUFF HERE ONCE YOU HAVE INPUTS
     differentialDrive.arcadeDrive(xSpeed, zRotation, true);
 }
+
+  @Override
+  protected void initDefaultCommand() {
+    // TODO Auto-generated method stub
+
+  }
 }
