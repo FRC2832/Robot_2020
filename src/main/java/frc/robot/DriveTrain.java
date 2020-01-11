@@ -13,16 +13,15 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-
-
 public class DriveTrain extends Subsystem {
   private HoloTable holo = HoloTable.getInstance();
   private WPI_TalonSRX driveTurn;
-  private CANSparkMax leftFront; 
-	private CANSparkMax rightFront;
-	private CANSparkMax leftRear;
-	private CANSparkMax rightRear;
+  private CANSparkMax leftFront;
+  private CANSparkMax rightFront;
+  private CANSparkMax leftRear;
+  private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
+
   /**
    * Creates a new DriveTrain.
    */
@@ -30,7 +29,7 @@ public class DriveTrain extends Subsystem {
     driveTurn = holo.getDriveTurn();
     leftFront = holo.getDriveLeftFront();
     rightFront = holo.getDriveRightFront();
-    leftRear= holo.getDriveLeftRear();
+    leftRear = holo.getDriveLeftRear();
     rightRear = holo.getDriveRightRear();
   }
 
@@ -41,8 +40,16 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setDifferentialDriveCommand(double xSpeed, double zRotation) {
-    //WRITE STUFF HERE ONCE YOU HAVE INPUTS
+    // WRITE STUFF HERE ONCE YOU HAVE INPUTS
     differentialDrive.arcadeDrive(xSpeed, zRotation, true);
+  }
+
+public void extendDriveTurn(){
+  // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS
+}
+
+public void retractDriveTurn(){
+  // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS
 }
 
   @Override
