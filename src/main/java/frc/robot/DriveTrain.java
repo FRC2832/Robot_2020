@@ -21,6 +21,7 @@ public class DriveTrain extends Subsystem {
   private CANSparkMax leftRear;
   private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
+  private PigeonIMU gyro;
 
   /**
    * Creates a new DriveTrain.
@@ -31,6 +32,7 @@ public class DriveTrain extends Subsystem {
     rightFront = holo.getDriveRightFront();
     leftRear = holo.getDriveLeftRear();
     rightRear = holo.getDriveRightRear();
+    gyro = holo.getGyro();
   }
 
   @Override
