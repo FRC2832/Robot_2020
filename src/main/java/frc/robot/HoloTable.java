@@ -7,8 +7,11 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public final class HoloTable {
 
@@ -19,6 +22,13 @@ public final class HoloTable {
     private static PigeonIMU gyro;
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
+    private static WPI_TalonSRX conveyorTop;
+    private static WPI_TalonSRX conveyorBottom;
+    private static SpeedControllerGroup convayerMotors;
+    private static DigitalInput infraredConvayor1;
+    private static DigitalInput infraredConvayor2;
+    private static DigitalInput infraredConvayor3;
+
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
@@ -30,7 +40,10 @@ public final class HoloTable {
         gyro = new PigeonIMU(0);
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
-
+        conveyorTop = new WPI_TalonSRX(0);
+        conveyorBottom = new WPI_TalonSRX(1);
+        conveyorBottom.setInverted(true);
+        convayerMotors = new SpeedControllerGroup(conveyorTop, conveyorBottom);
     }
 
     public static HoloTable getInstance() {
@@ -62,5 +75,23 @@ public final class HoloTable {
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
+    public SpeedControllerGroup getMotors() {
 
+        return convayerMotors;
+    }
+
+    public DigitalInput getInfraredConvayer1(){
+
+        return infraredConvayor1;
+    }
+
+    public DigitalInput getInfraredConvayer2(){
+
+        return infraredConvayor2;
+    }
+
+    public DigitalInput getInfraredConvayer3(){
+
+        return infraredConvayor3;
+    }
 }
