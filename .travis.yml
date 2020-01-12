@@ -6,7 +6,7 @@ install: true
 before_install:
 - chmod +x gradlew
 - mkdir lib/
-- wget -P "lib/" https://github.com/FRC2832/Robot_2020/raw/master/SparkMax-java-1.0.26.jar
+- wget -P "lib/" https://github.com/FRC2832/Robot_2020/blob/master/SparkMax-java-1.0.26.jar
 script: ./gradlew build
 after_success: ./gradlew bintrayUpload
 jdk: oraclejdk11
