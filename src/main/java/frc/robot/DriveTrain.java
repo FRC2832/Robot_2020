@@ -42,11 +42,14 @@ public class DriveTrain extends Subsystem {
     // This method will be called once per scheduler run
   }
 
-  public void setDifferentialDriveCommand(double xSpeed, double zRotation) {
+  public void driveTank(double lSpeed, double rSpeed) {
+    // WRITE STUFF HERE ONCE YOU HAVE INPUTS
+    differentialDrive.tankDrive(lSpeed, rSpeed, true);
+  }
+  public void driveArcade(double xSpeed, double zRotation) {
     // WRITE STUFF HERE ONCE YOU HAVE INPUTS
     differentialDrive.arcadeDrive(xSpeed, zRotation, true);
   }
-
 public void extendDriveTurn(){
   // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS
 }
