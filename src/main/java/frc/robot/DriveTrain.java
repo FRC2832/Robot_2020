@@ -23,6 +23,7 @@ public class DriveTrain extends Subsystem {
   private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
+  private XBoxController controller;
 
   /**
    * Creates a new DriveTrain.
@@ -34,6 +35,7 @@ public class DriveTrain extends Subsystem {
     leftRear = holo.getDriveLeftRear();
     rightRear = holo.getDriveRightRear();
     gyro = holo.getGyro();
+    controller = holo.getController();
   }
 
   @Override
@@ -42,13 +44,12 @@ public class DriveTrain extends Subsystem {
     // This method will be called once per scheduler run
   }
 
-  public void driveTank(double lSpeed, double rSpeed) {
-    // WRITE STUFF HERE ONCE YOU HAVE INPUTS
-    differentialDrive.tankDrive(lSpeed, rSpeed, true);
+  public void driveTank() {
+    differentialDrive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(3), true);
   }
-  public void driveArcade(double xSpeed, double zRotation) {
+  public void driveArcade() {
     // WRITE STUFF HERE ONCE YOU HAVE INPUTS
-    differentialDrive.arcadeDrive(xSpeed, zRotation, true);
+    differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);
   }
 public void extendDriveTurn(){
   // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS

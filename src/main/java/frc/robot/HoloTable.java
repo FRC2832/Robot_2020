@@ -22,6 +22,7 @@ public final class HoloTable {
     private static PigeonIMU gyro;
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
+    private static XBoxController controller;
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
@@ -36,6 +37,7 @@ public final class HoloTable {
         gyro = new PigeonIMU(0);
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
+        controller = new XBoxController(0);
 
     }
 
@@ -79,6 +81,9 @@ public final class HoloTable {
 
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
+    }
+    public XBoxController getController(){
+        return controller;
     }
 
 }
