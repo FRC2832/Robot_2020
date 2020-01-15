@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motion.SetValueMotionProfile;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
@@ -31,11 +29,11 @@ public final class Conveyor{
         
     }
    
-    public Boolean movement(DigitalInput dI){
-        if (dI.get()){
-            return SetValueMotionProfile();
-
+    public Boolean movement(){
+        if (movement() == null) {
+            return null;
         }
+        return movement();
     }
     
 
