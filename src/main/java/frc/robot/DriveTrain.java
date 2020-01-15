@@ -12,6 +12,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem {
@@ -23,7 +24,7 @@ public class DriveTrain extends Subsystem {
   private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
-  private XBoxController controller;
+  private XboxController controller;
 
   /**
    * Creates a new DriveTrain.
