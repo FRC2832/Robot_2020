@@ -12,6 +12,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -25,6 +26,7 @@ public class DriveTrain extends Subsystem {
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
   private XboxController controller;
+  private DoubleSolenoid turnSolenoid;
 
   /**
    * Creates a new DriveTrain.
@@ -37,6 +39,7 @@ public class DriveTrain extends Subsystem {
     rightRear = holo.getDriveRightRear();
     gyro = holo.getGyro();
     controller = holo.getController();
+    turnSolenoid = holo.getTurnSolenoid();
   }
 
   @Override
@@ -49,16 +52,15 @@ public class DriveTrain extends Subsystem {
     differentialDrive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(3), true);
   }
   public void driveArcade() {
-    // WRITE STUFF HERE ONCE YOU HAVE INPUTS
     differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);
   }
-public void extendDriveTurn(){
-  // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS
-}
+  public void extendDriveTurn(){
+    turnSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
 
-public void retractDriveTurn(){
-  // ADD IMPLEMENTATION ONCE WE KNOW WHAT KIND OF ACTUATOR DOES THIS
-}
+  public void retractDriveTurn(){
+    turnSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
 
   @Override
   protected void initDefaultCommand() {
