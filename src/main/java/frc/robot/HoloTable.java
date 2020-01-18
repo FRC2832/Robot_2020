@@ -27,6 +27,7 @@ public final class HoloTable {
     private static DigitalInput infraredConvayor1;
     private static DigitalInput infraredConvayor2;
     private static DigitalInput infraredConvayor3;
+    private static DigitalInput infraredIntake;
 
     private static WPI_TalonSRX shooterTop;
     private static WPI_TalonSRX shooterBottom;
@@ -89,7 +90,6 @@ public final class HoloTable {
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
-
     public XboxController getGamepad1() {
         return gamepad1;
     }
