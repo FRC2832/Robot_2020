@@ -13,20 +13,17 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public final class HoloTable {
 
     private static HoloTable instance = null;
     // public static HashMap map = new HashMap<String, Object>(); For Hashmap
-    private static WPI_TalonSRX intakeLeft;
-    private static WPI_TalonSRX intakeRight;
+    private static WPI_TalonSRX intake;
     private static WPI_TalonSRX driveTurn;
     private static CANSparkMax driveRightFront;
     private static PigeonIMU gyro;
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
-    private static SpeedControllerGroup intake;
     private static XboxController gamepad1;
     
     private static WPI_TalonSRX conveyorTop;
@@ -42,15 +39,12 @@ public final class HoloTable {
     private HoloTable() {
 
         // map.put("driveTurn", ); For Hashmap
-        intakeLeft = new WPI_TalonSRX(0);
-        intakeLeft.setInverted(true);
-        intakeRight = new WPI_TalonSRX(0);
+        intake = new WPI_TalonSRX(0);
         driveTurn = new WPI_TalonSRX(0);
         driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
-        intake = new SpeedControllerGroup(intakeLeft, intakeRight);
         gamepad1 = new XboxController(1);
 
         conveyorTop = new WPI_TalonSRX(0);
@@ -71,7 +65,9 @@ public final class HoloTable {
         return instance;
 
     }
-
+    public WPI_TalonSRX getIntake(){
+        return intake;
+    }
     public WPI_TalonSRX getDriveTurn() {
         return driveTurn;
     }
@@ -90,9 +86,6 @@ public final class HoloTable {
 
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
-    }
-    public SpeedControllerGroup getIntake(){
-        return intake;
     }
     public XboxController getGamepad1() {
         return gamepad1;

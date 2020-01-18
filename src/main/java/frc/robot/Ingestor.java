@@ -1,27 +1,35 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class Ingestor{
 
-    private static Ingestor instance = null;
+    HoloTable holoTable = HoloTable.getInstance();
+    WPI_TalonSRX intake = holoTable.getIntake();
+    XboxController gamepad1 = holoTable.getGamepad1();
+    private boolean motorRunning;
+    
 
-    private Ingestor() {
-
-        HoloTable holoTable = HoloTable.getInstance();
-        SpeedControllerGroup intake;
-        intake = holoTable.getIntake();
-
+    public Ingestor() {
+        motorRunning = false;
+    
     }
-
-    public static Ingestor getInstance() {
-
-        if (instance == null) {
-            instance = new Ingestor();
+    public void RunIngestor(){
+        if (gamepad1.getAButtonPressed() && !motorRunning){
+            intake.set(.5);
+            motorRunning = true;
         }
-
-        return instance;
-
+        else if (gamepad1.getAButtonPressed() && motorRunning){
+            intake.set(0);
+            motorRunning = false;
+        }
+        if (gamepad1.getStartButtonPressed()){
+            intake.set(-.5);
+        }
+        else if (gamepad1.getStartButtonReleased()){
+            intake.set(0);
+        }
     }
 
 }
