@@ -1,14 +1,15 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 
 public final class Conveyor{
 
     HoloTable table = HoloTable.getInstance();
 
-    SpeedControllerGroup conv;
+    WPI_TalonSRX conv;
     DigitalInput infraredCovayor1;
     DigitalInput infraredCovayor2;
     DigitalInput infraredCovayor3;
@@ -16,7 +17,7 @@ public final class Conveyor{
 
     private Conveyor(){
         
-    conv = table.getMotors();
+    conv = table.getConvayor();
     infraredCovayor1 = table.getInfraredConvayer1();
     infraredCovayor2 = table.getInfraredConvayer2();
     infraredCovayor3 = table.getInfraredConvayer3();
