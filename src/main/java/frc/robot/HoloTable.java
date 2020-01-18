@@ -27,11 +27,10 @@ public final class HoloTable {
     private static DigitalInput infraredConvayor1;
     private static DigitalInput infraredConvayor2;
     private static DigitalInput infraredConvayor3;
-    private static DigitalInput infraredIntake;
 
     private static WPI_TalonSRX shooterTop;
     private static WPI_TalonSRX shooterBottom;
-    private static SpeedControllerGroup shooterMotors;
+    private static SpeedControllerGroup shooter;
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
@@ -54,7 +53,7 @@ public final class HoloTable {
         shooterTop = new WPI_TalonSRX(0);
         shooterBottom = new WPI_TalonSRX(1);
         shooterBottom.setInverted(true);
-        shooterMotors = new SpeedControllerGroup(shooterTop, shooterBottom);
+        shooter = new SpeedControllerGroup(shooterTop, shooterBottom);
     }
 
     public static HoloTable getInstance() {
@@ -65,10 +64,6 @@ public final class HoloTable {
 
         return instance;
 
-    }
-
-    public WPI_TalonSRX getIntake() {
-        return intake;
     }
 
     public WPI_TalonSRX getDriveTurn() {
@@ -90,30 +85,32 @@ public final class HoloTable {
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
+
     public XboxController getGamepad1() {
         return gamepad1;
     }
 
-    public SpeedControllerGroup getMotors() {
-
-        return shooterMotors;
+    public WPI_TalonSRX getIntake() {
+        return intake;
     }
 
     public DigitalInput getInfraredConvayer1() {
 
         return infraredConvayor1;
     }
-
     public DigitalInput getInfraredConvayer2() {
 
         return infraredConvayor2;
     }
-
     public DigitalInput getInfraredConvayer3() {
 
         return infraredConvayor3;
     }
     public WPI_TalonSRX getConvayor(){
         return conveyor;
+    }
+
+    public SpeedControllerGroup getShooter(){
+        return shooter;
     }
 }
