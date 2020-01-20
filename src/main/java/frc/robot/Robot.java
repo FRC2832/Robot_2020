@@ -90,7 +90,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        driveTrain.driveArcade();
+        driveTrain.driveTank();
+        //driveTrain.driveArcade();
     }
 
     /**

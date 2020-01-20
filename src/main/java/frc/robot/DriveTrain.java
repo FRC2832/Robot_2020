@@ -51,9 +51,9 @@ public class DriveTrain extends Subsystem {
   public void driveTank() {
     differentialDrive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(3), true);
   }
-  public void driveArcade() {
+  /*public void driveArcade() {
     differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);
-  }
+  }*/
   public void extendDriveTurn(){
     turnSolenoid.set(DoubleSolenoid.Value.kForward);
   }
