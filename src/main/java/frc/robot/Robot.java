@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
+    private static final TrackerBeam tracker = new TrackerBeam();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -46,6 +47,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putString("Slot 1", tracker.countBalls());
+        SmartDashboard.putString("Slot 2", tracker.countBalls2());
+        SmartDashboard.putString("Slot 3", tracker.countBalls3());
+        SmartDashboard.putString("Slot 4", tracker.countBalls4());
+        SmartDashboard.putString("Slot 5", tracker.countBalls5());
     }
 
     /**

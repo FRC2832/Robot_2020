@@ -27,7 +27,8 @@ public final class HoloTable {
     private static DigitalInput infraredConvayor1;
     private static DigitalInput infraredConvayor2;
     private static DigitalInput infraredConvayor3;
-    private static DigitalInput infraredIntake;
+    private static DigitalInput infraredConvayor4;
+    private static DigitalInput infraredConvayor5;
 
     private static WPI_TalonSRX shooterTop;
     private static WPI_TalonSRX shooterBottom;
@@ -47,9 +48,11 @@ public final class HoloTable {
         intake = new WPI_TalonSRX(0);
 
         conveyor = new WPI_TalonSRX(0);
-        infraredConvayor1 = new DigitalInput(1);
-        infraredConvayor2 = new DigitalInput(2);
-        infraredConvayor3 = new DigitalInput(3);
+        infraredConvayor1 = new DigitalInput(0);
+        infraredConvayor2 = new DigitalInput(1);
+        infraredConvayor3 = new DigitalInput(2);
+        infraredConvayor4 = new DigitalInput(3);
+        infraredConvayor5 = new DigitalInput(4);
 
         shooterTop = new WPI_TalonSRX(0);
         shooterBottom = new WPI_TalonSRX(1);
@@ -113,7 +116,19 @@ public final class HoloTable {
 
         return infraredConvayor3;
     }
+
+    public DigitalInput getInfraredConvayer4(){
+
+        return infraredConvayor4;
+    }
+
+    public DigitalInput getInfraredConvayer5(){
+
+        return infraredConvayor5;
+    }
+
     public WPI_TalonSRX getConvayor(){
+    
         return conveyor;
     }
 }

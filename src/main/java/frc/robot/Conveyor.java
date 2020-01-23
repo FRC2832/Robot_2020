@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 
 public final class Conveyor{
@@ -10,41 +9,14 @@ public final class Conveyor{
     HoloTable table = HoloTable.getInstance();
 
     WPI_TalonSRX conv;
-    DigitalInput infraredCovayor1;
-    DigitalInput infraredCovayor2;
-    DigitalInput infraredCovayor3;
     XboxController gamepad1;
 
     private Conveyor(){
         
     conv = table.getConvayor();
-    infraredCovayor1 = table.getInfraredConvayer1();
-    infraredCovayor2 = table.getInfraredConvayer2();
-    infraredCovayor3 = table.getInfraredConvayer3();
     gamepad1 = table.getGamepad1();
 
 
-    }
-
-    public String ballCount(DigitalInput dI) {
-        if (dI.get()){
-            return "On";
-        }
-        return "Off";
-        
-    }
-
-    public String countBalls(){
-        if (infraredCovayor1.get()) {
-            return "Two";
-        }
-        else if (infraredCovayor2.get()) {
-            return "Three";
-        }
-        else if (infraredCovayor3.get()) {
-            return "FULL";
-        }
-        return "empty...... :((((";
     }
    
     public void RunMotors(){
