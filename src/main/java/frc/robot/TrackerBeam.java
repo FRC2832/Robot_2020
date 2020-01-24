@@ -16,6 +16,7 @@ public final class TrackerBeam{
     DigitalInput infraredCovayor5;
     
     WPI_TalonSRX intake;
+    WPI_TalonSRX color;
 
     public TrackerBeam(){
 
@@ -26,6 +27,7 @@ public final class TrackerBeam{
         infraredCovayor5 = table.getInfraredConvayer5();
 
         intake = table.getIntake();
+        color = table.getColor();
     }
 
     public String ballCount(DigitalInput dI) {
@@ -77,5 +79,15 @@ public final class TrackerBeam{
             intake.set(0);
     
         }
+    }
+
+    public void spin(){
+        if (!infraredCovayor1.get()){
+            color.set(.5);
+        }
+        else {
+            color.set(0);
+        }
+
     }
 }

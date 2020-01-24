@@ -23,6 +23,8 @@ public final class HoloTable {
 
     private static WPI_TalonSRX intake;
 
+    private static WPI_TalonSRX color;
+
     private static WPI_TalonSRX conveyor;
     private static DigitalInput infraredConvayor1;
     private static DigitalInput infraredConvayor2;
@@ -46,6 +48,8 @@ public final class HoloTable {
         gamepad1 = new XboxController(1);
 
         intake = new WPI_TalonSRX(0);
+
+        color = new WPI_TalonSRX(12);
 
         conveyor = new WPI_TalonSRX(0);
         infraredConvayor1 = new DigitalInput(0);
@@ -128,5 +132,9 @@ public final class HoloTable {
 
     public SpeedControllerGroup getShooter(){
         return shooter;
+    }
+
+    public WPI_TalonSRX getColor(){
+        return color;
     }
 }
