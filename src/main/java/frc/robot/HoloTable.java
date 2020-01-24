@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -24,6 +25,11 @@ public final class HoloTable {
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
     private static XboxController controller;
+    private static Joystick joystickLeft;
+    private static Joystick joystickRight;
+
+    
+
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
@@ -39,9 +45,9 @@ public final class HoloTable {
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
         controller = new XboxController(0);
-
+        joystickLeft = new Joystick(0);
+        joystickRight = new Joystick(1);
     }
-
     public static HoloTable getInstance() {
 
         if (instance == null) {
@@ -86,5 +92,12 @@ public final class HoloTable {
     public XboxController getController(){
         return controller;
     }
+    public Joystick getJoystickLeft() {
+        return joystickLeft;
+    }
+    public Joystick getJoystickRight() {
+        return joystickRight;
+    }
 
+    
 }

@@ -13,6 +13,8 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -27,6 +29,10 @@ public class DriveTrain extends Subsystem {
   private PigeonIMU gyro;
   private XboxController controller;
   private DoubleSolenoid turnSolenoid;
+  private SpeedControllerGroup leftMotors;
+  private SpeedControllerGroup rightMotors;
+  private Joystick joystickLeft;
+  private Joystick joystickRight;
 
   /**
    * Creates a new DriveTrain.
@@ -39,7 +45,13 @@ public class DriveTrain extends Subsystem {
     rightRear = holo.getDriveRightRear();
     gyro = holo.getGyro();
     controller = holo.getController();
+    joystickLeft = holo.getJoystickLeft();
+    joystickRight = holo.getJoystickRight();
     turnSolenoid = holo.getTurnSolenoid();
+    leftMotors = new SpeedControllerGroup(leftFront, leftRear);
+    rightMotors = new SpeedControllerGroup(rightFront, rightRear);
+    rightMotors.setInverted(true);
+    differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
   }
 
   @Override
@@ -49,15 +61,15 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    differentialDrive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(3), true);
+    differentialDrive.tankDrive(joystickLeft.getY(), joystickRight.getY(), true);
   }
-  public void driveArcade() {
-    differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);
-  }
+  /*public void driveArcade() {
+    differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used
+  }*/
+
   public void extendDriveTurn(){
     turnSolenoid.set(DoubleSolenoid.Value.kForward);
   }
-
   public void retractDriveTurn(){
     turnSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
