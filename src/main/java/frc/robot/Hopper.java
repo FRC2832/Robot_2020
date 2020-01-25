@@ -5,22 +5,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 
-public final class Conveyor{
+public final class Hopper{
 
     HoloTable table = HoloTable.getInstance();
 
-    WPI_TalonSRX conv;
-    DigitalInput infraredCovayor1;
-    DigitalInput infraredCovayor2;
-    DigitalInput infraredCovayor3;
+    WPI_TalonSRX hopper;
+    DigitalInput infraredHopper1;
+    DigitalInput infraredHopper2;
+    DigitalInput infraredHopper3;
     XboxController gamepad1;
 
-    private Conveyor(){
+    private Hopper(){
         
-    conv = table.getConvayor();
-    infraredCovayor1 = table.getInfraredConvayer1();
-    infraredCovayor2 = table.getInfraredConvayer2();
-    infraredCovayor3 = table.getInfraredConvayer3();
+    hopper = table.getHopper();
+    infraredHopper1 = table.getInfraredHopper1();
+    infraredHopper2 = table.getInfraredHopper2();
+    infraredHopper3 = table.getInfraredHopper3();
     gamepad1 = table.getGamepad1();
 
 
@@ -35,13 +35,13 @@ public final class Conveyor{
     }
 
     public String countBalls(){
-        if (infraredCovayor1.get()) {
+        if (infraredHopper1.get()) {
             return "Two";
         }
-        else if (infraredCovayor2.get()) {
+        else if (infraredHopper2.get()) {
             return "Three";
         }
-        else if (infraredCovayor3.get()) {
+        else if (infraredHopper3.get()) {
             return "FULL";
         }
         return "empty...... :((((";
@@ -49,16 +49,16 @@ public final class Conveyor{
    
     public void RunMotors(){
         if (gamepad1.getAButtonPressed()) {
-            conv.set(.5);
+            hopper.set(.5);
         }
         else if (gamepad1.getAButtonReleased()) {
-            conv.set(0);
+            hopper.set(0);
         }
         if (gamepad1.getStartButtonPressed()) {
-            conv.set(-.5);
+            hopper.set(-.5);
         }
         else if (gamepad1.getStartButtonReleased()){
-            conv.set(0);
+            hopper.set(0);
         }
         
         

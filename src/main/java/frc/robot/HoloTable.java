@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -15,18 +14,20 @@ public final class HoloTable {
 
     private static HoloTable instance = null;
     private static WPI_TalonSRX driveTurn;
+    private static WPI_TalonSRX kickerMotor;
     private static CANSparkMax driveRightFront;
     private static PigeonIMU gyro;
-    private static Solenoid singleSolenoid;
+    private static DoubleSolenoid dropIntake;
+    private static DoubleSolenoid kickerPiston;
     private static DoubleSolenoid turnSolenoid;
     private static XboxController gamepad1;
 
     private static WPI_TalonSRX intake;
 
-    private static WPI_TalonSRX conveyor;
-    private static DigitalInput infraredConvayor1;
-    private static DigitalInput infraredConvayor2;
-    private static DigitalInput infraredConvayor3;
+    private static WPI_TalonSRX Hopper;
+    private static DigitalInput infraredHopper1;
+    private static DigitalInput infraredHopper2;
+    private static DigitalInput infraredHopper3;
 
     private static WPI_TalonSRX shooterTop;
     private static WPI_TalonSRX shooterBottom;
@@ -37,18 +38,20 @@ public final class HoloTable {
     private HoloTable() {
 
         driveTurn = new WPI_TalonSRX(0);
+        kickerMotor = new WPI_TalonSRX(0);
         driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
-        singleSolenoid = new Solenoid(0);
-        turnSolenoid = new DoubleSolenoid(1, 2);
+        dropIntake = new DoubleSolenoid(0, 1);
+        turnSolenoid = new DoubleSolenoid(2, 3);
+        kickerPiston = new DoubleSolenoid(4, 5);
         gamepad1 = new XboxController(1);
 
         intake = new WPI_TalonSRX(0);
 
-        conveyor = new WPI_TalonSRX(0);
-        infraredConvayor1 = new DigitalInput(1);
-        infraredConvayor2 = new DigitalInput(2);
-        infraredConvayor3 = new DigitalInput(3);
+        Hopper = new WPI_TalonSRX(0);
+        infraredHopper1 = new DigitalInput(1);
+        infraredHopper2 = new DigitalInput(2);
+        infraredHopper3 = new DigitalInput(3);
 
         shooterTop = new WPI_TalonSRX(0);
         shooterBottom = new WPI_TalonSRX(1);
@@ -70,6 +73,10 @@ public final class HoloTable {
         return driveTurn;
     }
 
+    public WPI_TalonSRX getKickerMotor(){
+        return kickerMotor;
+    }
+
     public CANSparkMax getDriveRightFront() {
         return driveRightFront;
     }
@@ -78,14 +85,16 @@ public final class HoloTable {
         return gyro;
     }
 
-    public Solenoid getSingleSoleniod() {
-        return singleSolenoid;
+    public DoubleSolenoid getDropIntake() {
+        return dropIntake;
     }
-
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
-
+    public DoubleSolenoid getKickerPiston(){
+        return kickerPiston;
+    }
+    
     public XboxController getGamepad1() {
         return gamepad1;
     }
@@ -94,20 +103,20 @@ public final class HoloTable {
         return intake;
     }
 
-    public DigitalInput getInfraredConvayer1() {
+    public DigitalInput getInfraredHopper1() {
 
-        return infraredConvayor1;
+        return infraredHopper1;
     }
-    public DigitalInput getInfraredConvayer2() {
+    public DigitalInput getInfraredHopper2() {
 
-        return infraredConvayor2;
+        return infraredHopper2;
     }
-    public DigitalInput getInfraredConvayer3() {
+    public DigitalInput getInfraredHopper3() {
 
-        return infraredConvayor3;
+        return infraredHopper3;
     }
-    public WPI_TalonSRX getConvayor(){
-        return conveyor;
+    public WPI_TalonSRX getHopper(){
+        return Hopper;
     }
 
     public SpeedControllerGroup getShooter(){
