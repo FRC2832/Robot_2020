@@ -5,26 +5,26 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public final class TrackerBeam{
+public final class BallCount{
 
     HoloTable table = HoloTable.getInstance();
 
-    DigitalInput infraredCovayor1;
-    DigitalInput infraredCovayor2;
-    DigitalInput infraredCovayor3;
-    DigitalInput infraredCovayor4;
-    DigitalInput infraredCovayor5;
+    DigitalInput infraredHopper1;
+    DigitalInput infraredHopper2;
+    DigitalInput infraredHopper3;
+    DigitalInput infraredHopper4;
+    DigitalInput infraredHopper5;
     
     WPI_TalonSRX intake;
     WPI_TalonSRX color;
 
-    public TrackerBeam(){
+    public BallCount(){
 
-        infraredCovayor1 = table.getInfraredConvayer1();
-        infraredCovayor2 = table.getInfraredConvayer2();
-        infraredCovayor3 = table.getInfraredConvayer3();
-        infraredCovayor4 = table.getInfraredConvayer4();
-        infraredCovayor5 = table.getInfraredConvayer5();
+        infraredHopper1 = table.getInfraredHopper1();
+        infraredHopper2 = table.getInfraredHopper2();
+        infraredHopper3 = table.getInfraredHopper3();
+        infraredHopper4 = table.getInfraredHopper4();
+        infraredHopper5 = table.getInfraredHopper5();
 
         intake = table.getIntake();
         color = table.getColor();
@@ -40,49 +40,49 @@ public final class TrackerBeam{
     }
 
     public String countBalls(){
-        if (!infraredCovayor1.get()){
+        if (!infraredHopper1.get()){
             return "One";
         }
         else return "empty";
     }
 
     public String countBalls2(){
-        if (!infraredCovayor2.get()) {
+        if (!infraredHopper2.get()) {
             return "Two";
         }
         else return "empty";
     }
 
     public String countBalls3(){
-        if (!infraredCovayor3.get()) {
+        if (!infraredHopper3.get()) {
             return "Three";
         }
         else return "empty";
     }
 
     public String countBalls4(){
-        if (!infraredCovayor4.get()){
+        if (!infraredHopper4.get()){
             return "Four!";
         }
         else return "empty";
     }
 
     public String countBalls5(){
-        if (!infraredCovayor5.get()) {
+        if (!infraredHopper5.get()) {
             return "!!!FULL!!!";
         }
         else return "empty";
     }
 
     public void full(){
-        if(infraredCovayor5.get()){
+        if(infraredHopper5.get()){
             intake.set(0);
     
         }
     }
 
     public void spin(){
-        if (!infraredCovayor1.get()){
+        if (!infraredHopper1.get()){
             color.set(.5);
         }
         else {
