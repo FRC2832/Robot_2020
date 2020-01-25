@@ -49,6 +49,7 @@ public class DriveTrain extends Subsystem {
     joystickRight = holo.getJoystickRight();
     turnSolenoid = holo.getTurnSolenoid();
     leftMotors = new SpeedControllerGroup(leftFront, leftRear);
+    leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
     rightMotors.setInverted(true);
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);

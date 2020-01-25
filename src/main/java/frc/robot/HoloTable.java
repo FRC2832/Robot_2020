@@ -67,15 +67,15 @@ public final class HoloTable {
     }
 
     public CANSparkMax getDriveLeftFront() {
-        return driveRightFront;
+        return driveLeftFront;
     }
 
     public CANSparkMax getDriveRightRear() {
-        return driveRightFront;
+        return driveRightRear;
     }
 
     public CANSparkMax getDriveLeftRear() {
-        return driveRightFront;
+        return driveLeftRear;
     }
 
     public PigeonIMU getGyro() {
