@@ -24,10 +24,14 @@ public final class HoloTable {
 
     private static WPI_TalonSRX intake;
 
+    private static WPI_TalonSRX color;    
+    
     private static WPI_TalonSRX Hopper;
     private static DigitalInput infraredHopper1;
     private static DigitalInput infraredHopper2;
     private static DigitalInput infraredHopper3;
+    private static DigitalInput infraredHopper4;
+    private static DigitalInput infraredHopper5;
 
     private static WPI_TalonSRX shooterTop;
     private static WPI_TalonSRX shooterBottom;
@@ -48,10 +52,14 @@ public final class HoloTable {
 
         intake = new WPI_TalonSRX(0);
 
+        color = new WPI_TalonSRX(12);
+
         Hopper = new WPI_TalonSRX(0);
-        infraredHopper1 = new DigitalInput(1);
-        infraredHopper2 = new DigitalInput(2);
+        infraredHopper1 = new DigitalInput(0);
+        infraredHopper2 = new DigitalInput(1);
+        infraredHopper3 = new DigitalInput(2);
         infraredHopper3 = new DigitalInput(3);
+        infraredHopper3 = new DigitalInput(4);
 
         shooterTop = new WPI_TalonSRX(0);
         shooterBottom = new WPI_TalonSRX(1);
@@ -115,11 +123,27 @@ public final class HoloTable {
 
         return infraredHopper3;
     }
+
+    public DigitalInput getInfraredHopper4(){
+
+        return infraredHopper4;
+    }
+
+    public DigitalInput getInfraredHopper5(){
+
+        return infraredHopper5;
+    }
+
     public WPI_TalonSRX getHopper(){
+        
         return Hopper;
     }
 
     public SpeedControllerGroup getShooter(){
         return shooter;
+    }
+
+    public WPI_TalonSRX getColor(){
+        return color;
     }
 }
