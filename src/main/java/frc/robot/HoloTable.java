@@ -29,7 +29,20 @@ public final class HoloTable {
     private static Joystick joystickRight;
 
     
+<<<<<<< Updated upstream
 
+=======
+    private static WPI_TalonSRX Hopper;
+    private static DigitalInput infraredHopper1;
+    private static DigitalInput infraredHopper2;
+    private static DigitalInput infraredHopper3;
+    private static DigitalInput infraredHopper4;
+    private static DigitalInput infraredHopper5;
+
+    private static CANSparkMax shooterTop;
+    private static CANSparkMax shooterBottom;
+    private static SpeedControllerGroup shooter;
+>>>>>>> Stashed changes
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
