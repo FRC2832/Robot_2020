@@ -39,39 +39,39 @@ public final class BallCount{
         
     }
 
-    public String countBalls(){
+    public Boolean countBalls(){
         if (!infraredHopper1.get()){
-            return "One";
+            return true;
         }
-        else return "empty";
+        else return false;
     }
 
-    public String countBalls2(){
+    public Boolean countBalls2(){
         if (!infraredHopper2.get()) {
-            return "Two";
+            return true;
         }
-        else return "empty";
+        else return false;
     }
 
-    public String countBalls3(){
+    public boolean countBalls3(){
         if (!infraredHopper3.get()) {
-            return "Three";
+            return true;
         }
-        else return "empty";
+        else return false;
     }
 
-    public String countBalls4(){
+    public boolean countBalls4(){
         if (!infraredHopper4.get()){
-            return "Four!";
+            return true;
         }
-        else return "empty";
+        else return false;
     }
 
-    public String countBalls5(){
+    public boolean countBalls5(){
         if (!infraredHopper5.get()) {
-            return "!!!FULL!!!";
+            return true;
         }
-        else return "empty";
+        else return false;
     }
 
     public void full(){
@@ -81,13 +81,4 @@ public final class BallCount{
         }
     }
 
-    public void spin(){
-        if (!infraredHopper1.get()){
-            color.set(.5);
-        }
-        else {
-            color.set(0);
-        }
-
-    }
 }
