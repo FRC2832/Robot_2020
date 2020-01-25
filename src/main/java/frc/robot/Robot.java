@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
@@ -28,10 +29,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
+  private static String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private WheelMover mover = new WheelMover();
-
+  //private static String gameData = "";
+  //private static String gameData =DriverStation.getInstance().getGameSpecificMessage();
   /*
    * OLD OFFICIAL COLOR PRESETS private final Color kBlueTarget =
    * ColorMatch.makeColor(0.143, 0.427, 0.429); private final Color kGreenTarget =
@@ -48,10 +50,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    
   }
   /**
    * This function is called every robot packet, no matter the mode. Use this for
@@ -64,7 +66,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
     
   }
 
@@ -82,6 +84,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    //gameData = DriverStation.getInstance().getGameSpecificMessage());
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -104,11 +107,22 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called periodically during operator control.
+   * This func
+   * tion is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    //gameData = DriverStation.getInstance().getGameSpecificMessage();
+    //mover.setGameData(DriverStation.getInstance().getGameSpecificMessage());
+    mover.setWheel();
     mover.moveWheel();
+
+    
+  }
+
+  public void teleopInit() {
+    //mover.setGameData(DriverStation.getInstance().getGameSpecificMessage());
+    
   }
 
   /**
@@ -117,4 +131,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  //public static String getGameData(){
+  //  return gameData;
+  //}
 }
