@@ -8,7 +8,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.XboxController;
 
 public final class HoloTable {
 
@@ -16,9 +18,18 @@ public final class HoloTable {
     // public static HashMap map = new HashMap<String, Object>(); For Hashmap
     private static WPI_TalonSRX driveTurn;
     private static CANSparkMax driveRightFront;
+    private static CANSparkMax driveLeftFront;
+    private static CANSparkMax driveRightRear;
+    private static CANSparkMax driveLeftRear;
     private static PigeonIMU gyro;
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
+    private static XboxController controller;
+    private static Joystick joystickLeft;
+    private static Joystick joystickRight;
+
+    
+
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
@@ -27,12 +38,16 @@ public final class HoloTable {
         // map.put("driveTurn", ); For Hashmap
         driveTurn = new WPI_TalonSRX(0);
         driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
+        driveLeftFront = new CANSparkMax(1, MotorType.kBrushless);
+        driveRightRear = new CANSparkMax(2, MotorType.kBrushless);
+        driveLeftRear = new CANSparkMax(3, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
-
+        controller = new XboxController(0);
+        joystickLeft = new Joystick(0);
+        joystickRight = new Joystick(1);
     }
-
     public static HoloTable getInstance() {
 
         if (instance == null) {
@@ -51,6 +66,18 @@ public final class HoloTable {
         return driveRightFront;
     }
 
+    public CANSparkMax getDriveLeftFront() {
+        return driveRightFront;
+    }
+
+    public CANSparkMax getDriveRightRear() {
+        return driveRightFront;
+    }
+
+    public CANSparkMax getDriveLeftRear() {
+        return driveRightFront;
+    }
+
     public PigeonIMU getGyro() {
         return gyro;
     }
@@ -62,5 +89,15 @@ public final class HoloTable {
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
+    public XboxController getController(){
+        return controller;
+    }
+    public Joystick getJoystickLeft() {
+        return joystickLeft;
+    }
+    public Joystick getJoystickRight() {
+        return joystickRight;
+    }
 
+    
 }
