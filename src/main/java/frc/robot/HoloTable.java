@@ -58,8 +58,8 @@ public final class HoloTable {
         infraredHopper1 = new DigitalInput(0);
         infraredHopper2 = new DigitalInput(1);
         infraredHopper3 = new DigitalInput(2);
-        infraredHopper3 = new DigitalInput(3);
-        infraredHopper3 = new DigitalInput(4);
+        infraredHopper4 = new DigitalInput(3);
+        infraredHopper5 = new DigitalInput(4);
 
         shooterTop = new CANSparkMax(0, MotorType.kBrushless);
         shooterBottom = new CANSparkMax(1, MotorType.kBrushless);
