@@ -33,8 +33,8 @@ public final class HoloTable {
     private static DigitalInput infraredHopper4;
     private static DigitalInput infraredHopper5;
 
-    private static WPI_TalonSRX shooterTop;
-    private static WPI_TalonSRX shooterBottom;
+    private static CANSparkMax shooterTop;
+    private static CANSparkMax shooterBottom;
     private static SpeedControllerGroup shooter;
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
@@ -61,8 +61,8 @@ public final class HoloTable {
         infraredHopper3 = new DigitalInput(3);
         infraredHopper3 = new DigitalInput(4);
 
-        shooterTop = new WPI_TalonSRX(0);
-        shooterBottom = new WPI_TalonSRX(1);
+        shooterTop = new CANSparkMax(0, MotorType.kBrushless);
+        shooterBottom = new CANSparkMax(1, MotorType.kBrushless);
         shooterBottom.setInverted(true);
         shooter = new SpeedControllerGroup(shooterTop, shooterBottom);
     }
