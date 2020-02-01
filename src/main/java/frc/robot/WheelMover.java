@@ -23,8 +23,8 @@ public class WheelMover extends Subsystem {
   private String lastColor;
   private int wheelCount = 0;
   private int debouncer = 0;
-  private double fastSpeed = 0.75;
-  private double slowSpeed = -0.25;
+  private double fastSpeed = 0.75; //This speed is used for completing 3.5 revolutions
+  private double slowSpeed = -0.25; //This speed is used for setting the wheel to a specific color
   private boolean checkSame = false;
   private String correctColor;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -37,9 +37,9 @@ public class WheelMover extends Subsystem {
   private final DigitalInput proxTrigger = holo.getProxTrigger();
   private final DigitalInput proxTrigger1 = holo.getProxTrigger1();
 
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429); //These are our custom RGB values for each color.
+  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240); //These will likely need to be changed for different
+  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114); //lighting conditions
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
   // MAIN SET
@@ -50,7 +50,7 @@ public class WheelMover extends Subsystem {
    * private final Color kYellowTarget = ColorMatch.makeColor(0.28, 0.52, 0.19);
    */
 
-  // BIASED SET
+  // BIASED SET (These values are exaggerated to try to differentiate between blue and green. It doesnt really work that well)
   /*
    * private final Color kBlueTarget = ColorMatch.makeColor(0.05, 0.45, 0.45);
    * private final Color kGreenTarget = ColorMatch.makeColor(0.3, 0.51, 0.25);
@@ -93,10 +93,10 @@ public class WheelMover extends Subsystem {
 
   }
 
-  public void moveWheel() { //3 revs in 5.17 sec     35 rpm
+  public void moveWheel() { //This method is for spinning the wheel "3.5ish" times           3 revs in 5.17 sec     35 rpm 
     if (!proxTrigger.get()) {
       wheelCount = 0;
-      while (wheelCount <= 28) {
+      while (wheelCount <= 28) { //The wheel will spin through 28 color segments
         final Color detectedColor = colorSensor.getColor();
         /**
          * S Run the color match algorithm on our detected color
@@ -116,7 +116,7 @@ public class WheelMover extends Subsystem {
           colorString = "Unknown";
         }
 
-        // DEBOUNCER ALGORITHM
+        // DEBOUNCER ALGORITHM TO PREVENT DOUBLE COUNTING OF SEGMENTS
         if (!checkSame) {
           if (!(colorString.equals(lastColor))) {
             debouncer++;
@@ -151,14 +151,14 @@ public class WheelMover extends Subsystem {
 
       }
     }
-    if (wheelCount > 28) {
+    if (wheelCount > 28) {  //Once 28 segments have been passed, the wheel stops
       wheelCount = 0;
       wheelMotor.set(0);
     }
   }
 
-  public void setWheel() {
-
+  public void setWheel() {  //This method moves the wheel to a color specified in the driverstation game data
+                            //It spins the wheel at slowSpeed
     if (!proxTrigger1.get()) {
 
       if (gameData.length() > 0) {
@@ -220,12 +220,12 @@ public class WheelMover extends Subsystem {
         }
         if (colorString.equals(correctColor)) {
           try {
-            Thread.sleep(100);
+            Thread.sleep(100); //This makes the wheel continue moving for 0.1 seconds after initially seeing the target color
           } catch (Exception e) {
             // TODO: handle exception
           }
 
-          wheelMotor.set(0);
+          wheelMotor.set(0); //Stops the motor if the correct color is reached
           break;
         }
       }
