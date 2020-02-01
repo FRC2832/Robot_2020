@@ -23,6 +23,8 @@ public class WheelMover extends Subsystem {
   private String lastColor;
   private int wheelCount = 0;
   private int debouncer = 0;
+  private double fastSpeed = 0.75;
+  private double slowSpeed = -0.25;
   private boolean checkSame = false;
   private String correctColor;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -91,7 +93,7 @@ public class WheelMover extends Subsystem {
 
   }
 
-  public void moveWheel() {
+  public void moveWheel() { //3 revs in 5.17 sec     35 rpm
     if (!proxTrigger.get()) {
       wheelCount = 0;
       while (wheelCount <= 28) {
@@ -145,7 +147,7 @@ public class WheelMover extends Subsystem {
         SmartDashboard.putString("Detected Color", colorString);
         SmartDashboard.putNumber("Count", wheelCount);
         lastColor = colorString;
-        wheelMotor.set(0.75);
+        wheelMotor.set(fastSpeed); //0.75
 
       }
     }
@@ -198,7 +200,7 @@ public class WheelMover extends Subsystem {
         colorString = "Unknown";
       }
       while (!colorString.equals(correctColor)) {
-        wheelMotor.set(-0.25);
+        wheelMotor.set(slowSpeed);
         detectedColor = colorSensor.getColor();
         /**
          * S Run the color match algorithm on our detected color
