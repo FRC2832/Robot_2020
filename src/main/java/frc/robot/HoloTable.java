@@ -2,12 +2,12 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 
 public final class HoloTable {
@@ -33,17 +33,16 @@ public final class HoloTable {
     private static DigitalInput infraredHopper4;
     private static DigitalInput infraredHopper5;
 
+    public CANPIDController topPID; 
+    public CANPIDController bottomPID;
+
     private static CANSparkMax shooterTop;
     private static CANSparkMax shooterBottom;
-    //private static SpeedControllerGroup shooter;
-    // private static Insert Camera Here;
-    // private static Insert Color Sensor Here;
 
     HoloTable() {
 
         driveTurn = new WPI_TalonSRX(0);
         kickerMotor = new WPI_TalonSRX(0);
-        //driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
         dropIntake = new DoubleSolenoid(0, 1);
         turnSolenoid = new DoubleSolenoid(2, 3);
@@ -63,9 +62,8 @@ public final class HoloTable {
 
         shooterTop = new CANSparkMax(3, MotorType.kBrushless);
         shooterBottom = new CANSparkMax(4, MotorType.kBrushless);
-        //shooter = new SpeedControllerGroup(shooterTop, shooterBottom);
-        /*shooterTop.restoreFactoryDefaults();
-        shooterBottom.restoreFactoryDefaults();*/
+        topPID = shooterTop.getPIDController();
+        bottomPID = shooterBottom.getPIDController();
     }
 
     public static HoloTable getInstance() {

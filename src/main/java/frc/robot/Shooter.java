@@ -1,41 +1,66 @@
 package frc.robot;
 
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
     public boolean shooterOff;
     HoloTable holo = HoloTable.getInstance();
-    // WPI_TalonSRX kickerMotor = holo.getKickerMotor();
-    //SpeedControllerGroup shooter = holo.getShooter();
-    //DoubleSolenoid kickerPiston = holo.getKickerPiston();
-    
-    
-    public void runShooter() throws InterruptedException {
+    public XboxController gamepad1 = holo.getGamepad1();
 
-  
+    public void runShooter() {
 
-        /*if (gamepad1.getXButtonPressed()){
-            //topShooter.set(0.38);
-            //bottomShooter.set(-0.38);
-            topShooter.setSmartCurrentLimit(0, 5700, 4000);
-            //speed = 0.38
-            /*kickerMotor.set(.25);
-            kickerPiston.set(Value.kForward);
-            Thread.sleep(20);
-            kickerPiston.set(Value.kReverse);*/
-        //}
-        /*if (gamepad1.getXButtonReleased()){
-            topShooter.set(0);
-            bottomShooter.set(0);
-            /*kickerMotor.set(0);
-            kickerPiston.set(Value.kOff);*/
-        //}
-        
+        // read PID coefficients from SmartDashboard
+        double p = SmartDashboard.getNumber("P Gain", 0);
+        double i = SmartDashboard.getNumber("I Gain", 0);
+        double d = SmartDashboard.getNumber("D Gain", 0);
+        double iz = SmartDashboard.getNumber("I Zone", 0);
+        double ff = SmartDashboard.getNumber("Feed Forward", 0);
+        double max = SmartDashboard.getNumber("Max Output", 0);
+        double min = SmartDashboard.getNumber("Min Output", 0);
+
+        // if PID coefficients on SmartDashboard have changed, write new values to
+        // controller
+        if ((p != Robot.kP)) {
+            holo.topPID.setP(p);
+            Robot.kP = p;
+        }
+        if ((i != Robot.kI)) {
+            holo.topPID.setI(i);
+            Robot.kI = i;
+        }
+        if ((d != Robot.kD)) {
+            holo.topPID.setD(d);
+            Robot.kD = d;
+        }
+        if ((iz != Robot.kIz)) {
+            holo.topPID.setIZone(iz);
+            Robot.kIz = iz;
+        }
+        if ((ff != Robot.kFF)) {
+            holo.topPID.setFF(ff);
+            Robot.kFF = ff;
+        }
+        if ((max != Robot.kMaxOutput) || (min != Robot.kMinOutput)) {
+            holo.topPID.setOutputRange(min, max);
+            Robot.kMinOutput = min;
+            Robot.kMaxOutput = max;
+        }
+        if (gamepad1.getXButtonPressed()) {
+            Robot.setTop = Robot.topRPM;
+            Robot.setBottom = Robot.bottomRPM;
+            // shooterOff = false;
+            System.out.println("@@@@@@");
+        }
+        if (gamepad1.getXButtonReleased()) {
+            Robot.setTop = 0;
+            Robot.setBottom = 0;
+            // shooterOff = true;
+            System.out.println("XXXXXXX");
+        }
+        holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+        holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+
     }
 }
