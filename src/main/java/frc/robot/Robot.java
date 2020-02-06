@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,8 +27,16 @@ public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
     private static final BallCount tracker = new BallCount();
+    private HoloTable holo = HoloTable.getInstance();
+    private Shooter shooter = new Shooter();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, topRPM, bottomRPM, setTop, setBottom;
+    public CANPIDController topPID;
+    public XboxController gamepad1 = holo.getGamepad1(); 
+    public CANPIDController bottomPID;
+    CANSparkMax topShooter = holo.getTopShooter();
+    CANSparkMax bottomShooter = holo.getBottomShooter();
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -34,6 +47,44 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
+        topPID = topShooter.getPIDController();
+        bottomPID = bottomShooter.getPIDController();
+        
+        kP = 0;
+    kI = 0;
+    kD = 0;
+    kIz = 0;
+    kFF = 0.0023;
+    kMaxOutput = 1;
+    kMinOutput = -1;
+    topRPM = -5700;
+    bottomRPM = 5700;
+    
+    // set PID coefficients
+    bottomPID.setP(kP);
+    bottomPID.setI(kI);
+    bottomPID.setD(kD);
+    bottomPID.setIZone(kIz);
+    bottomPID.setFF(kFF);
+    bottomPID.setOutputRange(kMinOutput, kMaxOutput);
+    topPID.setP(kP);
+    topPID.setI(kI);
+    topPID.setD(kD);
+    topPID.setIZone(kIz);
+    topPID.setFF(kFF);
+    topPID.setOutputRange(kMinOutput, kMaxOutput);
+    
+
+    // display PID coefficients on SmartDashboard
+         SmartDashboard.putNumber("P Gain", kP);
+         SmartDashboard.putNumber("I Gain", kI);
+         SmartDashboard.putNumber("D Gain", kD);
+         SmartDashboard.putNumber("I Zone", kIz);
+         SmartDashboard.putNumber("Feed Forward", kFF);
+         SmartDashboard.putNumber("Max Output", kMaxOutput);
+         SmartDashboard.putNumber("Min Output", kMinOutput);
+         
+   
     }
 
     /**
@@ -94,6 +145,46 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+                // read PID coefficients from SmartDashboard
+   double p = SmartDashboard.getNumber("P Gain", 0);
+   double i = SmartDashboard.getNumber("I Gain", 0);
+   double d = SmartDashboard.getNumber("D Gain", 0);
+   double iz = SmartDashboard.getNumber("I Zone", 0);
+   double ff = SmartDashboard.getNumber("Feed Forward", 0);
+   double max = SmartDashboard.getNumber("Max Output", 0);
+   double min = SmartDashboard.getNumber("Min Output", 0);
+
+        // if PID coefficients on SmartDashboard have changed, write new values to controller
+if((p != Robot.kP)) { topPID.setP(p); Robot.kP = p; }
+if((i != Robot.kI)) { topPID.setI(i); Robot.kI = i; }
+if((d != Robot.kD)) { topPID.setD(d); Robot.kD = d; }
+if((iz != Robot.kIz)) { topPID.setIZone(iz); Robot.kIz = iz; }
+if((ff != Robot.kFF)) { topPID.setFF(ff); Robot.kFF = ff; }
+if((max != Robot.kMaxOutput) || (min != Robot.kMinOutput)) { 
+    topPID.setOutputRange(min, max); 
+    Robot.kMinOutput = min; Robot.kMaxOutput = max;
+ } 
+ if (gamepad1.getXButtonPressed()){
+    Robot.setTop = Robot.topRPM;
+    Robot.setBottom = Robot.bottomRPM;
+    //shooterOff = false;
+    System.out.println("@@@@@@");
+}
+if (gamepad1.getXButtonReleased()){
+    Robot.setTop = 0;
+    Robot.setBottom = 0;
+    //shooterOff = true;
+    System.out.println("XXXXXXX");
+}
+topPID.setReference(Robot.setTop, ControlType.kVelocity);
+bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+        /*try {
+            shooter.runShooter();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
+
     }
 
     /**

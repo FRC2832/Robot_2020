@@ -35,20 +35,20 @@ public final class HoloTable {
 
     private static CANSparkMax shooterTop;
     private static CANSparkMax shooterBottom;
-    private static SpeedControllerGroup shooter;
+    //private static SpeedControllerGroup shooter;
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
 
-    private HoloTable() {
+    HoloTable() {
 
         driveTurn = new WPI_TalonSRX(0);
         kickerMotor = new WPI_TalonSRX(0);
-        driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
+        //driveRightFront = new CANSparkMax(0, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
         dropIntake = new DoubleSolenoid(0, 1);
         turnSolenoid = new DoubleSolenoid(2, 3);
         kickerPiston = new DoubleSolenoid(4, 5);
-        gamepad1 = new XboxController(1);
+        gamepad1 = new XboxController(2);
 
         intake = new WPI_TalonSRX(0);
 
@@ -61,10 +61,11 @@ public final class HoloTable {
         infraredHopper4 = new DigitalInput(3);
         infraredHopper5 = new DigitalInput(4);
 
-        shooterTop = new CANSparkMax(0, MotorType.kBrushless);
-        shooterBottom = new CANSparkMax(1, MotorType.kBrushless);
-        shooterBottom.setInverted(true);
-        shooter = new SpeedControllerGroup(shooterTop, shooterBottom);
+        shooterTop = new CANSparkMax(3, MotorType.kBrushless);
+        shooterBottom = new CANSparkMax(4, MotorType.kBrushless);
+        //shooter = new SpeedControllerGroup(shooterTop, shooterBottom);
+        /*shooterTop.restoreFactoryDefaults();
+        shooterBottom.restoreFactoryDefaults();*/
     }
 
     public static HoloTable getInstance() {
@@ -139,8 +140,11 @@ public final class HoloTable {
         return Hopper;
     }
 
-    public SpeedControllerGroup getShooter(){
-        return shooter;
+    public CANSparkMax getTopShooter(){
+        return shooterTop;
+    }
+    public CANSparkMax getBottomShooter(){
+        return shooterBottom;
     }
 
     public WPI_TalonSRX getColor(){
