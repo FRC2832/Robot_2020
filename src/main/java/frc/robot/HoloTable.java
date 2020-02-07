@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
@@ -27,6 +28,7 @@ public final class HoloTable {
     private static PigeonIMU gyro;
     private static Solenoid singleSolenoid;
     private static DoubleSolenoid turnSolenoid;
+    private static Compressor compressor = new Compressor(13);
 
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
@@ -88,6 +90,10 @@ public final class HoloTable {
 
     public DigitalInput getProxTrigger1(){
         return proxTrigger1;
+    }
+
+    public Compressor getCompressor(){
+        return compressor;
     }
 
 }
