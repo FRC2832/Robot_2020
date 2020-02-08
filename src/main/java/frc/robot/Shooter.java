@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     public boolean shooterOff;
     HoloTable holo = HoloTable.getInstance();
-    public XboxController gamepad1 = holo.getGamepad1();
-    public Joystick joystick = holo.getJoystick();
+    public XboxController gamepad1 = holo.getController();
+    public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
 
     public void runShooter() throws InterruptedException{
@@ -80,6 +80,12 @@ public class Shooter {
                     Robot.setTop = 0;
                     Robot.setBottom = 0;
                     ejector.set(0);
+                }
+                if(joystick.getRawButtonPressed(2)){
+
+                }
+                if(joystick.getRawButtonReleased(2)){
+                    
                 }
             }
         }

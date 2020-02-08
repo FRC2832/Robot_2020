@@ -14,7 +14,7 @@ public final class Hopper {
     Hopper() {
 
         hopper = table.getHopper();
-        gamepad1 = table.getGamepad1();
+        gamepad1 = table.getController();
 
     }
 
