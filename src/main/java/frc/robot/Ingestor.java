@@ -10,9 +10,9 @@ public class Ingestor{
 
     HoloTable holoTable = HoloTable.getInstance();
     WPI_TalonSRX intake = holoTable.getIntake();
-    XboxController gamepad1 = holoTable.getGamepad1();
+    XboxController gamepad1 = holoTable.getController();
     DoubleSolenoid dropIntake = holoTable.getDropIntake();
-    Joystick joystick = holoTable.getJoystick();
+    Joystick joystick = holoTable.getJoystickRight();
     private boolean intakeDown;
     
 
