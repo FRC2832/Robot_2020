@@ -25,9 +25,11 @@ public class Robot extends TimedRobot {
     private static final BallCount tracker = new BallCount();
     private HoloTable holo = HoloTable.getInstance();
     private Shooter shooter = new Shooter();
+    private Ingestor ingestor = new Ingestor();
+    private Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, topRPM, bottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM, slowBottomRPM, setTop, setBottom;
     public XboxController gamepad1 = holo.getGamepad1();
 
     /**
@@ -47,8 +49,10 @@ public class Robot extends TimedRobot {
         kFF = 0.0023;
         kMaxOutput = 1;
         kMinOutput = -1;
-        topRPM = -5700;
-        bottomRPM = 5700;
+        fastTopRPM = -5700;
+        fastBottomRPM = 5700;
+        slowTopRPM = -3000;
+        slowBottomRPM = 3000;
 
         // set PID coefficients
         holo.bottomPID.setP(kP);
@@ -133,8 +137,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
-        shooter.runShooter();
+        ingestor.RunIngestor();
+        hopper.RunMotors();
+        try {
+            shooter.runShooter();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 

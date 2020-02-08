@@ -11,7 +11,7 @@ public final class Hopper {
     WPI_TalonSRX hopper;
     XboxController gamepad1;
 
-    private Hopper() {
+    Hopper() {
 
         hopper = table.getHopper();
         gamepad1 = table.getGamepad1();

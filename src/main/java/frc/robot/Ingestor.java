@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -11,12 +12,11 @@ public class Ingestor{
     WPI_TalonSRX intake = holoTable.getIntake();
     XboxController gamepad1 = holoTable.getGamepad1();
     DoubleSolenoid dropIntake = holoTable.getDropIntake();
-    private boolean motorRunning;
+    Joystick joystick = holoTable.getJoystick();
     private boolean intakeDown;
     
 
     public Ingestor() {
-        motorRunning = false;
         intakeDown = false;
     }
     public void RunIngestor(){
@@ -28,20 +28,12 @@ public class Ingestor{
             dropIntake.set(Value.kReverse);
             intakeDown = false;
         }
-        if (gamepad1.getAButtonPressed() && !motorRunning){
+        if (joystick.getPOV() == 180){
             intake.set(.5);
-            motorRunning = true;
         }
-        else if (gamepad1.getAButtonPressed() && motorRunning){
-            intake.set(0);
-            motorRunning = false;
-        }
-        if (gamepad1.getStartButtonPressed()){
-            intake.set(-.5);
-        }
-        else if (gamepad1.getStartButtonReleased()){
+        else{
             intake.set(0);
         }
-    }
 
+    }
 }

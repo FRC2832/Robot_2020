@@ -8,19 +8,19 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 public final class HoloTable {
 
     private static HoloTable instance = null;
     private static WPI_TalonSRX driveTurn;
-    private static WPI_TalonSRX kickerMotor;
     private static CANSparkMax driveRightFront;
     private static PigeonIMU gyro;
     private static DoubleSolenoid dropIntake;
-    private static DoubleSolenoid kickerPiston;
     private static DoubleSolenoid turnSolenoid;
     private static XboxController gamepad1;
+    private static Joystick joystick;
 
     private static WPI_TalonSRX intake;
 
@@ -38,16 +38,16 @@ public final class HoloTable {
 
     private static CANSparkMax shooterTop;
     private static CANSparkMax shooterBottom;
+    private static WPI_TalonSRX ejector;
 
     HoloTable() {
 
         driveTurn = new WPI_TalonSRX(0);
-        kickerMotor = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
         dropIntake = new DoubleSolenoid(0, 1);
         turnSolenoid = new DoubleSolenoid(2, 3);
-        kickerPiston = new DoubleSolenoid(4, 5);
         gamepad1 = new XboxController(2);
+        joystick = new Joystick(0); //CHANGE PORT
 
         intake = new WPI_TalonSRX(0);
 
@@ -64,6 +64,7 @@ public final class HoloTable {
         shooterBottom = new CANSparkMax(4, MotorType.kBrushless);
         topPID = shooterTop.getPIDController();
         bottomPID = shooterBottom.getPIDController();
+        ejector = new WPI_TalonSRX(0);
     }
 
     public static HoloTable getInstance() {
@@ -80,10 +81,6 @@ public final class HoloTable {
         return driveTurn;
     }
 
-    public WPI_TalonSRX getKickerMotor(){
-        return kickerMotor;
-    }
-
     public CANSparkMax getDriveRightFront() {
         return driveRightFront;
     }
@@ -98,12 +95,12 @@ public final class HoloTable {
     public DoubleSolenoid getTurnSolenoid() {
         return turnSolenoid;
     }
-    public DoubleSolenoid getKickerPiston(){
-        return kickerPiston;
-    }
-    
+
     public XboxController getGamepad1() {
         return gamepad1;
+    }
+    public Joystick getJoystick(){
+        return joystick;
     }
 
     public WPI_TalonSRX getIntake() {
@@ -143,6 +140,9 @@ public final class HoloTable {
     }
     public CANSparkMax getBottomShooter(){
         return shooterBottom;
+    }
+    public WPI_TalonSRX getEjector(){
+        return ejector;
     }
 
     public WPI_TalonSRX getColor(){
