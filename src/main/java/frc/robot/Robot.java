@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,8 +23,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
+    private HoloTable holo = HoloTable.getInstance();
+    private Shooter shooter = new Shooter();
+    private Ingestor ingestor = new Ingestor();
+    private Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM, slowBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
 
     /**
@@ -35,6 +41,42 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
+
+        kP = 0;
+        kI = 0;
+        kD = 0;
+        kIz = 0;
+        kFF = 0.0023;
+        kMaxOutput = 1;
+        kMinOutput = -1;
+        fastTopRPM = -5700;
+        fastBottomRPM = 5700;
+        slowTopRPM = -3000;
+        slowBottomRPM = 3000;
+
+        // set PID coefficients
+        holo.bottomPID.setP(kP);
+        holo.bottomPID.setI(kI);
+        holo.bottomPID.setD(kD);
+        holo.bottomPID.setIZone(kIz);
+        holo.bottomPID.setFF(kFF);
+        holo.bottomPID.setOutputRange(kMinOutput, kMaxOutput);
+        holo.topPID.setP(kP);
+        holo.topPID.setI(kI);
+        holo.topPID.setD(kD);
+        holo.topPID.setIZone(kIz);
+        holo.topPID.setFF(kFF);
+        holo.topPID.setOutputRange(kMinOutput, kMaxOutput);
+
+        // display PID coefficients on SmartDashboard
+        SmartDashboard.putNumber("P Gain", kP);
+        SmartDashboard.putNumber("I Gain", kI);
+        SmartDashboard.putNumber("D Gain", kD);
+        SmartDashboard.putNumber("I Zone", kIz);
+        SmartDashboard.putNumber("Feed Forward", kFF);
+        SmartDashboard.putNumber("Max Output", kMaxOutput);
+        SmartDashboard.putNumber("Min Output", kMinOutput);
+
         driveTrain = new DriveTrain();
     }
 
@@ -49,6 +91,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+     
     }
 
     /**
@@ -91,6 +134,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        ingestor.RunIngestor();
+        hopper.RunMotors();
+        try {
+            shooter.runShooter();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         driveTrain.driveTank();
         
     }
