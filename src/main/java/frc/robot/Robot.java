@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,14 +25,22 @@ public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
     private static final BallCount tracker = new BallCount();
+    private static NetworkTable networkTable;
+    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
     private HoloTable holo = HoloTable.getInstance();
     private Shooter shooter = new Shooter();
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM, slowBottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM,
+            slowBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
+    private int visionCenter = 640;
+    private static NetworkTableEntry xEntry;
+    private static NetworkTableEntry yEntry;
+    //private static Number[] defaultArray = new Number[1];
+    private static Number testNum = 0;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -40,7 +51,8 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
-
+        networkTable = inst.getTable("datatable");
+       // networkTable = NetworkTable.getTable("MainTable");
         kP = 0;
         kI = 0;
         kD = 0;
@@ -54,7 +66,7 @@ public class Robot extends TimedRobot {
         slowBottomRPM = 3000;
 
         // set PID coefficients
-        holo.bottomPID.setP(kP);
+        /*holo.bottomPID.setP(kP);
         holo.bottomPID.setI(kI);
         holo.bottomPID.setD(kD);
         holo.bottomPID.setIZone(kIz);
@@ -66,7 +78,7 @@ public class Robot extends TimedRobot {
         holo.topPID.setIZone(kIz);
         holo.topPID.setFF(kFF);
         holo.topPID.setOutputRange(kMinOutput, kMaxOutput);
-
+        */
         // display PID coefficients on SmartDashboard
         SmartDashboard.putNumber("P Gain", kP);
         SmartDashboard.putNumber("I Gain", kI);
@@ -90,11 +102,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        xEntry = networkTable.getEntry("x");
+        
+        //System.out.println("X ENTRY");
+        //System.out.println(xEntry);
+        testNum = (xEntry.getNumber(640));
+        visionCenter = testNum.intValue();
+        //visionCenter = networkTable.get
         SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
         SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
+        SmartDashboard.putNumber("visionCenter", visionCenter);
     }
 
     /**
@@ -139,6 +159,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ingestor.RunIngestor();
         hopper.RunMotors();
+        driveTrain.autoAlign(visionCenter);
         try {
             shooter.runShooter();
         } catch (InterruptedException e) {
@@ -147,7 +168,7 @@ public class Robot extends TimedRobot {
         }
 
         driveTrain.driveTank();
-        
+
     }
 
     /**
@@ -155,6 +176,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
-        
+
     }
 }
