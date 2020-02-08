@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,7 +31,7 @@ public class Robot extends TimedRobot {
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM, slowBottomRPM, setTop, setBottom;
-    public XboxController gamepad1 = holo.getGamepad1();
+    private static DriveTrain driveTrain;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -77,6 +78,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
+        driveTrain = new DriveTrain();
     }
 
     /**
@@ -146,6 +148,8 @@ public class Robot extends TimedRobot {
             e.printStackTrace();
         }
 
+        driveTrain.driveTank();
+        
     }
 
     /**
@@ -153,5 +157,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+        
     }
 }
