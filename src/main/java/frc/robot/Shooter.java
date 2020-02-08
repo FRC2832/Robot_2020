@@ -1,8 +1,8 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +13,7 @@ public class Shooter {
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
+    public CANSparkMax leftRearDrive = holo.getDriveLeftRear();
 
     public void runShooter() throws InterruptedException{
 
@@ -82,7 +83,7 @@ public class Shooter {
                     ejector.set(0);
                 }
                 if(joystick.getRawButtonPressed(2)){
-
+                    
                 }
                 if(joystick.getRawButtonReleased(2)){
                     
