@@ -69,29 +69,24 @@ public class Shooter {
                 if(joystick.getTriggerReleased()){
                     shooterOff = true;
                 }
-                if(joystick.getTriggerReleased()){
-                    Robot.setTop = 0;
-                    Robot.setBottom = 0;
-                    ejector.set(0);
-                    System.out.println("XXXXXXX");
-                }
-                if(joystick.getRawButtonPressed(3)){
-                    Robot.setTop = Robot.slowTopRPM;
-                    Robot.setBottom = Robot.slowBottomRPM;
-                    ejector.set(.5);
-                }
-                if(joystick.getRawButtonReleased(3)){
-                    Robot.setTop = 0;
-                    Robot.setBottom = 0;
-                    ejector.set(0);
-                }
-                if(joystick.getRawButtonPressed(2)){
-                    
-                }
-                if(joystick.getRawButtonReleased(2)){
-                    
-                }
             }
+            
+        }
+        if(joystick.getTriggerReleased()){
+            Robot.setTop = 0;
+            Robot.setBottom = 0;
+            ejector.set(0);
+            System.out.println("XXXXXXX");
+        }
+        if(joystick.getRawButtonPressed(3)){
+            Robot.setTop = Robot.emptyTopRPM;
+            Robot.setBottom = Robot.emptyBottomRPM;
+            ejector.set(.5);
+        }
+        if(joystick.getRawButtonReleased(3)){
+            Robot.setTop = 0;
+            Robot.setBottom = 0;
+            ejector.set(0);
         }
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);

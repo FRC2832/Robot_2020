@@ -28,7 +28,8 @@ public class Robot extends TimedRobot {
     private Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM, slowBottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, 
+                         emptyTopRPM, emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
 
     /**
@@ -50,8 +51,8 @@ public class Robot extends TimedRobot {
         kMinOutput = -1;
         fastTopRPM = -5700;
         fastBottomRPM = 5700;
-        slowTopRPM = -3000;
-        slowBottomRPM = 3000;
+        emptyTopRPM = -3000;
+        emptyBottomRPM = 3000;
 
         // set PID coefficients
         holo.bottomPID.setP(kP);
