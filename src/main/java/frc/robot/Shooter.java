@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,8 +15,7 @@ public class Shooter {
     public WPI_TalonSRX ejector = holo.getEjector();
     public CANSparkMax rightRear = holo.getDriveRightRear();
     public CANSparkMax rightFront = holo.getDriveRightFront();
-    private SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
-
+    
     public void runShooter() throws InterruptedException{
 
         // read PID coefficients from SmartDashboard
