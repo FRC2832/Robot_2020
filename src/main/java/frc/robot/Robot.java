@@ -93,31 +93,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        
-        SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
-        SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
-        SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
-        SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
-        SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        try{
-        visionCenterX = (int)((table.getEntry("x").getDoubleArray(defaultValue))[0]);}
-        catch(Exception e){
-
-        }
-
-        /*try{
-            visionCenterY = (int)((table.getEntry("y").getDoubleArray(defaultValue))[0]);}
-            catch(Exception e){
-    
-            }*/
-        //visionCenter = (table.getEntry("x").getNumber(defaultValue).intValue());
-        //System.out.println("X value:");
-        //System.out.println(visionCenterX);
-        //System.out.println("Y value:");
-        //System.out.println(visionCenterY);
-
-        SmartDashboard.putNumber("x", visionCenterX);
-        
+     
     }
 
     /**
@@ -162,7 +138,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ingestor.RunIngestor();
         hopper.RunMotors();
-        driveTrain.autoAlign(visionCenterX);
+        
+
         try {
             shooter.runShooter();
         } catch (final InterruptedException e) {
