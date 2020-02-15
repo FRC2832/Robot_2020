@@ -13,7 +13,6 @@ public class Shooter {
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
-
     public void runShooter() throws InterruptedException{
 
         // read PID coefficients from SmartDashboard
