@@ -25,22 +25,19 @@ public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
     private static final BallCount tracker = new BallCount();
-    private static NetworkTable networkTable;
-    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private HoloTable holo = HoloTable.getInstance();
-    private Shooter shooter = new Shooter();
-    private Ingestor ingestor = new Ingestor();
-    private Hopper hopper = new Hopper();
+    private final HoloTable holo = HoloTable.getInstance();
+    private final Shooter shooter = new Shooter();
+    private final Ingestor ingestor = new Ingestor();
+    private final Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM,
             slowBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
-    private int visionCenter = 640;
-    private static NetworkTableEntry xEntry;
-    private static NetworkTableEntry yEntry;
-    //private static Number[] defaultArray = new Number[1];
-    private static Number testNum = 0;
+    private static int visionCenterX = 640;
+    private static int visionCenterY = 360;
+    private NetworkTable table;
+    private double[] defaultValue = {-1};
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -48,11 +45,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
-        networkTable = inst.getTable("datatable");
-       // networkTable = NetworkTable.getTable("MainTable");
+        table = NetworkTableInstance.getDefault().getTable("datatable");
         kP = 0;
         kI = 0;
         kD = 0;
@@ -66,19 +63,13 @@ public class Robot extends TimedRobot {
         slowBottomRPM = 3000;
 
         // set PID coefficients
-        /*holo.bottomPID.setP(kP);
-        holo.bottomPID.setI(kI);
-        holo.bottomPID.setD(kD);
-        holo.bottomPID.setIZone(kIz);
-        holo.bottomPID.setFF(kFF);
-        holo.bottomPID.setOutputRange(kMinOutput, kMaxOutput);
-        holo.topPID.setP(kP);
-        holo.topPID.setI(kI);
-        holo.topPID.setD(kD);
-        holo.topPID.setIZone(kIz);
-        holo.topPID.setFF(kFF);
-        holo.topPID.setOutputRange(kMinOutput, kMaxOutput);
-        */
+        /*
+         * holo.bottomPID.setP(kP); holo.bottomPID.setI(kI); holo.bottomPID.setD(kD);
+         * holo.bottomPID.setIZone(kIz); holo.bottomPID.setFF(kFF);
+         * holo.bottomPID.setOutputRange(kMinOutput, kMaxOutput); holo.topPID.setP(kP);
+         * holo.topPID.setI(kI); holo.topPID.setD(kD); holo.topPID.setIZone(kIz);
+         * holo.topPID.setFF(kFF); holo.topPID.setOutputRange(kMinOutput, kMaxOutput);
+         */
         // display PID coefficients on SmartDashboard
         SmartDashboard.putNumber("P Gain", kP);
         SmartDashboard.putNumber("I Gain", kI);
@@ -87,7 +78,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
-
+        
         driveTrain = new DriveTrain();
     }
 
@@ -102,19 +93,31 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        xEntry = networkTable.getEntry("x");
         
-        //System.out.println("X ENTRY");
-        //System.out.println(xEntry);
-        testNum = (xEntry.getNumber(640));
-        visionCenter = testNum.intValue();
-        //visionCenter = networkTable.get
         SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
         SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        SmartDashboard.putNumber("visionCenter", visionCenter);
+        try{
+        visionCenterX = (int)((table.getEntry("x").getDoubleArray(defaultValue))[0]);}
+        catch(Exception e){
+
+        }
+
+        /*try{
+            visionCenterY = (int)((table.getEntry("y").getDoubleArray(defaultValue))[0]);}
+            catch(Exception e){
+    
+            }*/
+        //visionCenter = (table.getEntry("x").getNumber(defaultValue).intValue());
+        //System.out.println("X value:");
+        //System.out.println(visionCenterX);
+        //System.out.println("Y value:");
+        //System.out.println(visionCenterY);
+
+        SmartDashboard.putNumber("x", visionCenterX);
+        
     }
 
     /**
@@ -159,10 +162,10 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ingestor.RunIngestor();
         hopper.RunMotors();
-        driveTrain.autoAlign(visionCenter);
+        driveTrain.autoAlign(visionCenterX);
         try {
             shooter.runShooter();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
