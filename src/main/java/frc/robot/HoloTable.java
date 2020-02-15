@@ -32,6 +32,7 @@ public final class HoloTable {
     private static DigitalInput infraredHopper3;
     private static DigitalInput infraredHopper4;
     private static DigitalInput infraredHopper5;
+    private static DigitalInput infraredIntake;
 
     public CANPIDController topPID; 
     public CANPIDController bottomPID;
@@ -54,16 +55,17 @@ public final class HoloTable {
         gyro = new PigeonIMU(0);
         dropIntake = new DoubleSolenoid(0, 1);
 
-        intake = new WPI_TalonSRX(0);
+        intake = new WPI_TalonSRX(2);
 
-        color = new WPI_TalonSRX(12);
+        color = new WPI_TalonSRX(1);
 
-        Hopper = new WPI_TalonSRX(0);
+        Hopper = new WPI_TalonSRX(12);
         infraredHopper1 = new DigitalInput(0);
         infraredHopper2 = new DigitalInput(1);
         infraredHopper3 = new DigitalInput(2);
         infraredHopper4 = new DigitalInput(3);
         infraredHopper5 = new DigitalInput(4);
+        infraredIntake = new DigitalInput(5);
 
         shooterTop = new CANSparkMax(3, MotorType.kBrushless);
         shooterBottom = new CANSparkMax(4, MotorType.kBrushless);
@@ -154,6 +156,11 @@ public final class HoloTable {
     public DigitalInput getInfraredHopper5(){
 
         return infraredHopper5;
+    }
+
+    public DigitalInput getInfraredIntake(){
+
+        return infraredIntake;
     }
 
     public WPI_TalonSRX getHopper(){

@@ -91,11 +91,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
-        SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
-        SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
-        SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
-        SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
+     
     }
 
     /**
@@ -140,6 +136,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ingestor.RunIngestor();
         hopper.RunMotors();
+        
+
         try {
             shooter.runShooter();
         } catch (InterruptedException e) {
