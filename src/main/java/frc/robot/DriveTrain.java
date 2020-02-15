@@ -27,6 +27,7 @@ public class DriveTrain extends Subsystem {
   private SpeedControllerGroup rightMotors;
   private Joystick joystickLeft;
   private Joystick joystickRight;
+  private int targetPixel = 640;
 
   /**
    * Creates a new DriveTrain.
@@ -55,14 +56,21 @@ public class DriveTrain extends Subsystem {
   public void driveTank() {
     differentialDrive.tankDrive(joystickLeft.getY(), joystickRight.getY(), true);
   }
-  /*public void driveArcade() {
-    differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used
-  }*/
 
-  public void extendDriveTurn(){
+  public void rotate(double rotateSpeed) {
+    differentialDrive.arcadeDrive(0, rotateSpeed);
+  }
+  /*
+   * public void driveArcade() {
+   * differentialDrive.arcadeDrive(controller.getRawAxis(0),
+   * controller.getRawAxis(4), true); Not Being Used }
+   */
+
+  public void extendDriveTurn() {
     turnSolenoid.set(DoubleSolenoid.Value.kForward);
   }
-  public void retractDriveTurn(){
+
+  public void retractDriveTurn() {
     turnSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
@@ -70,5 +78,25 @@ public class DriveTrain extends Subsystem {
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub
 
+  }
+
+  public void autoAlign(int visionCenter) {
+    if (joystickRight.getRawButton(3)) {
+      if (visionCenter - targetPixel >= 10) {
+        while (visionCenter - targetPixel >= 10) {
+          rotate(0.25);
+        }
+      }
+      if (visionCenter - targetPixel <= -10) {
+        while (visionCenter - targetPixel <= -10) {
+          rotate(-0.25);
+        }
+      }
+
+      if(Math.abs(visionCenter - targetPixel) <= 10){
+        rotate(0);
+      }
+
+    }
   }
 }
