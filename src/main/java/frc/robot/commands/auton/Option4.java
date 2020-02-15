@@ -14,21 +14,36 @@ public class Option4 extends Command {
     CANSparkMax rightFront = holo.getDriveRightFront();
     CANSparkMax leftRear = holo.getDriveLeftRear();
     CANSparkMax rightRear = holo.getDriveRightRear();
-    SpeedControllerGroup leftMotors= new SpeedControllerGroup(leftFront, leftRear);
-    SpeedControllerGroup rightMotors= new SpeedControllerGroup(rightFront, rightRear);
+    SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
+    SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
+    double angle;
+    
 
     @Override
     protected void initialize() {
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
-        gyro.setYaw(0);
+        gyro.setYaw(angle, 0);
+        
         // TODO Auto-generated method stub
         super.initialize();
     }
 
     @Override
     protected void execute() {
-        gyro.setYaw(0);
+        if (angle < 28){
+            leftMotors.set(-0.3);
+            rightMotors.set(0.3);
+
+        }else if(angle == 28){
+            
+
+        }else if(angle > 28){
+            leftMotors.set(0.3);
+            rightMotors.set(-0.3);
+
+        }
+        
         // TODO Auto-generated method stub
         super.execute();
     }
