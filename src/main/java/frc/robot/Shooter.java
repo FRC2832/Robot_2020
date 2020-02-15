@@ -88,8 +88,8 @@ public class Shooter {
                 }
             }
         }
-        //holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
-        //holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+        holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+        holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
 
     }
 }

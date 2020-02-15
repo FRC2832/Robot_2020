@@ -2,10 +2,12 @@ package frc.robot.commands.auton;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HoloTable;
+import frc.robot.Robot;
 
 public class Option4 extends Command {
     HoloTable holo = HoloTable.getInstance();
@@ -17,6 +19,8 @@ public class Option4 extends Command {
     SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
     double angle;
+    int targetPixel = 640;
+    int visionCenter;
     
 
     @Override
@@ -31,18 +35,39 @@ public class Option4 extends Command {
 
     @Override
     protected void execute() {
-        if (angle < 28){
-            leftMotors.set(-0.3);
-            rightMotors.set(0.3);
+        if (angle < 25){
+            leftMotors.set(-0.35);
+            rightMotors.set(0.35);
 
-        }else if(angle == 28){
-            
+        }else if(angle >= 25 && angle <= 30){
+            if (visionCenter - targetPixel >= 10) {
+                while (visionCenter - targetPixel >= 10) {
+                    leftMotors.set(0.2);
+                    rightMotors.set(-0.2);
+                }
+              }
+              if (visionCenter - targetPixel <= -10) {
+                while (visionCenter - targetPixel <= -10) {
+                    leftMotors.set(-0.2);
+                    rightMotors.set(0.2);
+                }
+              }
+        
+              if(Math.abs(visionCenter - targetPixel) <= 10){
+                leftMotors.set(0);
+                rightMotors.set(0);
+                Robot.setTop = Robot.fastTopRPM;
+                Robot.setBottom = Robot.fastBottomRPM;
+              }
 
-        }else if(angle > 28){
-            leftMotors.set(0.3);
-            rightMotors.set(-0.3);
+        }else if(angle > 30){
+            leftMotors.set(0.35);
+            rightMotors.set(-0.35);
 
         }
+        
+        holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+        holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
         
         // TODO Auto-generated method stub
         super.execute();
