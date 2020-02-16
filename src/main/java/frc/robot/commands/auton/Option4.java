@@ -1,10 +1,13 @@
 package frc.robot.commands.auton;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HoloTable;
 import frc.robot.Robot;
@@ -18,13 +21,21 @@ public class Option4 extends Command {
     CANSparkMax rightRear = holo.getDriveRightRear();
     SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
+    DoubleSolenoid dropIntake = holo.getDropIntake();
+    WPI_TalonSRX intake = holo.getIntake();
+    Timer timer = new Timer();
     double angle;
     int targetPixel = 640;
     int visionCenter;
     
+    
 
     @Override
     protected void initialize() {
+        timer.reset();
+        timer.start();
+        dropIntake.set(Value.kForward);
+        intake.set(0.5);
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
         gyro.setYaw(angle, 0);
