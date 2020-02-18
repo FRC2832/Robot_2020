@@ -7,12 +7,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,7 +40,10 @@ public class Robot extends TimedRobot {
     private static int visionCenterX = 640;
     private static int visionCenterY = 360;
     private NetworkTable table;
-    private double[] defaultValue = {-1};
+    private final double[] defaultValue = { -1 };
+    private XboxController gamepad1;
+    private JoystickButton buttonA, buttonB, buttonX;
+    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("camselect");
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -45,7 +51,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        
+
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -61,6 +67,10 @@ public class Robot extends TimedRobot {
         fastBottomRPM = 5700;
         slowTopRPM = -3000;
         slowBottomRPM = 3000;
+
+        buttonA = new JoystickButton(gamepad1, 1);
+        buttonB = new JoystickButton(gamepad1, 2);
+        buttonX = new JoystickButton(gamepad1, 3);
 
         // set PID coefficients
         /*
@@ -78,8 +88,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
-        
+
         driveTrain = new DriveTrain();
+
+        CameraServer.getInstance().startAutomaticCapture();
+        // CameraServer.getInstance().addServer(name, port);
     }
 
     /**
@@ -93,15 +106,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        
+
         SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
         SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        try{
-        visionCenterX = (int)((table.getEntry("x").getDoubleArray(defaultValue))[0]);}
-        catch(Exception e){
+        try {
+            visionCenterX = (int) ((table.getEntry("x").getDoubleArray(defaultValue))[0]);
+        } catch (final Exception e) {
 
         }
 
@@ -171,6 +184,16 @@ public class Robot extends TimedRobot {
         }
 
         driveTrain.driveTank();
+
+        if (gamepad1.getAButtonPressed()) {
+            cameraSelect.setDouble(0);  // or setString("My Pi Camera Name")
+          }
+        if (gamepad1.getBButtonPressed()) {
+            cameraSelect.setDouble(1);
+          }
+        /*if (gamepad1.getXButtonPressed()) {
+            cameraSelect.setDouble(2);
+        }*/
 
     }
 
