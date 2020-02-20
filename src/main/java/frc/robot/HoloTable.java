@@ -37,10 +37,10 @@ public final class HoloTable {
 
         // map.put("driveTurn", ); For Hashmap
         driveTurn = new WPI_TalonSRX(0);
-        driveRightFront = new CANSparkMax(2, MotorType.kBrushless);
-        driveLeftFront = new CANSparkMax(4, MotorType.kBrushless);
-        driveRightRear = new CANSparkMax(1, MotorType.kBrushless);
-        driveLeftRear = new CANSparkMax(3, MotorType.kBrushless);
+        driveRightFront = new CANSparkMax(1, MotorType.kBrushless);
+        driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);
+        driveRightRear = new CANSparkMax(0, MotorType.kBrushless);
+        driveLeftRear = new CANSparkMax(14, MotorType.kBrushless);
         gyro = new PigeonIMU(0);
         singleSolenoid = new Solenoid(0);
         turnSolenoid = new DoubleSolenoid(1, 2);
