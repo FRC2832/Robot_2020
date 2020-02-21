@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    if(joystickRight.getButton(2))
+    if(joystickRight.getRawButton(2))
       driveCoeff = .3;
     else
       driveCoeff = 1;
