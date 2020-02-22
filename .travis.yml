@@ -1,11 +1,14 @@
 notifications:
-  slack: livoniawarriors:WlPFlm1wbRWJ6GlWtEQLFWfG
+  slack:
+    rooms:
+      secure: vPPsgQcfCA8xwR+5FCzRJGAKzLTJxW2h4x+3lNpBg1PQdRWEOI8J9vu0pTMRFgXl/E719PdauI88zcfEK31F6RjLFtDQmzW5chpmjGupIxikonBlRqcOMG2LdGPcsTURLthnXzlLet3h6amjBjvxZPLYOeixKyJXWffFk/+PqL24m502KcQcyqcunGaxhE0vio+i+tk0xkn3FyWh2a5fjb16OU6kOiZKD9q3koM1GY9OiulIL1BU7PFdhhByKcqaJulnR0WnlCmw4BFrrv86LtTnC/8FAmEYqRc+XZB54Cl4U+19tqvPEwtM26oA3F+UAi1GYZn88PadyjCDN1VC9p6NWMNOzMBHSYzWiaZjxEE2q8c9WEGC2gYLB/Zr+3JI5QS/nFV1MfKUXTM9d7NzZnLx0VaK7q5OLzWEEohCPBaHEEDQpg2BbEcrZeisoog3dYugyYvHtG+mmnQ8LErhgF1t4ocDA9v67URDx2F4/K6Be4fUGD35iZJgzBJuOIPUmjAAYw6WCseYrO0dW7JXw/M4lcpKt8hZUp39LhwS5wgI/xfkRntNH2tzfPp2UgAdmhzpNMDF/UT64zySpsXqHlFANwo4CrVUCWmsGbMS3KfbtlOwVEOvAS0IRYT/PBtn0JlaQAj3jq6vF+Y8JLOLlh2Ai0u8sKLZlWh1UNOSPkA=
 sudo: false
 language: java
 install: true
 before_install:
 - chmod +x gradlew
 - mkdir lib/
-- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1w6vrVvmJthSR0ZLOVddlKqDQ49GPCqlE' -P "lib/"  -O 'SparkMax-java-1.0.26.jar'
-script: ./gradlew build
+- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1w6vrVvmJthSR0ZLOVddlKqDQ49GPCqlE'
+  -P "lib/"  -O 'SparkMax-java-1.0.26.jar'
+script: "./gradlew build"
 jdk: oraclejdk11
