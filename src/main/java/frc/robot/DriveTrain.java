@@ -22,7 +22,7 @@ public class DriveTrain extends Subsystem {
   private CANSparkMax leftRear;
   private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
-  private DoubleSolenoid turnSolenoid;
+  //private DoubleSolenoid turnSolenoid;
   private SpeedControllerGroup leftMotors;
   private SpeedControllerGroup rightMotors;
   private Joystick joystickLeft;
@@ -39,7 +39,7 @@ public class DriveTrain extends Subsystem {
     rightRear = holo.getDriveRightRear();
     joystickLeft = holo.getJoystickLeft();
     joystickRight = holo.getJoystickRight();
-    turnSolenoid = holo.getTurnSolenoid();
+    //turnSolenoid = holo.getTurnSolenoid();
     leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
@@ -66,10 +66,10 @@ public class DriveTrain extends Subsystem {
   }*/
 
   public void extendDriveTurn(){
-    turnSolenoid.set(DoubleSolenoid.Value.kForward);
+    //turnSolenoid.set(DoubleSolenoid.Value.kForward);
   }
   public void retractDriveTurn(){
-    turnSolenoid.set(DoubleSolenoid.Value.kReverse);
+    //turnSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   @Override

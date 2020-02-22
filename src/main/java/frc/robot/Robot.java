@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        ingestor.RunIngestor();
+        ingestor.runIngestor();
         hopper.RunMotors();
         
 

@@ -11,7 +11,8 @@ public class Ingestor{
     HoloTable holoTable = HoloTable.getInstance();
     WPI_TalonSRX intake = holoTable.getIntake();
     XboxController gamepad1 = holoTable.getController();
-    DoubleSolenoid dropIntake = holoTable.getDropIntake();
+    DoubleSolenoid dropIntake1 = holoTable.getDropIntake1();
+    DoubleSolenoid dropIntake2 = holoTable.getDropIntake2();
     Joystick joystick = holoTable.getJoystickRight();
     private boolean intakeDown;
     
@@ -19,13 +20,15 @@ public class Ingestor{
     public Ingestor() {
         intakeDown = false;
     }
-    public void RunIngestor(){
+    public void runIngestor(){
         if (gamepad1.getBButtonPressed() && !intakeDown){
-            dropIntake.set(Value.kForward);
+            dropIntake1.set(Value.kForward);
+            dropIntake2.set(Value.kForward);
             intakeDown = true;
         }
         if (gamepad1.getBButtonPressed() && intakeDown){
-            dropIntake.set(Value.kReverse);
+            dropIntake1.set(Value.kReverse);
+            dropIntake2.set(Value.kReverse);
             intakeDown = false;
         }
         if (joystick.getPOV() == 180){
@@ -35,5 +38,8 @@ public class Ingestor{
             intake.set(0);
         }
 
+    }
+    public void stopIngestor(){
+        intake.set(0);
     }
 }
