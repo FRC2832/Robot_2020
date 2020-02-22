@@ -28,6 +28,11 @@ public final class Hopper {
     }
 
     public void RunMotors() {
+        if (gamepad1.getStartButtonPressed()) {
+            hopper.set(-.5);
+        } else if (gamepad1.getStartButtonReleased()) {
+            hopper.set(0);
+        }
         if (!infraredIntake.get()){
             if (!infraredHopper1.get()){
                 if (!infraredHopper2.get()){
@@ -41,11 +46,7 @@ public final class Hopper {
         }else {
             hopper.set(0);
         }
-        if (gamepad1.getStartButtonPressed()) {
-            hopper.set(-.5);
-        } else if (gamepad1.getStartButtonReleased()) {
-            hopper.set(0);
-        }
+       
     }
 
 }
