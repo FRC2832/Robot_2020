@@ -19,7 +19,7 @@ public class Ingestor{
     public Ingestor() {
         intakeDown = false;
     }
-    public void RunIngestor(){
+    public void runIngestor(){
         if (gamepad1.getBButtonPressed() && !intakeDown){
             dropIntake.set(Value.kForward);
             intakeDown = true;
@@ -35,5 +35,8 @@ public class Ingestor{
             intake.set(0);
         }
 
+    }
+    public void stopIngestor(){
+        intake.set(0);
     }
 }
