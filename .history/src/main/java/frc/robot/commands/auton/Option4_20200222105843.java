@@ -124,14 +124,7 @@ public class Option4 extends Command {
                 rightMotors.set(0.4);
             }
             if(timer.get() >=7 && timer.get() <= 10){
-                /*Lidar stuff to make when Lidar is ready.
-                Outline: check if center of the robot is 27.75 inches from the wall;
-                                if not, move to it
-                                if yes, move back 204 inches and intake the balls
-                                if moved back 204 inches, turn 14 degrees(not sure about actual angle this is just a estimate)
-                                if turned 14 degrees,move forward 84 inches
-                                if moved forward 84 inches, start shooter
-                */
+                //Lidar stuff to make when done
 
             }
         }

@@ -21,8 +21,7 @@ public class Option4 extends Command {
     CANSparkMax rightRear = holo.getDriveRightRear();
     SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
-    DoubleSolenoid dropIntake1 = holo.getDropIntake1();
-    DoubleSolenoid dropIntake2 = holo.getDropIntake2();
+    DoubleSolenoid dropIntake = holo.getDropIntake();
     WPI_TalonSRX intake = holo.getIntake();
     WPI_TalonSRX ejector = holo.getEjector();
     WPI_TalonSRX hopper = holo.getHopper();
@@ -35,10 +34,10 @@ public class Option4 extends Command {
     protected void initialize() {
         timer.reset();
         timer.start();
-        dropIntake1.set(Value.kForward);
-        dropIntake2.set(Value.kForward);
+        dropIntake.set(Value.kForward);
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
+        gyro.setYaw(angle, 0);
 
         // TODO Auto-generated method stub
         super.initialize();
@@ -78,7 +77,6 @@ public class Option4 extends Command {
             }
 
             if (Math.abs(visionCenter - targetPixel) <= 10) {
-                gyro.setYaw(angle, 28);
                 leftMotors.set(0);
                 rightMotors.set(0);
                 Robot.setTop = Robot.fastTopRPM;
@@ -101,10 +99,10 @@ public class Option4 extends Command {
                     ejector.set(0);
                 }
             }
-        if(timer.get() >=5 && timer.get() <= 7){
+        if(timer.get() >=10 && timer.get() <= 15){
             if(angle <= 30 && angle >= 5){
-                leftMotors.set(0.4);
-                rightMotors.set(-0.4);
+                leftMotors.set(0.35);
+                rightMotors.set(-0.35);
             }
             if(angle <= 5 && angle > 0){
                 leftMotors.set(0.15);
@@ -120,18 +118,11 @@ public class Option4 extends Command {
                 rightMotors.set(0.15);
             }
             if(angle <= -30 && angle >= -5){
-                leftMotors.set(-0.4);
-                rightMotors.set(0.4);
+                leftMotors.set(-0.35);
+                rightMotors.set(0.35);
             }
-            if(timer.get() >=7 && timer.get() <= 10){
-                /*Lidar stuff to make when Lidar is ready.
-                Outline: check if center of the robot is 27.75 inches from the wall;
-                                if not, move to it
-                                if yes, move back 204 inches and intake the balls
-                                if moved back 204 inches, turn 14 degrees(not sure about actual angle this is just a estimate)
-                                if turned 14 degrees,move forward 84 inches
-                                if moved forward 84 inches, start shooter
-                */
+            if(timer.get() >=15 && timer.get() <= 20){
+                //Lidar stuff to make if
 
             }
         }

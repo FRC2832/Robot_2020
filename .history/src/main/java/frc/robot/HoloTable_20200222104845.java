@@ -54,7 +54,7 @@ public final class HoloTable {
         driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
         dropIntake1 = new DoubleSolenoid(0, 1);
-        dropIntake2 = new DoubleSolenoid(2, 3);
+        dropIntake2 = new DoubleSolenoid(2, 3)
 
         intake = new WPI_TalonSRX(2);
 
