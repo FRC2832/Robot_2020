@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -40,22 +42,30 @@ public class Robot extends TimedRobot {
     private static int visionCenterX = 640;
     private static int visionCenterY = 360;
     private NetworkTable table;
+    //private NetworkTable camTable;
     private final double[] defaultValue = { -1 };
     private XboxController gamepad1;
     private JoystickButton buttonA, buttonB, buttonX;
-    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("camselect");
+    NetworkTableEntry cameraSelect;
+    //NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
 
+    /*UsbCamera piCamera1;
+    UsbCamera piCamera2;
+    VideoSink server;*/
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
      */
     @Override
     public void robotInit() {
-
+        
+        gamepad1 = new XboxController(0);
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
         table = NetworkTableInstance.getDefault().getTable("datatable");
+        //cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
+        cameraSelect = NetworkTableInstance.getDefault().getTable("datatable").getEntry("/camselect");
         kP = 0;
         kI = 0;
         kD = 0;
@@ -91,7 +101,10 @@ public class Robot extends TimedRobot {
 
         driveTrain = new DriveTrain();
 
-        CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture(); //UNCOMMENT IF REVERTING
+        //camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+
+
         // CameraServer.getInstance().addServer(name, port);
     }
 
@@ -185,16 +198,22 @@ public class Robot extends TimedRobot {
 
         driveTrain.driveTank();
 
-        if (gamepad1.getAButtonPressed()) {
-            cameraSelect.setDouble(0);  // or setString("My Pi Camera Name")
+        if (buttonA.get()) {
+            System.out.println("A BUTTON HAS BEEN PRESSED");
+            cameraSelect.setDouble(0.0);  // or setString("My Pi Camera Name")
           }
-        if (gamepad1.getBButtonPressed()) {
-            cameraSelect.setDouble(1);
+        if (buttonB.get()) {
+            System.out.println("B BUTTON HAS BEEN PRESSED");
+            cameraSelect.setDouble(1.0);
           }
         /*if (gamepad1.getXButtonPressed()) {
             cameraSelect.setDouble(2);
         }*/
+        if((int) cameraSelect.getDouble(-1.0) == 0)
+            System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE");
 
+        if((int) cameraSelect.getDouble(-1.0) == 1)
+            System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
     }
 
     /**

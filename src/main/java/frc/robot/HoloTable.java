@@ -20,8 +20,8 @@ public final class HoloTable {
     private static CANSparkMax driveRightRear;
     private static CANSparkMax driveLeftRear;
     private static PigeonIMU gyro;
-    private static DoubleSolenoid dropIntake;
-    private static DoubleSolenoid turnSolenoid;
+    //private static DoubleSolenoid dropIntake;
+    //private static DoubleSolenoid turnSolenoid;
     private static WPI_TalonSRX intake;
 
     private static WPI_TalonSRX color;    
@@ -52,7 +52,7 @@ public final class HoloTable {
 
         driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
-        dropIntake = new DoubleSolenoid(0, 1);
+        //dropIntake = new DoubleSolenoid(0, 1);
 
         intake = new WPI_TalonSRX(0);
 
@@ -70,10 +70,10 @@ public final class HoloTable {
         //topPID = shooterTop.getPIDController();
         //bottomPID = shooterBottom.getPIDController();
         //ejector = new WPI_TalonSRX(0);
-        driveRightFront = new CANSparkMax(2, MotorType.kBrushless);
+        /*driveRightFront = new CANSparkMax(2, MotorType.kBrushless);
         driveLeftFront = new CANSparkMax(8, MotorType.kBrushless);//the motor should be set to 4. changed to test shooter
         driveRightRear = new CANSparkMax(1, MotorType.kBrushless);
-        driveLeftRear = new CANSparkMax(6, MotorType.kBrushless);//the motor should be set to 3. changed to test shooter
+        driveLeftRear = new CANSparkMax(6, MotorType.kBrushless);//the motor should be set to 3. changed to test shooter*/
         //turnSolenoid = new DoubleSolenoid(1, 2);
         controller = new XboxController(0);
         joystickLeft = new Joystick(0);
@@ -93,7 +93,7 @@ public final class HoloTable {
         return driveTurn;
     }
 
-    public CANSparkMax getDriveRightFront() {
+    /*public CANSparkMax getDriveRightFront() {
         return driveRightFront;
     }
 
@@ -108,17 +108,17 @@ public final class HoloTable {
     public CANSparkMax getDriveLeftRear() {
         return driveLeftRear;
     }
-
+    */
     public PigeonIMU getGyro() {
         return gyro;
     }
 
-    public DoubleSolenoid getDropIntake() {
-        return dropIntake;
-    }
-    public DoubleSolenoid getTurnSolenoid() {
-        return turnSolenoid;
-    }
+    //public DoubleSolenoid getDropIntake() {
+    //    return dropIntake;
+    //}
+    //public DoubleSolenoid getTurnSolenoid() {
+    //    return turnSolenoid;
+    //}
     public XboxController getController(){
         return controller;
     }
