@@ -54,16 +54,15 @@ public final class HoloTable {
         driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
         dropIntake1 = new DoubleSolenoid(0, 1);
-        dropIntake2 = new DoubleSolenoid(2, 3);
 
         intake = new WPI_TalonSRX(4);
 
         //color = new WPI_TalonSRX(1);
 
         Hopper = new WPI_TalonSRX(6);
-        infraredHopper1 = new DigitalInput(1);
+        infraredHopper1 = new DigitalInput(0);
         infraredHopper2 = new DigitalInput(2);
-        infraredIntake = new DigitalInput(0);
+        infraredIntake = new DigitalInput(1);
 
         shooterTop = new CANSparkMax(13, MotorType.kBrushless);
         shooterBottom = new CANSparkMax(12, MotorType.kBrushless);
@@ -72,9 +71,9 @@ public final class HoloTable {
         ejector = new WPI_TalonSRX(5);
         driveRightFront = new CANSparkMax(1, MotorType.kBrushless);
         driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);
-        driveRightRear = new CANSparkMax(0, MotorType.kBrushless);
+        driveRightRear = new CANSparkMax(39, MotorType.kBrushless);
         driveLeftRear = new CANSparkMax(14, MotorType.kBrushless);
-        controller = new XboxController(0);
+        controller = new XboxController(2);
         joystickLeft = new Joystick(0);
         joystickRight = new Joystick(1);
     }

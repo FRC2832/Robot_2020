@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.logging.Logger;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,31 +17,42 @@ public class Ingestor{
     DoubleSolenoid dropIntake2 = holoTable.getDropIntake2();
     Joystick joystick = holoTable.getJoystickRight();
     private boolean intakeDown;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     
 
     public Ingestor() {
         intakeDown = false;
     }
     public void runIngestor(){
-        if (gamepad1.getBButtonPressed() && !intakeDown){
-            dropIntake1.set(Value.kForward);
-            dropIntake2.set(Value.kForward);
-            intakeDown = true;
+        if (gamepad1.getBButtonPressed()){
+            if(!intakeDown){
+                dropIntake1.set(Value.kForward);
+            // dropIntake2.set(Value.kForward);
+                intakeDown = true;
+            }
+            else if (intakeDown){
+                dropIntake1.set(Value.kReverse);
+                //dropIntake2.set(Value.kReverse);
+                intakeDown = false;
+            }
         }
-        if (gamepad1.getBButtonPressed() && intakeDown){
-            dropIntake1.set(Value.kReverse);
-            dropIntake2.set(Value.kReverse);
-            intakeDown = false;
-        }
-        if (joystick.getPOV() == 180){
-            intake.set(.5);
-        }
-        else{
-            intake.set(0);
-        }
-
+            if (joystick.getPOV() == 180){
+                intake.set(.8);
+            }
+            else{
+                intake.set(0);
+                
+            }
+            
+            if (joystick.getRawButtonPressed(5)){
+                logger.warning("Hi");
+            }
+        
+        
     }
     public void stopIngestor(){
         intake.set(0);
     }
+
+
 }
