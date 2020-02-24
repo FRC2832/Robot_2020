@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
         kFF = 0.0023;
         kMaxOutput = 1;
         kMinOutput = -1;
-        fastTopRPM = -5700;
-        fastBottomRPM = 5700;
+        fastTopRPM = -2850;
+        fastBottomRPM = 4000;
         emptyTopRPM = -3000;
         emptyBottomRPM = 3000;
 

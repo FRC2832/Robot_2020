@@ -1,4 +1,4 @@
- package frc.robot;
+package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -11,7 +11,8 @@ public class Ingestor{
     HoloTable holoTable = HoloTable.getInstance();
     WPI_TalonSRX intake = holoTable.getIntake();
     XboxController gamepad1 = holoTable.getController();
-    DoubleSolenoid dropIntake = holoTable.getDropIntake();
+    DoubleSolenoid dropIntake1 = holoTable.getDropIntake1();
+    DoubleSolenoid dropIntake2 = holoTable.getDropIntake2();
     Joystick joystick = holoTable.getJoystickRight();
     private boolean intakeDown;
     
@@ -20,19 +21,17 @@ public class Ingestor{
         intakeDown = false;
     }
     public void runIngestor(){
-        System.out.println("@@@@@@@"+intakeDown);
-        if (gamepad1.getBButtonPressed() && intakeDown == false){
-            System.out.println("expell");
-            dropIntake.set(Value.kForward);
+        if (gamepad1.getBButtonPressed() && !intakeDown){
+            dropIntake1.set(Value.kForward);
+            dropIntake2.set(Value.kForward);
             intakeDown = true;
         }
-        else if (gamepad1.getBButtonPressed() && intakeDown == true){
-            System.out.println("retract");
-            dropIntake.set(Value.kReverse);
+        if (gamepad1.getBButtonPressed() && intakeDown){
+            dropIntake1.set(Value.kReverse);
+            dropIntake2.set(Value.kReverse);
             intakeDown = false;
         }
         if (joystick.getPOV() == 180){
-            System.out.println("intake run");
             intake.set(.5);
         }
         else{

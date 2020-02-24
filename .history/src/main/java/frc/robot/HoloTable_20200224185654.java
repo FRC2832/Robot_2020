@@ -110,8 +110,11 @@ public final class HoloTable {
         return gyro;
     }
 
-    public DoubleSolenoid getDropIntake() {
-        return dropIntake;
+    public DoubleSolenoid getDropIntake1() {
+        return dropIntake1;
+    }
+    public DoubleSolenoid getDropIntake2() {
+        return dropIntake2;
     }
     public XboxController getController(){
         return controller;

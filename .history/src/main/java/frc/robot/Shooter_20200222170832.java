@@ -87,6 +87,12 @@ public class Shooter {
             Robot.setBottom = 0;
             ejector.set(0);
         }
+        if(gamepad1.getAButtonPressed()){
+            ejector.set(.5);
+        }
+        else if (gamepad1.getAButtonReleased()){
+            ejector.set(0);
+        }
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
 

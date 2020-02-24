@@ -31,7 +31,7 @@ public final class Hopper {
 
     public void RunMotors() throws InterruptedException {
         if (gamepad1.getYButtonPressed()) {
-            hopper.set(.5);
+            hopper.set(-.5);
         } else if (gamepad1.getYButtonReleased()) {
             hopper.set(0);
         }

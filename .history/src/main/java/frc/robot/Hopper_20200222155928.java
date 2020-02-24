@@ -30,9 +30,9 @@ public final class Hopper {
     }
 
     public void RunMotors() throws InterruptedException {
-        if (gamepad1.getYButtonPressed()) {
+        if (gamepad1.getStartButtonPressed()) {
             hopper.set(.5);
-        } else if (gamepad1.getYButtonReleased()) {
+        } else if (gamepad1.getStartButtonReleased()) {
             hopper.set(0);
         }
         if (!infraredIntake.get()){
@@ -41,10 +41,10 @@ public final class Hopper {
                     hopper.set(0);
                 }else {
                     hopper.set(-.75);
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                     hopper.set(0);
-                    ejector.set(.25);
-                    Thread.sleep(50 );
+                    ejector.set(.2);
+                    Thread.sleep(25);
                     ejector.set(0);
                 }
             }else {

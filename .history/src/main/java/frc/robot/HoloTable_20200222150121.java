@@ -20,7 +20,8 @@ public final class HoloTable {
     private static CANSparkMax driveRightRear;
     private static CANSparkMax driveLeftRear;
     private static PigeonIMU gyro;
-    private static DoubleSolenoid dropIntake;
+    private static DoubleSolenoid dropIntake1;
+    private static DoubleSolenoid dropIntake2;
     private static WPI_TalonSRX intake;
 
     private static WPI_TalonSRX color;    
@@ -52,7 +53,8 @@ public final class HoloTable {
 
         driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
-        dropIntake = new DoubleSolenoid(0, 1);
+        dropIntake1 = new DoubleSolenoid(0, 1);
+        dropIntake2 = new DoubleSolenoid(2, 3);
 
         intake = new WPI_TalonSRX(4);
 
@@ -110,8 +112,11 @@ public final class HoloTable {
         return gyro;
     }
 
-    public DoubleSolenoid getDropIntake() {
-        return dropIntake;
+    public DoubleSolenoid getDropIntake1() {
+        return dropIntake1;
+    }
+    public DoubleSolenoid getDropIntake2() {
+        return dropIntake2;
     }
     public XboxController getController(){
         return controller;

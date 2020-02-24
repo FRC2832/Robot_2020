@@ -28,8 +28,8 @@ public class Robot extends TimedRobot {
     private Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
-            emptyBottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, 
+                         emptyTopRPM, emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
 
     /**
@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-
+     
     }
 
     /**
@@ -119,13 +119,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-            case kCustomAuto:
-                // Put custom auto code here
-                break;
-            case kDefaultAuto:
-            default:
-                // Put default auto code here
-                break;
+        case kCustomAuto:
+            // Put custom auto code here
+            break;
+        case kDefaultAuto:
+        default:
+            // Put default auto code here
+            break;
         }
     }
 
@@ -135,12 +135,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();
-        try {
-            hopper.RunMotors();
-        } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        hopper.RunMotors();
         
 
         try {

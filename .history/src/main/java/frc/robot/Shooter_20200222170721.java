@@ -59,7 +59,7 @@ public class Shooter {
             Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
             System.out.println("@@@@@@");
-           /* while(shooterOff = false){
+            while(shooterOff = false){
                 Thread.sleep(1000);
                 ejector.set(1);
                 Thread.sleep(500);
@@ -67,8 +67,7 @@ public class Shooter {
                 if(joystick.getTriggerReleased()){
                     shooterOff = true;
                 }
-            }*/
-        
+            }
             
         }
         if(joystick.getTriggerReleased()){
@@ -85,6 +84,12 @@ public class Shooter {
         if(joystick.getRawButtonReleased(3)){
             Robot.setTop = 0;
             Robot.setBottom = 0;
+            ejector.set(0);
+        }
+        if(gamepad1.getAButtonPressed()){
+            ejector.set(.5);
+        }
+        else if (gamepad1.getAButtonReleased()){
             ejector.set(0);
         }
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);

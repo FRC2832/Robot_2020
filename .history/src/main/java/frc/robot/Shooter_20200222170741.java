@@ -66,9 +66,8 @@ public class Shooter {
                 ejector.set(0);
                 if(joystick.getTriggerReleased()){
                     shooterOff = true;
-                }
-            }*/
-        
+                }*/
+            }
             
         }
         if(joystick.getTriggerReleased()){
@@ -85,6 +84,12 @@ public class Shooter {
         if(joystick.getRawButtonReleased(3)){
             Robot.setTop = 0;
             Robot.setBottom = 0;
+            ejector.set(0);
+        }
+        if(gamepad1.getAButtonPressed()){
+            ejector.set(.5);
+        }
+        else if (gamepad1.getAButtonReleased()){
             ejector.set(0);
         }
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);

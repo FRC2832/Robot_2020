@@ -11,7 +11,6 @@ public final class Hopper {
 
     WPI_TalonSRX hopper;
     XboxController gamepad1;
-    WPI_TalonSRX ejector;
     
     DigitalInput infraredHopper1;
     DigitalInput infraredHopper2;
@@ -24,15 +23,14 @@ public final class Hopper {
         infraredHopper1 = table.getInfraredHopper1();
         infraredHopper2 = table.getInfraredHopper2();
         infraredIntake = table.getInfraredIntake();
-        ejector = table.getEjector();
 
 
     }
 
-    public void RunMotors() throws InterruptedException {
-        if (gamepad1.getYButtonPressed()) {
+    public void RunMotors() {
+        if (gamepad1.getStartButtonPressed()) {
             hopper.set(.5);
-        } else if (gamepad1.getYButtonReleased()) {
+        } else if (gamepad1.getStartButtonReleased()) {
             hopper.set(0);
         }
         if (!infraredIntake.get()){
@@ -40,15 +38,10 @@ public final class Hopper {
                 if (!infraredHopper2.get()){
                     hopper.set(0);
                 }else {
-                    hopper.set(-.75);
-                    Thread.sleep(100);
-                    hopper.set(0);
-                    ejector.set(.25);
-                    Thread.sleep(50 );
-                    ejector.set(0);
+                    hopper.set(-1);
                 }
             }else {
-                hopper.set(-.75);
+                hopper.set(-1);
             }
         }else {
             hopper.set(0);
