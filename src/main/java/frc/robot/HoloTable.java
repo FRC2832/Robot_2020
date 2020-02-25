@@ -59,8 +59,8 @@ public final class HoloTable {
         //color = new WPI_TalonSRX(1);
 
         Hopper = new WPI_TalonSRX(6);
-        infraredHopper1 = new DigitalInput(2);
-        infraredHopper2 = new DigitalInput(0);
+        infraredHopper1 = new DigitalInput(0);
+        infraredHopper2 = new DigitalInput(2);
         infraredIntake = new DigitalInput(1);
 
         shooterTop = new CANSparkMax(13, MotorType.kBrushless);

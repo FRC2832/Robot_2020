@@ -1,5 +1,7 @@
  package frc.robot;
 
+import java.util.logging.Logger;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,13 +16,13 @@ public class Ingestor{
     DoubleSolenoid dropIntake = holoTable.getDropIntake();
     Joystick joystick = holoTable.getJoystickRight();
     private boolean intakeDown;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     
 
     public Ingestor() {
         intakeDown = false;
     }
     public void runIngestor(){
-        System.out.println("@@@@@@@"+intakeDown);
         if (gamepad1.getBButtonPressed() && intakeDown == false){
             System.out.println("expell");
             dropIntake.set(Value.kForward);
@@ -38,9 +40,11 @@ public class Ingestor{
         else{
             intake.set(0);
         }
-
+           
     }
     public void stopIngestor(){
         intake.set(0);
     }
+
+
 }

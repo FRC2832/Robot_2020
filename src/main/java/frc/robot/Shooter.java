@@ -54,6 +54,9 @@ public class Shooter {
             Robot.kMinOutput = min;
             Robot.kMaxOutput = max;
         }
+        if (gamepad1.getAButtonPressed()){
+            ejector.set(1);
+        }
         if (joystick.getTriggerPressed()) {
             Robot.setTop = Robot.fastTopRPM;
             Robot.setBottom = Robot.fastBottomRPM;
@@ -87,6 +90,7 @@ public class Shooter {
             Robot.setBottom = 0;
             ejector.set(0);
         }
+        
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
 
