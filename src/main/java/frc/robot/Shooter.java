@@ -14,9 +14,9 @@ public class Shooter {
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
-    public CANSparkMax rightRear = holo.getDriveRightRear();
-    public CANSparkMax rightFront = holo.getDriveRightFront();
-    private SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
+    //public CANSparkMax rightRear = holo.getDriveRightRear();
+    //public CANSparkMax rightFront = holo.getDriveRightFront();
+    //private SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
 
     public void runShooter() throws InterruptedException{
 

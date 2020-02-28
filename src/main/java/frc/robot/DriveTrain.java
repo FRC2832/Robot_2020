@@ -21,10 +21,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem {
   private HoloTable holo = HoloTable.getInstance();
   private WPI_TalonSRX driveTurn;
-  private CANSparkMax leftFront;
+  /*private CANSparkMax leftFront;
   private CANSparkMax rightFront;
   private CANSparkMax leftRear;
-  private CANSparkMax rightRear;
+  private CANSparkMax rightRear;*/
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
   private XboxController controller;
@@ -40,20 +40,20 @@ public class DriveTrain extends Subsystem {
    */
   public DriveTrain() {
     driveTurn = holo.getDriveTurn();
-    leftFront = holo.getDriveLeftFront();
+    /*leftFront = holo.getDriveLeftFront();
     rightFront = holo.getDriveRightFront();
     leftRear = holo.getDriveLeftRear();
-    rightRear = holo.getDriveRightRear();
+    rightRear = holo.getDriveRightRear();*/
     gyro = holo.getGyro();
     controller = holo.getController();
     joystickLeft = holo.getJoystickLeft();
     joystickRight = holo.getJoystickRight();
-    turnSolenoid = holo.getTurnSolenoid();
-    leftMotors = new SpeedControllerGroup(leftFront, leftRear);
+    //turnSolenoid = holo.getTurnSolenoid();
+    /*leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
-    rightMotors.setInverted(true);
-    differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+    rightMotors.setInverted(true);*/
+    //differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
   }
 
   @Override
@@ -63,11 +63,11 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    differentialDrive.tankDrive(joystickLeft.getY(), joystickRight.getY(), true);
+    //differentialDrive.tankDrive(joystickLeft.getY(), joystickRight.getY(), true);
   }
 
   public void rotate(double rotateSpeed) {
-    differentialDrive.arcadeDrive(0, rotateSpeed);
+    //differentialDrive.arcadeDrive(0, rotateSpeed);
   }
   /*
    * public void driveArcade() {
