@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
     private final double[] defaultValue = { -1 };
     private XboxController gamepad1;
     private JoystickButton buttonA, buttonB, buttonX;
-    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("camselect");
+    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
 
     /**
      * This function is run when the robot is first started up and should be used
