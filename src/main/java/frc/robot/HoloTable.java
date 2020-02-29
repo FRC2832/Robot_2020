@@ -6,6 +6,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -40,7 +41,8 @@ public final class HoloTable {
     private static Joystick joystickLeft;
     private static Joystick joystickRight;
 
-    
+    public NetworkTableEntry R_Angle;
+    public NetworkTableEntry distance;
 
     // private static Insert Camera Here;
     // private static Insert Color Sensor Here;
@@ -181,6 +183,12 @@ public final class HoloTable {
 
     public WPI_TalonSRX getColor(){
         return color;
+    }
+    public NetworkTableEntry getR_Angle(){
+        return R_Angle;
+    }
+    public NetworkTableEntry getDistance(){
+        return distance;
     }
     
 }

@@ -5,6 +5,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -27,12 +28,15 @@ public class Option4 extends Command {
     WPI_TalonSRX ejector = holo.getEjector();
     WPI_TalonSRX hopper = holo.getHopper();
     Timer timer = new Timer();
-    double angle;
+    NetworkTableEntry R_Angle = holo.getR_Angle();
+    NetworkTableEntry distance = holo.getDistance();
+    double lazerAngle;
     int targetPixel = 640;
     int visionCenter;
 
     @Override
     protected void initialize() {
+        R_Angle.getDouble(lazerAngle);
         timer.reset();
         timer.start();
         dropIntake1.set(Value.kForward);
@@ -47,23 +51,7 @@ public class Option4 extends Command {
     @Override
     protected void execute() {
         if (timer.get() >= 0 && timer.get() <= 5) {
-            /*
-             * if (angle < 25){ leftMotors.set(-0.35); rightMotors.set(0.35);
-             * 
-             * }else if(angle >= 25 && angle <= 30){ if (visionCenter - targetPixel >= 10) {
-             * while (visionCenter - targetPixel >= 10) { leftMotors.set(0.2);
-             * rightMotors.set(-0.2); } } if (visionCenter - targetPixel <= -10) { while
-             * (visionCenter - targetPixel <= -10) { leftMotors.set(-0.2);
-             * rightMotors.set(0.2); } }
-             * 
-             * if(Math.abs(visionCenter - targetPixel) <= 10){ leftMotors.set(0);
-             * rightMotors.set(0); Robot.setTop = Robot.fastTopRPM; Robot.setBottom =
-             * Robot.fastBottomRPM; hopper.set(0.5); while(Math.abs(visionCenter -
-             * targetPixel) <= 10){ Thread.sleep(1000); ejector.set(1); Thread.sleep(500);
-             * ejector.set(0); } }
-             * 
-             * }else if(angle > 30){ leftMotors.set(0.35); rightMotors.set(-0.35); }
-             */
+            
             if (visionCenter - targetPixel >= 10) {
                 while (visionCenter - targetPixel >= 10) {
                     leftMotors.set(0.2);
@@ -78,7 +66,7 @@ public class Option4 extends Command {
             }
 
             if (Math.abs(visionCenter - targetPixel) <= 10) {
-                gyro.setYaw(angle, 28);
+                gyro.setYaw(90-lazerAngle);
                 leftMotors.set(0);
                 rightMotors.set(0);
                 Robot.setTop = Robot.fastTopRPM;
@@ -102,24 +90,24 @@ public class Option4 extends Command {
                 }
             }
         if(timer.get() >=5 && timer.get() <= 7){
-            if(angle <= 30 && angle >= 5){
+            if(lazerAngle <= 45 && lazerAngle >= 5){
                 leftMotors.set(0.4);
                 rightMotors.set(-0.4);
             }
-            if(angle <= 5 && angle > 0){
+            if(lazerAngle <= 5 && lazerAngle > 0){
                 leftMotors.set(0.15);
                 rightMotors.set(-0.15);
             }
-            if(angle == 0){
+            if(lazerAngle == 0){
                 leftMotors.set(0);
                 
                 rightMotors.set(0);
             }
-            if(angle <= -5 && angle > -0){
+            if(lazerAngle <= -5 && lazerAngle > -0){
                 leftMotors.set(-0.15);
                 rightMotors.set(0.15);
             }
-            if(angle <= -30 && angle >= -5){
+            if(lazerAngle <= -45 && lazerAngle >= -5){
                 leftMotors.set(-0.4);
                 rightMotors.set(0.4);
             }
@@ -132,7 +120,7 @@ public class Option4 extends Command {
                                 if turned 14 degrees,move forward 84 inches
                                 if moved forward 84 inches, start shooter
                 */
-
+                //if()
             }
         }
     }

@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
     private static int visionCenterY = 360;
     private NetworkTable table;
     private double[] defaultValue = {-1};
+    NetworkTableEntry R_Angle = holo.getR_Angle();
+    NetworkTableEntry distance = holo.getDistance();
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -50,6 +52,8 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
         table = NetworkTableInstance.getDefault().getTable("datatable");
+        R_Angle = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Angle");
+        distance = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Distance");
         kP = 0;
         kI = 0;
         kD = 0;
