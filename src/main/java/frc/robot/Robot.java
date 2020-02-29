@@ -46,16 +46,26 @@ public class Robot extends TimedRobot {
     private final double[] defaultValue = { -1 };
     private XboxController gamepad1;
     private JoystickButton buttonA, buttonB, buttonX;
-<<<<<<< HEAD
-    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
-=======
-    NetworkTableEntry cameraSelect;
-    //NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
->>>>>>> a77917d8a2fa6e65106a349417ef9df3cf5fad4c
 
-    /*UsbCamera piCamera1;
+    NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
+
+
+    NetworkTableEntry lidarDist;
+    
+
+
+
+    /*UsbCamera camera1;
+    UsbCamera camera2;
+    NetworkTableEntry cameraSelection;*/
+
+
+
+
+
+    UsbCamera piCamera1;
     UsbCamera piCamera2;
-    VideoSink server;*/
+    VideoSink server;
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
@@ -69,7 +79,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
         table = NetworkTableInstance.getDefault().getTable("datatable");
         //cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
-        cameraSelect = NetworkTableInstance.getDefault().getTable("datatable").getEntry("/camselect");
+        cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
         kP = 0;
         kI = 0;
         kD = 0;
@@ -81,7 +91,8 @@ public class Robot extends TimedRobot {
         fastBottomRPM = 5700;
         slowTopRPM = -3000;
         slowBottomRPM = 3000;
-
+        
+        
         buttonA = new JoystickButton(gamepad1, 1);
         buttonB = new JoystickButton(gamepad1, 2);
         buttonX = new JoystickButton(gamepad1, 3);
@@ -102,14 +113,20 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
-
         driveTrain = new DriveTrain();
 
         CameraServer.getInstance().startAutomaticCapture(); //UNCOMMENT IF REVERTING
         //camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 
 
-        // CameraServer.getInstance().addServer(name, port);
+
+
+        lidarDist = table.getEntry("distance");
+        
+
+        piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
+        piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
+        server = CameraServer.getInstance().getServer();
     }
 
     /**
@@ -129,6 +146,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance").getNumber(-1.0));
         try {
             visionCenterX = (int) ((table.getEntry("x").getDoubleArray(defaultValue))[0]);
         } catch (final Exception e) {
@@ -202,6 +220,9 @@ public class Robot extends TimedRobot {
 
         driveTrain.driveTank();
 
+        
+        
+        
         if (buttonA.get()) {
             System.out.println("A BUTTON HAS BEEN PRESSED");
             cameraSelect.setDouble(0.0);  // or setString("My Pi Camera Name")
@@ -210,14 +231,15 @@ public class Robot extends TimedRobot {
             System.out.println("B BUTTON HAS BEEN PRESSED");
             cameraSelect.setDouble(1.0);
           }
-        /*if (gamepad1.getXButtonPressed()) {
+        if (gamepad1.getXButtonPressed()) {
             cameraSelect.setDouble(2);
-        }*/
+        }
         if((int) cameraSelect.getDouble(-1.0) == 0)
             System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE");
 
         if((int) cameraSelect.getDouble(-1.0) == 1)
             System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
+            
     }
 
     /**
