@@ -3,7 +3,9 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -61,24 +63,18 @@ public class Shooter {
             Robot.setTop = Robot.fastTopRPM;
             Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
-            System.out.println("@@@@@@");
-           /* while(shooterOff = false){
-                Thread.sleep(1000);
-                ejector.set(1);
-                Thread.sleep(500);
-                ejector.set(0);
-                if(joystick.getTriggerReleased()){
-                    shooterOff = true;
-                }
-            }*/
-        
-            
+            holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+            holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+            Timer.delay(1);
+            ejector.set(1);
+            Timer.delay(5);
+            ejector.set(0);
         }
         if(joystick.getTriggerReleased()){
             Robot.setTop = 0;
             Robot.setBottom = 0;
             ejector.set(0);
-            System.out.println("XXXXXXX");
+            
         }
         if(joystick.getRawButtonPressed(3)){
             Robot.setTop = Robot.emptyTopRPM;
