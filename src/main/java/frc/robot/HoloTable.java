@@ -55,7 +55,7 @@ public final class HoloTable {
 
     HoloTable() {
 
-        driveTurn = new WPI_TalonSRX(0);
+        //driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
         dropIntake = new DoubleSolenoid(0, 1);
 
@@ -111,7 +111,7 @@ public final class HoloTable {
         return driveLeftRear;
     }
 
-    public PigeonIMU getGyro() {
+    public static PigeonIMU getGyro() {
         return gyro;
     }
 
