@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANPIDController;
@@ -48,6 +51,8 @@ public final class HoloTable {
     private static CANSparkMax shooterBottom;
     private static WPI_TalonSRX ejector;
 
+    
+
     HoloTable() {
 
         driveTurn = new WPI_TalonSRX(0);
@@ -69,9 +74,9 @@ public final class HoloTable {
         bottomPID = shooterBottom.getPIDController();
         ejector = new WPI_TalonSRX(5);
         driveRightFront = new CANSparkMax(1, MotorType.kBrushless);
-        driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);
+        driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);//on comp, 14. On practice 15
         driveRightRear = new CANSparkMax(39, MotorType.kBrushless);
-        driveLeftRear = new CANSparkMax(14, MotorType.kBrushless);
+        driveLeftRear = new CANSparkMax(14, MotorType.kBrushless);//on comp, 15. On practice, 14
         controller = new XboxController(2);
         joystickLeft = new Joystick(0);
         joystickRight = new Joystick(1);
