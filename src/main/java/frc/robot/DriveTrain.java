@@ -59,7 +59,7 @@ public class DriveTrain extends Subsystem {
       driveCoeff = .3;
     else
       driveCoeff = 1;
-    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 3), driveCoeff * Math.pow(joystickRight.getY(), 3));
+    differentialDrive.tankDrive(driveCoeff *joystickLeft.getY(), driveCoeff * joystickRight.getY());
   }
   /*public void driveArcade() {
     differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used

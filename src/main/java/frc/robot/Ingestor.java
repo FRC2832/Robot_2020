@@ -24,7 +24,7 @@ public class Ingestor{
     }
     public void runIngestor(){
         if (gamepad1.getBButtonPressed() && intakeDown == false){
-            System.out.println("expell");
+            System.out.println("eject");
             dropIntake.set(Value.kForward);
             intakeDown = true;
         }
@@ -36,6 +36,10 @@ public class Ingestor{
         if (joystick.getPOV() == 180){
             System.out.println("intake run");
             intake.set(.5);
+        }
+        else if (joystick.getPOV() == 0){
+            System.out.println("intake epell");
+            intake.set(-.5);
         }
         else{
             intake.set(0);
