@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +34,8 @@ public class Robot extends TimedRobot {
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
             emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
+    private NetworkTable table;
+    NetworkTableEntry lidarDist;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -38,6 +43,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        table = NetworkTableInstance.getDefault().getTable("datatable");
+        lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -91,7 +98,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
     }
 
     /**
