@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
-    private static final BallCount tracker = new BallCount();
     private HoloTable holo = HoloTable.getInstance();
     private Shooter shooter = new Shooter();
     private Ingestor ingestor = new Ingestor();
@@ -85,6 +84,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
         driveTrain = new DriveTrain();
+        
+        
     }
 
     /**

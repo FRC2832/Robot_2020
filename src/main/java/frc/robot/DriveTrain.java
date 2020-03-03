@@ -10,7 +10,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -48,6 +47,7 @@ public class DriveTrain extends Subsystem {
     driveCoeff = 1;
   }
 
+
   @Override
   public void periodic() {
 
@@ -59,8 +59,8 @@ public class DriveTrain extends Subsystem {
       driveCoeff = .3;
     else
       driveCoeff = 1;
-    differentialDrive.tankDrive(driveCoeff *joystickLeft.getY(), driveCoeff * joystickRight.getY());
-  }
+      differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 3 ) * 0.5, driveCoeff * Math.pow(joystickRight.getY(), 3 ) * 0.5, false);
+    } 
   /*public void driveArcade() {
     differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used
   }*/

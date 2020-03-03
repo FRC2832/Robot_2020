@@ -17,6 +17,7 @@ public class Shooter {
     public WPI_TalonSRX ejector = holo.getEjector();
     public CANSparkMax rightRear = holo.getDriveRightRear();
     public CANSparkMax rightFront = holo.getDriveRightFront();
+    public WPI_TalonSRX hopper = holo.getHopper();
     
     public void runShooter() throws InterruptedException{
 
@@ -59,16 +60,29 @@ public class Shooter {
         if (gamepad1.getAButtonPressed()){
             ejector.set(1);
         }
+        if (joystick.getTrigger()){
+            hopper.set(-.5);
+        }
         if (joystick.getTriggerPressed()) {
             Robot.setTop = Robot.fastTopRPM;
             Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
-            holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
-            holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
-            Timer.delay(1);
             ejector.set(1);
-            Timer.delay(5);
-            ejector.set(0);
+            System.out.println("@@@@@@");
+           /* while(shooterOff = false){
+                Thread.sleep(1000);
+                ejector.set(1);
+                Thread.sleep(500);
+                ejector.set(0);
+                if(joystick.getTriggerReleased()){
+                    shooterOff = true;
+                    ejector.set(0);
+                    hopper.set(0);
+
+                }
+            }*/
+        
+            
         }
         if(joystick.getTriggerReleased()){
             Robot.setTop = 0;
