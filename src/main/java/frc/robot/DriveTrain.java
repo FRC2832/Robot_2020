@@ -33,6 +33,8 @@ public class DriveTrain extends Subsystem {
   private SpeedControllerGroup rightMotors;
   private Joystick joystickLeft;
   private Joystick joystickRight;
+  private double driveCoeff;
+  
 
   /**
    * Creates a new DriveTrain.
@@ -47,7 +49,6 @@ public class DriveTrain extends Subsystem {
     controller = holo.getController();
     joystickLeft = holo.getJoystickLeft();
     joystickRight = holo.getJoystickRight();
-    turnSolenoid = holo.getTurnSolenoid();
     leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
@@ -62,7 +63,11 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    differentialDrive.tankDrive(joystickLeft.getY(), joystickRight.getY(), true);
+    if (joystickRight.getRawButton(2))
+      driveCoeff = .3;
+    else
+      driveCoeff = 1;
+    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 3) * 0.5, driveCoeff * Math.pow(joystickRight.getY(), 3) * 0.5, false);
   }
   /*public void driveArcade() {
     differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used
