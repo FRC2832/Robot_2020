@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,6 +14,10 @@ public class Shooter {
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
+    public CANSparkMax rightRear = holo.getDriveRightRear();
+    public CANSparkMax rightFront = holo.getDriveRightFront();
+    public WPI_TalonSRX hopper = holo.getHopper();
+    
     public void runShooter() throws InterruptedException{
 
         // read PID coefficients from SmartDashboard
@@ -51,32 +56,37 @@ public class Shooter {
             Robot.kMinOutput = min;
             Robot.kMaxOutput = max;
         }
+        if (gamepad1.getAButtonPressed()){
+            ejector.set(1);
+        }
+        if (joystick.getTrigger()){
+            hopper.set(-.5);
+        }
         if (joystick.getTriggerPressed()) {
             Robot.setTop = Robot.fastTopRPM;
             Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
+            ejector.set(1);
             System.out.println("@@@@@@");
-            while(shooterOff == false){
-                Thread.sleep(1000);
-                ejector.set(1);
-                Thread.sleep(500);
-                ejector.set(0);
-                if(joystick.getTriggerReleased()){
-                    shooterOff = true;
-                }
-            }
-            if(joystick.getTriggerReleased() || joystick.getRawButtonReleased(3)){
-                Robot.setTop = 0;
-                Robot.setBottom = 0;
-                ejector.set(0);
-                System.out.println("XXXXXXX");
-            }
-            if(joystick.getRawButtonPressed(3)){
-                Robot.setTop = Robot.slowTopRPM;
-                Robot.setBottom = Robot.slowBottomRPM;
-                ejector.set(.5);
-            }
+            
         }
+        if(joystick.getTriggerReleased()){
+            Robot.setTop = 0;
+            Robot.setBottom = 0;
+            ejector.set(0);
+            
+        }
+        if(joystick.getRawButtonPressed(3)){
+            Robot.setTop = Robot.emptyTopRPM;
+            Robot.setBottom = Robot.emptyBottomRPM;
+            ejector.set(.5);
+        }
+        if(joystick.getRawButtonReleased(3)){
+            Robot.setTop = 0;
+            Robot.setBottom = 0;
+            ejector.set(0);
+        }
+        
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
 

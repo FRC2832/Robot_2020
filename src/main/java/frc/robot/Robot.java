@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM,
-            slowBottomRPM, setTop, setBottom;
+            slowBottomRPM, emptyTopRPM, emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
     private static int visionCenterX = 640;
     private static int visionCenterY = 360;
@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
     private double[] defaultValue = {-1};
     NetworkTableEntry R_Angle = holo.getR_Angle();
     NetworkTableEntry distance = holo.getDistance();
+    NetworkTableEntry lidarDist;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -47,7 +48,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        
+        table = NetworkTableInstance.getDefault().getTable("datatable");
+        lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -65,6 +67,8 @@ public class Robot extends TimedRobot {
         fastBottomRPM = 5700;
         slowTopRPM = -3000;
         slowBottomRPM = 3000;
+        emptyTopRPM = -3000;
+        emptyBottomRPM = 3000;
 
         // set PID coefficients
         /*
@@ -84,6 +88,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Min Output", kMinOutput);
         
         driveTrain = new DriveTrain();
+        
+        
     }
 
     /**
@@ -97,7 +103,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-     
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
     }
 
     /**
@@ -125,13 +131,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-        case kCustomAuto:
-            // Put custom auto code here
-            break;
-        case kDefaultAuto:
-        default:
-            // Put default auto code here
-            break;
+            case kCustomAuto:
+                // Put custom auto code here
+                break;
+            case kDefaultAuto:
+            default:
+                // Put default auto code here
+                break;
         }
     }
 

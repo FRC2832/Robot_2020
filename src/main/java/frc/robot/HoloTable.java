@@ -21,8 +21,7 @@ public final class HoloTable {
     private static CANSparkMax driveRightRear;
     private static CANSparkMax driveLeftRear;
     private static PigeonIMU gyro;
-    private static DoubleSolenoid dropIntake1;
-    private static DoubleSolenoid dropIntake2;
+    private static DoubleSolenoid dropIntake;
     private static WPI_TalonSRX intake;
 
     private static WPI_TalonSRX color;    
@@ -51,36 +50,33 @@ public final class HoloTable {
     private static CANSparkMax shooterBottom;
     private static WPI_TalonSRX ejector;
 
+    
+
     HoloTable() {
 
-        driveTurn = new WPI_TalonSRX(0);
+        //driveTurn = new WPI_TalonSRX(0);
         gyro = new PigeonIMU(0);
-        dropIntake1 = new DoubleSolenoid(0, 1);
-        dropIntake2 = new DoubleSolenoid(2, 3);
+        dropIntake = new DoubleSolenoid(0, 1);
 
-        intake = new WPI_TalonSRX(2);
+        intake = new WPI_TalonSRX(4);
 
-        color = new WPI_TalonSRX(1);
+        //color = new WPI_TalonSRX(1);
 
-        Hopper = new WPI_TalonSRX(12);
+        Hopper = new WPI_TalonSRX(6);
         infraredHopper1 = new DigitalInput(0);
-        infraredHopper2 = new DigitalInput(1);
-        infraredHopper3 = new DigitalInput(2);
-        infraredHopper4 = new DigitalInput(3);
-        infraredHopper5 = new DigitalInput(4);
-        infraredIntake = new DigitalInput(5);
+        infraredHopper2 = new DigitalInput(2);
+        infraredIntake = new DigitalInput(1);
 
-        shooterTop = new CANSparkMax(3, MotorType.kBrushless);
-        shooterBottom = new CANSparkMax(4, MotorType.kBrushless);
+        shooterTop = new CANSparkMax(13, MotorType.kBrushless);
+        shooterBottom = new CANSparkMax(12, MotorType.kBrushless);
         topPID = shooterTop.getPIDController();
         bottomPID = shooterBottom.getPIDController();
-        ejector = new WPI_TalonSRX(0);
-        driveRightFront = new CANSparkMax(2, MotorType.kBrushless);
-        driveLeftFront = new CANSparkMax(8, MotorType.kBrushless);//the motor should be set to 4. changed to test shooter
-        driveRightRear = new CANSparkMax(1, MotorType.kBrushless);
-        driveLeftRear = new CANSparkMax(6, MotorType.kBrushless);//the motor should be set to 3. changed to test shooter
-        //turnSolenoid = new DoubleSolenoid(1, 2);
-        controller = new XboxController(0);
+        ejector = new WPI_TalonSRX(5);
+        driveRightFront = new CANSparkMax(1, MotorType.kBrushless);
+        driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);//on comp, 14. On practice 15
+        driveRightRear = new CANSparkMax(39, MotorType.kBrushless);
+        driveLeftRear = new CANSparkMax(14, MotorType.kBrushless);//on comp, 15. On practice, 14
+        controller = new XboxController(2);
         joystickLeft = new Joystick(0);
         joystickRight = new Joystick(1);
     }
@@ -114,15 +110,12 @@ public final class HoloTable {
         return driveLeftRear;
     }
 
-    public PigeonIMU getGyro() {
+    public static PigeonIMU getGyro() {
         return gyro;
     }
 
-    public DoubleSolenoid getDropIntake1() {
-        return dropIntake1;
-    }
-    public DoubleSolenoid getDropIntake2() {
-        return dropIntake2;
+    public DoubleSolenoid getDropIntake() {
+        return dropIntake;
     }
     public XboxController getController(){
         return controller;

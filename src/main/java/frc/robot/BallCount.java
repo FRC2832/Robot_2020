@@ -38,25 +38,11 @@ public final class BallCount{
         
     }
 
-    public void fullnessCheck(){
-        if (!infraredIntake.get()){
-            if (!infraredHopper1.get()){
-                if (!infraredHopper2.get()){
-                    hopper.set(0);
-                }else {
-                    hopper.set(.5);
-                }
-            }else {
-                hopper.set(.5);
-            }
-        }else {
-            hopper.set(0);
-        }
-    }    
-
     public void saftyCheck(){
         if (!infraredHopper1.get()){
-            intake.set(0);
+            if (!infraredHopper2.get()){
+                intake.set(0);
+            }
         }
     }
 
