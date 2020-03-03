@@ -54,23 +54,6 @@ public class DriveTrain extends Subsystem {
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
     rightMotors.setInverted(true);
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
-    driveCoeff = 1;
-    openLoopRampRate(0.8);
-    setSmartCurrent(70);
-  }
-
-  public void setSmartCurrent(int limit) {
-    leftFront.setSmartCurrentLimit(limit);
-    leftRear.setSmartCurrentLimit(limit);
-    rightRear.setSmartCurrentLimit(limit);
-    rightFront.setSmartCurrentLimit(limit);
-  }
-
-  public void openLoopRampRate(double rate) {
-    leftFront.setOpenLoopRampRate(rate);
-    leftRear.setOpenLoopRampRate(rate);
-    rightRear.setOpenLoopRampRate(rate);
-    rightFront.setOpenLoopRampRate(rate);
   }
 
   @Override
