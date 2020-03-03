@@ -1,8 +1,5 @@
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANPIDController;
