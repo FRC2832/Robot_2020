@@ -98,4 +98,7 @@ public class DriveTrain extends Subsystem {
 
     }
   }
+
+  private void rotate(double d) {
+  }
 }

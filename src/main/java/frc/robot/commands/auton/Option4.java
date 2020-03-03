@@ -15,15 +15,14 @@ import frc.robot.Robot;
 
 public class Option4 extends Command {
     HoloTable holo = HoloTable.getInstance();
-    PigeonIMU gyro = holo.getGyro();
+    PigeonIMU gyro = HoloTable.getGyro();
     CANSparkMax leftFront = holo.getDriveLeftFront();
     CANSparkMax rightFront = holo.getDriveRightFront();
     CANSparkMax leftRear = holo.getDriveLeftRear();
     CANSparkMax rightRear = holo.getDriveRightRear();
     SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
-    DoubleSolenoid dropIntake1 = holo.getDropIntake1();
-    DoubleSolenoid dropIntake2 = holo.getDropIntake2();
+    DoubleSolenoid dropIntake = holo.getDropIntake();
     WPI_TalonSRX intake = holo.getIntake();
     WPI_TalonSRX ejector = holo.getEjector();
     WPI_TalonSRX hopper = holo.getHopper();
@@ -39,8 +38,7 @@ public class Option4 extends Command {
         R_Angle.getDouble(lazerAngle);
         timer.reset();
         timer.start();
-        dropIntake1.set(Value.kForward);
-        dropIntake2.set(Value.kForward);
+        dropIntake.set(Value.kForward);
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
