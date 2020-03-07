@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
     private final double[] defaultValue = { -1.0 };
     private boolean isCamValueUpdated;
     private XboxController gamepad1;
-    private JoystickButton buttonA, buttonB;
     private NetworkTableEntry cameraSelect, centerXEntry;
     // NetworkTableEntry cameraSelect =
     // NetworkTableInstance.getDefault().getEntry("/camselect");
@@ -50,6 +49,21 @@ public class Robot extends TimedRobot {
     /*
      * UsbCamera piCamera1; UsbCamera piCamera2; VideoSink server;
      */
+    private JoystickButton buttonA, buttonB, buttonX;
+
+    // NetworkTableEntry cameraSelect =
+    // NetworkTableInstance.getDefault().getEntry("/camselect");
+
+    NetworkTableEntry lidarDist;
+
+    /*
+     * UsbCamera camera1; UsbCamera camera2; NetworkTableEntry cameraSelection;
+     */
+
+    UsbCamera piCamera1;
+    UsbCamera piCamera2;
+    VideoSink server;
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
@@ -97,13 +111,16 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
-
         driveTrain = new DriveTrain();
         CameraServer.getInstance().addServer("10.28.32.4"); // I think this connects to the Raspberry Pi's CameraServer.
         // CameraServer.getInstance().startAutomaticCapture(); // UNCOMMENT IF REVERTING
         // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 
-        // CameraServer.getInstance().addServer(name, port);
+        lidarDist = table.getEntry("distance");
+
+        piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
+        piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
+        server = CameraServer.getInstance().getServer();
     }
 
     /**
@@ -123,6 +140,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
         try {
             visionCenterX = (int) (centerXEntry.getDoubleArray(defaultValue)[0]);
         } catch (final Exception e) {
@@ -218,13 +236,13 @@ public class Robot extends TimedRobot {
         /*
          * if (gamepad1.getXButtonPressed()) { cameraSelect.setDouble(2); }
          */
-/*         if (isCamValueUpdated) {
-            if ((int) cameraSelect.getNumber(-1.0) == 0)
-                System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE");
-            else if ((int) cameraSelect.getNumber(-1.0) == 1)
-                System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
-            isCamValueUpdated = false;
-        } */
+        /*
+         * if (isCamValueUpdated) { if ((int) cameraSelect.getNumber(-1.0) == 0)
+         * System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE"); else if ((int)
+         * cameraSelect.getNumber(-1.0) == 1)
+         * System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
+         * isCamValueUpdated = false; }
+         */
 
     }
 
