@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -38,7 +40,7 @@ public class Robot extends TimedRobot {
     private static DriveTrain driveTrain;
     private static int visionCenterX = 640;
     private NetworkTableInstance netInst;
-    // private NetworkTable camTable;
+    // private NetworkTable table;
     private final double[] defaultValue = { -1.0 };
     private boolean isCamValueUpdated;
     private XboxController gamepad1;
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
         // CameraServer.getInstance().startAutomaticCapture(); // UNCOMMENT IF REVERTING
         // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 
-        lidarDist = table.getEntry("distance");
+        lidarDist = netInst.getTable("datatable").getEntry("distance");
 
         piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
         piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
@@ -140,7 +142,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
+        SmartDashboard.putNumber("Lidar Distance",
+                (double) netInst.getTable("datatable").getEntry("distance0").getNumber(-1.0));
         try {
             visionCenterX = (int) (centerXEntry.getDoubleArray(defaultValue)[0]);
         } catch (final Exception e) {
