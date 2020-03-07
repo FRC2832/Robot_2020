@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance").getNumber(-1.0));
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
         try {
             visionCenterX = (int) ((table.getEntry("x").getDoubleArray(defaultValue))[0]);
         } catch (final Exception e) {
