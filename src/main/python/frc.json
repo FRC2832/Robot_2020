@@ -1,0 +1,27 @@
+{
+    "team": 2832,
+    "cameras": [
+	{
+	    "name": "Camera 1",
+	    "path": "/dev/video0",
+	    "pixel format": "mjpeg",
+	    "width": 160,
+	    "height": 120,
+	    "fps": 15
+	},
+	{
+	    "name": "Camera 2",
+	    "path": "/dev/video2",
+	    "pixel format": "mjpeg",
+	    "width": 160,
+	    "height": 120,
+	    "fps": 15
+	}
+    ],
+    "switched cameras": [
+	{
+	    "name": "/CurrentCamera",
+	    "key": "/camselect"
+	}
+    ]
+}
