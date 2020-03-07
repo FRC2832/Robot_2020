@@ -7,17 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.networktables.NetworkTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,8 +27,8 @@ public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
     private static final BallCount tracker = new BallCount();
-    private final HoloTable holo = HoloTable.getInstance();
     private final Shooter shooter = new Shooter();
+    private boolean isButtonHeld;
     private final Ingestor ingestor = new Ingestor();
     private final Hopper hopper = new Hopper();
     private String m_autoSelected;
@@ -40,47 +37,49 @@ public class Robot extends TimedRobot {
             slowBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
     private static int visionCenterX = 640;
-    private static int visionCenterY = 360;
-    private NetworkTable table;
-    //private NetworkTable camTable;
-    private final double[] defaultValue = { -1 };
+    private NetworkTableInstance netInst;
+    // private NetworkTable camTable;
+    private final double[] defaultValue = { -1.0 };
+    private boolean isCamValueUpdated;
     private XboxController gamepad1;
-    private JoystickButton buttonA, buttonB, buttonX;
-    NetworkTableEntry cameraSelect;
-    //NetworkTableEntry cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
+    private JoystickButton buttonA, buttonB;
+    private NetworkTableEntry cameraSelect, centerXEntry;
+    // NetworkTableEntry cameraSelect =
+    // NetworkTableInstance.getDefault().getEntry("/camselect");
 
-    /*UsbCamera piCamera1;
-    UsbCamera piCamera2;
-    VideoSink server;*/
+    /*
+     * UsbCamera piCamera1; UsbCamera piCamera2; VideoSink server;
+     */
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
      */
     @Override
     public void robotInit() {
-        
+
         gamepad1 = new XboxController(0);
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
-        table = NetworkTableInstance.getDefault().getTable("datatable");
-        //cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
-        cameraSelect = NetworkTableInstance.getDefault().getTable("datatable").getEntry("/camselect");
-        kP = 0;
-        kI = 0;
-        kD = 0;
-        kIz = 0;
+        netInst = NetworkTableInstance.getDefault();
+        // cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
+        cameraSelect = netInst.getTable("SmartDashboard").getEntry("camNumber");
+        centerXEntry = netInst.getTable("datatable").getEntry("x");
+        kP = 0.0;
+        kI = 0.0;
+        kD = 0.0;
+        kIz = 0.0;
         kFF = 0.0023;
-        kMaxOutput = 1;
-        kMinOutput = -1;
-        fastTopRPM = -5700;
-        fastBottomRPM = 5700;
-        slowTopRPM = -3000;
-        slowBottomRPM = 3000;
+        kMaxOutput = 1.0;
+        kMinOutput = -1.0;
+        fastTopRPM = -5700.0;
+        fastBottomRPM = 5700.0;
+        slowTopRPM = -3000.0;
+        slowBottomRPM = 3000.0;
 
         buttonA = new JoystickButton(gamepad1, 1);
         buttonB = new JoystickButton(gamepad1, 2);
-        buttonX = new JoystickButton(gamepad1, 3);
+        new JoystickButton(gamepad1, 3);
 
         // set PID coefficients
         /*
@@ -100,10 +99,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
         driveTrain = new DriveTrain();
-
-        CameraServer.getInstance().startAutomaticCapture(); //UNCOMMENT IF REVERTING
-        //camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-
+        CameraServer.getInstance().addServer("10.28.32.4"); // I think this connects to the Raspberry Pi's CameraServer.
+        // CameraServer.getInstance().startAutomaticCapture(); // UNCOMMENT IF REVERTING
+        // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 
         // CameraServer.getInstance().addServer(name, port);
     }
@@ -126,24 +124,26 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
         SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
         try {
-            visionCenterX = (int) ((table.getEntry("x").getDoubleArray(defaultValue))[0]);
+            visionCenterX = (int) (centerXEntry.getDoubleArray(defaultValue)[0]);
         } catch (final Exception e) {
-
+            visionCenterX = -1;
         }
 
-        /*try{
-            visionCenterY = (int)((table.getEntry("y").getDoubleArray(defaultValue))[0]);}
-            catch(Exception e){
-    
-            }*/
-        //visionCenter = (table.getEntry("x").getNumber(defaultValue).intValue());
-        //System.out.println("X value:");
-        //System.out.println(visionCenterX);
-        //System.out.println("Y value:");
-        //System.out.println(visionCenterY);
+        /*
+         * try{ visionCenterY =
+         * (int)((table.getEntry("y").getDoubleArray(defaultValue))[0]);}
+         * catch(Exception e){
+         * 
+         * }
+         */
+        // visionCenter = (table.getEntry("x").getNumber(defaultValue).intValue());
+        // System.out.println("X value:");
+        // System.out.println(visionCenterX);
+        // System.out.println("Y value:");
+        // System.out.println(visionCenterY);
 
         SmartDashboard.putNumber("x", visionCenterX);
-        
+
     }
 
     /**
@@ -171,13 +171,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-        case kCustomAuto:
-            // Put custom auto code here
-            break;
-        case kDefaultAuto:
-        default:
-            // Put default auto code here
-            break;
+            case kCustomAuto:
+                // Put custom auto code here
+                break;
+            case kDefaultAuto:
+            default:
+                // Put default auto code here
+                break;
         }
     }
 
@@ -199,21 +199,33 @@ public class Robot extends TimedRobot {
         driveTrain.driveTank();
 
         if (buttonA.get()) {
-            System.out.println("A BUTTON HAS BEEN PRESSED");
-            cameraSelect.setDouble(0.0);  // or setString("My Pi Camera Name")
-          }
-        if (buttonB.get()) {
-            System.out.println("B BUTTON HAS BEEN PRESSED");
-            cameraSelect.setDouble(1.0);
-          }
-        /*if (gamepad1.getXButtonPressed()) {
-            cameraSelect.setDouble(2);
-        }*/
-        if((int) cameraSelect.getDouble(-1.0) == 0)
-            System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE");
+            if (!isButtonHeld) {
+                System.out.println("A BUTTON HAS BEEN PRESSED");
+                cameraSelect.setNumber(0.0); // or setString("My Pi Camera Name")
+                isButtonHeld = true;
+                isCamValueUpdated = true;
+            }
+        } else if (buttonB.get()) {
+            if (!isButtonHeld) {
+                System.out.println("B BUTTON HAS BEEN PRESSED");
+                cameraSelect.setNumber(1.0);
+                isButtonHeld = true;
+                isCamValueUpdated = true;
+            }
+        } else {
+            isButtonHeld = false;
+        }
+        /*
+         * if (gamepad1.getXButtonPressed()) { cameraSelect.setDouble(2); }
+         */
+/*         if (isCamValueUpdated) {
+            if ((int) cameraSelect.getNumber(-1.0) == 0)
+                System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE");
+            else if ((int) cameraSelect.getNumber(-1.0) == 1)
+                System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
+            isCamValueUpdated = false;
+        } */
 
-        if((int) cameraSelect.getDouble(-1.0) == 1)
-            System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
     }
 
     /**
