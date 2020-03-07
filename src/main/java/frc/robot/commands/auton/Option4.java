@@ -29,7 +29,9 @@ public class Option4 extends Command {
     Timer timer = new Timer();
     NetworkTableEntry R_Angle = holo.getR_Angle();
     NetworkTableEntry distance = holo.getDistance();
+    double lenght;
     double lazerAngle;
+    int angle;
     int targetPixel = 640;
     int visionCenter;
 
@@ -64,48 +66,35 @@ public class Option4 extends Command {
             }
 
             if (Math.abs(visionCenter - targetPixel) <= 10) {
-                gyro.setYaw(90-lazerAngle);
+                gyro.setYaw(90-lazerAngle, angle);
                 leftMotors.set(0);
                 rightMotors.set(0);
                 Robot.setTop = Robot.fastTopRPM;
                 Robot.setBottom = Robot.fastBottomRPM;
                 hopper.set(0.5);
-                while ((visionCenter - targetPixel) <= 10) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    ejector.set(1);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    ejector.set(0);
+                ejector.set(1);
                 }
             }
         if(timer.get() >=5 && timer.get() <= 7){
-            if(lazerAngle <= 45 && lazerAngle >= 5){
+            ejector.set(0);
+            if(angle <= 45 && angle >= 8){
                 leftMotors.set(0.4);
                 rightMotors.set(-0.4);
             }
-            if(lazerAngle <= 5 && lazerAngle > 0){
+            if(angle <= 8 && angle > 3){
                 leftMotors.set(0.15);
                 rightMotors.set(-0.15);
             }
-            if(lazerAngle == 0){
+            if(angle < 3 && angle > -3){
                 leftMotors.set(0);
                 
                 rightMotors.set(0);
             }
-            if(lazerAngle <= -5 && lazerAngle > -0){
+            if(angle <= -8 && angle > -3){
                 leftMotors.set(-0.15);
                 rightMotors.set(0.15);
             }
-            if(lazerAngle <= -45 && lazerAngle >= -5){
+            if(angle <= -45 && angle >= -8){
                 leftMotors.set(-0.4);
                 rightMotors.set(0.4);
             }
@@ -118,10 +107,12 @@ public class Option4 extends Command {
                                 if turned 14 degrees,move forward 84 inches
                                 if moved forward 84 inches, start shooter
                 */
-                //if()
+                if(true){
+
+                }
             }
         }
-    }
+    
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
         
