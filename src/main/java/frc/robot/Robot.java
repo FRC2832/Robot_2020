@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
     private HoloTable holo = HoloTable.getInstance();
+    private ShootingTable shTable = ShootingTable.getInstance();
     private Shooter shooter = new Shooter();
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
 
         kP = 0;
+        //kP = 6e-5;
         kI = 0;
         kD = 0;
         kIz = 0;
@@ -100,6 +102,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
+        
+
     }
 
     /**
@@ -163,4 +167,6 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         
     }
+
+    
 }

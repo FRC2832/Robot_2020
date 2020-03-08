@@ -6,6 +6,8 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -48,6 +50,8 @@ public final class HoloTable {
     private static CANSparkMax shooterBottom;
     private static WPI_TalonSRX ejector;
 
+    private NetworkTable table;
+
     
 
     HoloTable() {
@@ -77,6 +81,8 @@ public final class HoloTable {
         controller = new XboxController(2);
         joystickLeft = new Joystick(0);
         joystickRight = new Joystick(1);
+
+        table = NetworkTableInstance.getDefault().getTable("datatable");
     }
     public static HoloTable getInstance() {
 
@@ -174,6 +180,10 @@ public final class HoloTable {
 
     public WPI_TalonSRX getColor(){
         return color;
+    }
+
+    public double getDistance0(){
+        return ((double) table.getEntry("distance0").getNumber(-1.0));
     }
     
 }
