@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -35,12 +36,12 @@ public class Robot extends TimedRobot {
     private final Hopper hopper = new Hopper();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM,
-            slowBottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
+            emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
     private static int visionCenterX = 640;
     private NetworkTableInstance netInst;
-    // private NetworkTable table;
+    private NetworkTable table;
     private final double[] defaultValue = { -1.0 };
     private boolean isCamValueUpdated;
     private XboxController gamepad1;
@@ -56,15 +57,15 @@ public class Robot extends TimedRobot {
     // NetworkTableEntry cameraSelect =
     // NetworkTableInstance.getDefault().getEntry("/camselect");
 
-    NetworkTableEntry lidarDist;
+    private NetworkTableEntry lidarDist;
 
     /*
      * UsbCamera camera1; UsbCamera camera2; NetworkTableEntry cameraSelection;
      */
 
-    UsbCamera piCamera1;
-    UsbCamera piCamera2;
-    VideoSink server;
+    private UsbCamera piCamera1;
+    private UsbCamera piCamera2;
+    private VideoSink server;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -72,15 +73,17 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-
         gamepad1 = new XboxController(0);
+        netInst = NetworkTableInstance.getDefault();
+        table = netInst.getTable("datatable");
+        lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
-        netInst = NetworkTableInstance.getDefault();
+
         // cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
         cameraSelect = netInst.getTable("SmartDashboard").getEntry("camNumber");
-        centerXEntry = netInst.getTable("datatable").getEntry("x");
+        centerXEntry = table.getEntry("x");
         kP = 0.0;
         kI = 0.0;
         kD = 0.0;
@@ -90,12 +93,12 @@ public class Robot extends TimedRobot {
         kMinOutput = -1.0;
         fastTopRPM = -5700.0;
         fastBottomRPM = 5700.0;
-        slowTopRPM = -3000.0;
-        slowBottomRPM = 3000.0;
+        emptyTopRPM = -3000.0;
+        emptyBottomRPM = 3000.0;
 
         buttonA = new JoystickButton(gamepad1, 1);
         buttonB = new JoystickButton(gamepad1, 2);
-        new JoystickButton(gamepad1, 3);
+        buttonX = new JoystickButton(gamepad1, 3);
 
         // set PID coefficients
         /*
@@ -117,9 +120,6 @@ public class Robot extends TimedRobot {
         CameraServer.getInstance().addServer("10.28.32.4"); // I think this connects to the Raspberry Pi's CameraServer.
         // CameraServer.getInstance().startAutomaticCapture(); // UNCOMMENT IF REVERTING
         // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-
-        lidarDist = netInst.getTable("datatable").getEntry("distance");
-
         piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
         piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
         server = CameraServer.getInstance().getServer();
@@ -136,14 +136,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-
-        SmartDashboard.putBoolean("Slot 1", tracker.countBalls());
-        SmartDashboard.putBoolean("Slot 2", tracker.countBalls2());
-        SmartDashboard.putBoolean("Slot 3", tracker.countBalls3());
-        SmartDashboard.putBoolean("Slot 4", tracker.countBalls4());
-        SmartDashboard.putBoolean("Slot 5", tracker.countBalls5());
-        SmartDashboard.putNumber("Lidar Distance",
-                (double) netInst.getTable("datatable").getEntry("distance0").getNumber(-1.0));
+        SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
         try {
             visionCenterX = (int) (centerXEntry.getDoubleArray(defaultValue)[0]);
         } catch (final Exception e) {
@@ -207,7 +200,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        ingestor.RunIngestor();
+        ingestor.runIngestor();
         hopper.RunMotors();
         driveTrain.autoAlign(visionCenterX);
         try {

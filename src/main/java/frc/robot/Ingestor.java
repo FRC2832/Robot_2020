@@ -6,34 +6,29 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-public class Ingestor{
+public class Ingestor {
 
     HoloTable holoTable = HoloTable.getInstance();
     WPI_TalonSRX intake = holoTable.getIntake();
-    XboxController gamepad1 = holoTable.getController();
-    //DoubleSolenoid dropIntake = holoTable.getDropIntake();
+    public XboxController gamepad1 = holoTable.getController();
+    DoubleSolenoid dropIntake = holoTable.getDropIntake();
     Joystick joystick = holoTable.getJoystickRight();
-    private boolean intakeDown;
-    
+    boolean intakeDown = false;
 
-    public Ingestor() {
-        intakeDown = false;
-    }
-    public void RunIngestor(){
-        if (gamepad1.getBButtonPressed() && !intakeDown){
-            //dropIntake.set(Value.kForward);
-            intakeDown = true;
-        }
-        if (gamepad1.getBButtonPressed() && intakeDown){
-            //dropIntake.set(Value.kReverse);
-            intakeDown = false;
-        }
-        if (joystick.getPOV() == 180){
-            intake.set(.5);
-        }
-        else{
-            intake.set(0);
+    public void runIngestor() {
+        if (joystick.getPOV() == 180) {
+            intake.set(0.5);
+        } else if (joystick.getPOV() == 0) {
+            intake.set(-0.5);
+        } else {
+            intake.set(0.0);
         }
 
+        if (gamepad1.getYButtonPressed()) {
+            dropIntake.set(Value.kForward);
+        }
+        if (gamepad1.getXButtonPressed()) {
+            dropIntake.set(Value.kReverse);
+        }
     }
 }
