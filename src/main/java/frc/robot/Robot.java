@@ -29,12 +29,15 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
-    private static final BallCount tracker = new BallCount();
-    private final Shooter shooter = new Shooter();
-    private boolean isButtonHeld;
-    private final Ingestor ingestor = new Ingestor();
-    private final Hopper hopper = new Hopper();
-    private final Pi pi = new Pi();
+
+    private HoloTable holo = HoloTable.getInstance();
+    private ShootingTable shTable = ShootingTable.getInstance();
+    private Shooter shooter = new Shooter();
+    private Ingestor ingestor = new Ingestor();
+    private Hopper hopper = new Hopper();
+    private Climber climber = new Climber();
+
+      private final Pi pi = new Pi();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
@@ -82,13 +85,12 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
 
-        // cameraSelect = NetworkTableInstance.getDefault().getEntry("/camselect");
-        cameraSelect = netInst.getTable("SmartDashboard").getEntry("camNumber");
-        centerXEntry = table.getEntry("x");
-        kP = 0.0;
-        kI = 0.0;
-        kD = 0.0;
-        kIz = 0.0;
+
+        kP = 0;
+        //kP = 6e-5;
+        kI = 0;
+        kD = 0;
+        kIz = 0;
         kFF = 0.0023;
         kMaxOutput = 1.0;
         kMinOutput = -1.0;
@@ -138,27 +140,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         SmartDashboard.putNumber("Lidar Distance", (double) table.getEntry("distance0").getNumber(-1.0));
-        try {
-            visionCenterX = (int) (centerXEntry.getDoubleArray(defaultValue)[0]);
-        } catch (final Exception e) {
-            visionCenterX = -1;
-        }
-
-        /*
-         * try{ visionCenterY =
-         * (int)((table.getEntry("y").getDoubleArray(defaultValue))[0]);}
-         * catch(Exception e){
-         * 
-         * }
-         */
-        // visionCenter = (table.getEntry("x").getNumber(defaultValue).intValue());
-        // System.out.println("X value:");
-        // System.out.println(visionCenterX);
-        // System.out.println("Y value:");
-        // System.out.println(visionCenterY);
-
-        SmartDashboard.putNumber("x", visionCenterX);
-
     }
 
     /**
@@ -202,7 +183,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();
-        hopper.RunMotors();
+
+            hopper.runMotors();
+            climber.runClimb();
         try {
             shooter.runShooter();
         } catch (final InterruptedException e) {
@@ -234,4 +217,6 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
 
     }
+
+    
 }
