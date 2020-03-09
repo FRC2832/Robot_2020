@@ -40,7 +40,8 @@ public final class HoloTable {
     private static XboxController controller;
     private static Joystick joystickLeft;
     private static Joystick joystickRight;
-
+    private static CANSparkMax climberTop;
+    private static CANSparkMax climberBottom;
     
 
     // private static Insert Camera Here;
@@ -69,6 +70,8 @@ public final class HoloTable {
         infraredHopper2 = new DigitalInput(2);
         infraredIntake = new DigitalInput(1);
 
+        climberTop = new CANSparkMax(2, MotorType.kBrushless);
+        climberBottom = new CANSparkMax(3, MotorType.kBrushless);
         shooterTop = new CANSparkMax(13, MotorType.kBrushless);
         shooterBottom = new CANSparkMax(12, MotorType.kBrushless);
         topPID = shooterTop.getPIDController();
@@ -185,5 +188,15 @@ public final class HoloTable {
     public double getDistance0(){
         return ((double) table.getEntry("distance0").getNumber(-1.0));
     }
+    
+    public CANSparkMax getTopClimber(){
+        return climberTop;
+    }
+    
+    public CANSparkMax getBottomClimber(){
+        return climberBottom;
+    }
+
+
     
 }

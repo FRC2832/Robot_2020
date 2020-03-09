@@ -32,7 +32,7 @@ public final class Hopper {
 
     }
 
-    public void RunMotors() {    
+    public void runMotors() {    
         if (!infraredIntake.get()){
             if (!infraredHopper1.get()){
                 if (!infraredHopper2.get()){
