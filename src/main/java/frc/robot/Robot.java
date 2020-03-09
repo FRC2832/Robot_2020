@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
     private boolean isButtonHeld;
     private final Ingestor ingestor = new Ingestor();
     private final Hopper hopper = new Hopper();
+    private final Pi pi = new Pi();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
@@ -73,7 +74,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        gamepad1 = new XboxController(0);
+        gamepad1 = new XboxController(2);
         netInst = NetworkTableInstance.getDefault();
         table = netInst.getTable("datatable");
         lidarDist = table.getEntry("distance");
@@ -202,7 +203,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ingestor.runIngestor();
         hopper.RunMotors();
-        driveTrain.autoAlign(visionCenterX);
         try {
             shooter.runShooter();
         } catch (final InterruptedException e) {
@@ -211,24 +211,9 @@ public class Robot extends TimedRobot {
         }
 
         driveTrain.driveTank();
+        pi.switchCameras();
 
-        if (buttonA.get()) {
-            if (!isButtonHeld) {
-                System.out.println("A BUTTON HAS BEEN PRESSED");
-                cameraSelect.setNumber(0.0); // or setString("My Pi Camera Name")
-                isButtonHeld = true;
-                isCamValueUpdated = true;
-            }
-        } else if (buttonB.get()) {
-            if (!isButtonHeld) {
-                System.out.println("B BUTTON HAS BEEN PRESSED");
-                cameraSelect.setNumber(1.0);
-                isButtonHeld = true;
-                isCamValueUpdated = true;
-            }
-        } else {
-            isButtonHeld = false;
-        }
+      
         /*
          * if (gamepad1.getXButtonPressed()) { cameraSelect.setDouble(2); }
          */

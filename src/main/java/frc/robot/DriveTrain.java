@@ -21,14 +21,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem {
   private HoloTable holo = HoloTable.getInstance();
   private WPI_TalonSRX driveTurn;
-  /*private CANSparkMax leftFront;
+  private CANSparkMax leftFront;
   private CANSparkMax rightFront;
   private CANSparkMax leftRear;
-  private CANSparkMax rightRear;*/
+  private CANSparkMax rightRear;
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
   private XboxController controller;
-  private DoubleSolenoid turnSolenoid;
+  //private DoubleSolenoid turnSolenoid;
   private SpeedControllerGroup leftMotors;
   private SpeedControllerGroup rightMotors;
   private Joystick joystickLeft;
@@ -42,20 +42,20 @@ public class DriveTrain extends Subsystem {
    */
   public DriveTrain() {
     driveTurn = holo.getDriveTurn();
-    /*leftFront = holo.getDriveLeftFront();
+    leftFront = holo.getDriveLeftFront();
     rightFront = holo.getDriveRightFront();
     leftRear = holo.getDriveLeftRear();
-    rightRear = holo.getDriveRightRear();*/
+    rightRear = holo.getDriveRightRear();
     gyro = holo.getGyro();
     controller = holo.getController();
     joystickLeft = holo.getJoystickLeft();
     joystickRight = holo.getJoystickRight();
     //turnSolenoid = holo.getTurnSolenoid();
-    /*leftMotors = new SpeedControllerGroup(leftFront, leftRear);
+    leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
-    rightMotors.setInverted(true);*/
-    //differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+    rightMotors.setInverted(true);
+    differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
   }
 
   @Override
@@ -65,11 +65,13 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    if (joystickRight.getRawButton(2))
+    if (joystickRight.getRawButton(2)){
       driveCoeff = .3;
-    else
+    } else {
       driveCoeff = 1;
-    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 3) * 0.5, driveCoeff * Math.pow(joystickRight.getY(), 3) * 0.5, false);
+    }
+    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 1), driveCoeff * Math.pow(joystickRight.getY(), 1) , false);
+    
   }
 
   public void rotate(double rotateSpeed) {
@@ -81,13 +83,6 @@ public class DriveTrain extends Subsystem {
    * controller.getRawAxis(4), true); Not Being Used }
    */
 
-  public void extendDriveTurn() {
-    turnSolenoid.set(DoubleSolenoid.Value.kForward);
-  }
-
-  public void retractDriveTurn() {
-    turnSolenoid.set(DoubleSolenoid.Value.kReverse);
-  }
 
   @Override
   protected void initDefaultCommand() {
@@ -95,7 +90,7 @@ public class DriveTrain extends Subsystem {
 
   }
 
-  public void autoAlign(int visionCenter) {
+  /*public void autoAlign(int visionCenter) {
     if (joystickRight.getRawButton(3)) {
       if (visionCenter - targetPixel >= 10) {
         while (visionCenter - targetPixel >= 10) {
@@ -113,5 +108,5 @@ public class DriveTrain extends Subsystem {
       }
 
     }
-  }
+  }*/
 }

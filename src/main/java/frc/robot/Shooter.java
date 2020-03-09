@@ -56,9 +56,7 @@ public class Shooter {
             Robot.kMinOutput = min;
             Robot.kMaxOutput = max;
         }
-        if (gamepad1.getAButtonPressed()) {
-            ejector.set(1.0);
-        }
+       
         if (joystick.getTrigger()) {
             hopper.set(-0.5);
         }
@@ -66,7 +64,7 @@ public class Shooter {
             Robot.setTop = Robot.fastTopRPM;
             Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
-            ejector.set(1.0);
+            ejector.set(0.25);
             System.out.println("@@@@@@");
             /*
              * while(shooterOff = false){ Thread.sleep(1000); ejector.set(1);
