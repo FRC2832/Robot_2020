@@ -28,11 +28,12 @@ public class DriveTrain extends Subsystem {
   private DifferentialDrive differentialDrive;
   private PigeonIMU gyro;
   private XboxController controller;
-  private DoubleSolenoid turnSolenoid;
+  //private DoubleSolenoid turnSolenoid;
   private SpeedControllerGroup leftMotors;
   private SpeedControllerGroup rightMotors;
   private Joystick joystickLeft;
   private Joystick joystickRight;
+  private int targetPixel = 640;
   private double driveCoeff;
   
 
@@ -49,6 +50,7 @@ public class DriveTrain extends Subsystem {
     controller = holo.getController();
     joystickLeft = holo.getJoystickLeft();
     joystickRight = holo.getJoystickRight();
+    //turnSolenoid = holo.getTurnSolenoid();
     leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     leftMotors.setInverted(true);
     rightMotors = new SpeedControllerGroup(rightFront, rightRear);
@@ -63,26 +65,47 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveTank() {
-    if (joystickRight.getRawButton(2))
+    if (joystickRight.getRawButton(2)){
       driveCoeff = .3;
-    else
+    } else {
       driveCoeff = 1;
-    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 1) , driveCoeff * Math.pow(joystickRight.getY(), 1), false);
+    }
+    differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 1), driveCoeff * Math.pow(joystickRight.getY(), 1) , false);
   }
-  /*public void driveArcade() {
-    differentialDrive.arcadeDrive(controller.getRawAxis(0), controller.getRawAxis(4), true);  Not Being Used
-  }*/
 
-  public void extendDriveTurn(){
-    turnSolenoid.set(DoubleSolenoid.Value.kForward);
+  public void rotate(double rotateSpeed) {
+    //differentialDrive.arcadeDrive(0, rotateSpeed);
   }
-  public void retractDriveTurn(){
-    turnSolenoid.set(DoubleSolenoid.Value.kReverse);
-  }
+  /*
+   * public void driveArcade() {
+   * differentialDrive.arcadeDrive(controller.getRawAxis(0),
+   * controller.getRawAxis(4), true); Not Being Used }
+   */
+
 
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub
 
   }
+
+  /*public void autoAlign(int visionCenter) {
+    if (joystickRight.getRawButton(3)) {
+      if (visionCenter - targetPixel >= 10) {
+        while (visionCenter - targetPixel >= 10) {
+          rotate(0.25);
+        }
+      }
+      if (visionCenter - targetPixel <= -10) {
+        while (visionCenter - targetPixel <= -10) {
+          rotate(-0.25);
+        }
+      }
+
+      if(Math.abs(visionCenter - targetPixel) <= 10){
+        rotate(0);
+      }
+
+    }
+  }*/
 }
