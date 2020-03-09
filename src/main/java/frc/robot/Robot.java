@@ -48,8 +48,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        table = NetworkTableInstance.getDefault().getTable("datatable");
-        lidarDist = table.getEntry("distance");
+        //lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
