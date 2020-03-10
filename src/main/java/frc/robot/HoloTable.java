@@ -75,6 +75,7 @@ public final class HoloTable {
         shooterBottom = new CANSparkMax(12, MotorType.kBrushless);
         topPID = shooterTop.getPIDController();
         bottomPID = shooterBottom.getPIDController();
+        dropIntake = new DoubleSolenoid(0, 1);
         ejector = new WPI_TalonSRX(5);
         driveRightFront = new CANSparkMax(1, MotorType.kBrushless);
         driveLeftFront = new CANSparkMax(15, MotorType.kBrushless);// on comp, 14. On practice 15
