@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.auton.Option4;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,9 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
-    private static final String kCustomAuto = "My Auto";
+    private static final String option4 = "Option 4";
     private static final BallCount tracker = new BallCount();
     private final HoloTable holo = HoloTable.getInstance();
+    private final Option4 auto4 = new Option4();
     private final Shooter shooter = new Shooter();
     private final Ingestor ingestor = new Ingestor();
     private final Hopper hopper = new Hopper();
@@ -50,7 +52,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         //lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-        m_chooser.addOption("My Auto", kCustomAuto);
+        m_chooser.addOption("Option 4", option4);
         SmartDashboard.putData("Auto choices", m_chooser);
         table = NetworkTableInstance.getDefault().getTable("datatable");
         R_Angle = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Angle");
@@ -130,8 +132,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-            case kCustomAuto:
+            case option4:
                 // Put custom auto code here
+                auto4.start();
                 break;
             case kDefaultAuto:
             default:
