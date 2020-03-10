@@ -7,13 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auton.Option4;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,25 +29,48 @@ import frc.robot.commands.auton.Option4;
  */
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Default";
-    private static final String option4 = "Option 4";
-    private static final BallCount tracker = new BallCount();
-    private final HoloTable holo = HoloTable.getInstance();
-    private final Option4 auto4 = new Option4();
-    private final Shooter shooter = new Shooter();
-    private final Ingestor ingestor = new Ingestor();
-    private final Hopper hopper = new Hopper();
+    private static final String kCustomAuto = "My Auto";
+
+    private HoloTable holo = HoloTable.getInstance();
+    private ShootingTable shTable = ShootingTable.getInstance();
+    private Shooter shooter = new Shooter();
+    private Ingestor ingestor = new Ingestor();
+    private Hopper hopper = new Hopper();
+    private Climber climber = new Climber();
+
+      private final Pi pi = new Pi();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, slowTopRPM,
-            slowBottomRPM, emptyTopRPM, emptyBottomRPM, setTop, setBottom;
+    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
+            emptyBottomRPM, setTop, setBottom;
     private static DriveTrain driveTrain;
     private static int visionCenterX = 640;
-    private static int visionCenterY = 360;
+    private NetworkTableInstance netInst;
     private NetworkTable table;
-    private double[] defaultValue = {-1};
-    NetworkTableEntry R_Angle = holo.getR_Angle();
-    NetworkTableEntry distance = holo.getDistance();
-    NetworkTableEntry lidarDist;
+    private final double[] defaultValue = { -1.0 };
+    private boolean isCamValueUpdated;
+    private XboxController gamepad1;
+    private NetworkTableEntry cameraSelect, centerXEntry;
+    // NetworkTableEntry cameraSelect =
+    // NetworkTableInstance.getDefault().getEntry("/camselect");
+
+    /*
+     * UsbCamera piCamera1; UsbCamera piCamera2; VideoSink server;
+     */
+    private JoystickButton buttonA, buttonB, buttonX;
+
+    // NetworkTableEntry cameraSelect =
+    // NetworkTableInstance.getDefault().getEntry("/camselect");
+
+    private NetworkTableEntry lidarDist;
+
+    /*
+     * UsbCamera camera1; UsbCamera camera2; NetworkTableEntry cameraSelection;
+     */
+
+    private UsbCamera piCamera1;
+    private UsbCamera piCamera2;
+    private VideoSink server;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -50,26 +78,30 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        //lidarDist = table.getEntry("distance");
+        gamepad1 = new XboxController(2);
+        netInst = NetworkTableInstance.getDefault();
+        table = netInst.getTable("datatable");
+        lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-        m_chooser.addOption("Option 4", option4);
         SmartDashboard.putData("Auto choices", m_chooser);
-        table = NetworkTableInstance.getDefault().getTable("datatable");
-        R_Angle = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Angle");
-        distance = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Distance");
+
+
         kP = 0;
+        //kP = 6e-5;
         kI = 0;
         kD = 0;
         kIz = 0;
         kFF = 0.0023;
-        kMaxOutput = 1;
-        kMinOutput = -1;
-        fastTopRPM = -5700;
-        fastBottomRPM = 5700;
-        slowTopRPM = -3000;
-        slowBottomRPM = 3000;
-        emptyTopRPM = -3000;
-        emptyBottomRPM = 3000;
+        kMaxOutput = 1.0;
+        kMinOutput = -1.0;
+        fastTopRPM = -5700.0;
+        fastBottomRPM = 5700.0;
+        emptyTopRPM = -3000.0;
+        emptyBottomRPM = 3000.0;
+
+        buttonA = new JoystickButton(gamepad1, 1);
+        buttonB = new JoystickButton(gamepad1, 2);
+        buttonX = new JoystickButton(gamepad1, 3);
 
         // set PID coefficients
         /*
@@ -87,10 +119,13 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
-        
         driveTrain = new DriveTrain();
-        
-        
+        CameraServer.getInstance().addServer("10.28.32.4"); // I think this connects to the Raspberry Pi's CameraServer.
+        // CameraServer.getInstance().startAutomaticCapture(); // UNCOMMENT IF REVERTING
+        // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+        piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
+        piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
+        server = CameraServer.getInstance().getServer();
     }
 
     /**
@@ -132,9 +167,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-            case option4:
+            case kCustomAuto:
                 // Put custom auto code here
-                auto4.start();
+                
                 break;
             case kDefaultAuto:
             default:
@@ -149,9 +184,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();
-        hopper.RunMotors();
-        
 
+            hopper.runMotors();
+            climber.runClimb();
         try {
             shooter.runShooter();
         } catch (final InterruptedException e) {
@@ -160,6 +195,19 @@ public class Robot extends TimedRobot {
         }
 
         driveTrain.driveTank();
+        pi.switchCameras();
+
+      
+        /*
+         * if (gamepad1.getXButtonPressed()) { cameraSelect.setDouble(2); }
+         */
+        /*
+         * if (isCamValueUpdated) { if ((int) cameraSelect.getNumber(-1.0) == 0)
+         * System.out.println("SUCCESSFULLY WROTE 0.0 TO NETWORK TABLE"); else if ((int)
+         * cameraSelect.getNumber(-1.0) == 1)
+         * System.out.println("SUCCESSFULLY WROTE 1.0 TO NETWORK TABLE");
+         * isCamValueUpdated = false; }
+         */
 
     }
 
@@ -170,4 +218,6 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
 
     }
+
+    
 }
