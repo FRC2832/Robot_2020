@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     public boolean shooterOff;
     HoloTable holo = HoloTable.getInstance();
-    private ShootingTable shTable = ShootingTable.getInstance();
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
@@ -83,7 +82,6 @@ public class Shooter {
 
             shooterOff = false;
             ejector.set(0.25);
-
             System.out.println("@@@@@@");
             /*
              * while(shooterOff = false){ Thread.sleep(1000); ejector.set(1);

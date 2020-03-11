@@ -35,6 +35,7 @@ public class DriveTrain extends Subsystem {
   private Joystick joystickRight;
   private int targetPixel = 640;
   private double driveCoeff;
+  
 
   /**
    * Creates a new DriveTrain.
@@ -73,6 +74,9 @@ public class DriveTrain extends Subsystem {
         driveCoeff * Math.pow(joystickRight.getY(), 1), false);
   }
 
+  public void stopDrive(){
+    differentialDrive.tankDrive(0,0);
+  }
   public void rotate(double rotateSpeed) {
     // differentialDrive.arcadeDrive(0, rotateSpeed);
   }

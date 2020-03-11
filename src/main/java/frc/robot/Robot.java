@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.auton.Option1;
+import frc.robot.commands.auton.Option1A;
 import frc.robot.commands.auton.Option2A;
 import frc.robot.commands.auton.Option2B;
 import frc.robot.commands.auton.Option2C;
@@ -39,14 +39,16 @@ public class Robot extends TimedRobot {
     private static final String kCustomAuto = "My Auto";
 
     private HoloTable holo = HoloTable.getInstance();
-    private ShootingTable shTable = ShootingTable.getInstance();
+    //private ShootingTable shTable = ShootingTable.getInstance();
     private Shooter shooter = new Shooter();
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
     private Climber climber = new Climber();
+    private Option2A option2A = new Option2A();
 
     private final Pi pi = new Pi();
     private String m_autoSelected;
+    private final Option1A option1a = new Option1A();
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
             emptyBottomRPM, setTop, setBottom;
@@ -233,6 +235,14 @@ public class Robot extends TimedRobot {
     /**
      * This function is called periodically during operator control.
      */
+
+     @Override
+     public void teleopInit() {
+         // TODO Auto-generated method stub
+         super.teleopInit();
+         driveTrain.stopDrive();
+         
+     }
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();
