@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -11,8 +12,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HoloTable;
+import frc.robot.Robot;
 
 public class Option4 extends Command {
 
@@ -57,13 +60,12 @@ public class Option4 extends Command {
 
         // TODO Auto-generated method stub
         super.initialize();
-        leftMotors.set(1);
 
     }
 
     @Override
     protected void execute() {
-        /*if (Timer.getFPGATimestamp() >= 0 && Timer.getFPGATimestamp() <= 4) {
+        if (Timer.getFPGATimestamp() >= 0 && Timer.getFPGATimestamp() <= 4) {
             
             if (visionCenter - targetPixel >= 10) {
                 while (visionCenter - targetPixel >= 10) {
@@ -223,7 +225,7 @@ public class Option4 extends Command {
 
             hopper.set(0);
             ejector.set(0);
-        }*/
+        }
 
         // TODO Auto-generated method stub
         super.execute();
