@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.auton.Option4;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,7 +38,7 @@ public class Robot extends TimedRobot {
     private Hopper hopper = new Hopper();
     private Climber climber = new Climber();
 
-      private final Pi pi = new Pi();
+    private final Pi pi = new Pi();
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
@@ -70,6 +71,13 @@ public class Robot extends TimedRobot {
     private UsbCamera piCamera1;
     private UsbCamera piCamera2;
     private VideoSink server;
+    private static final String option4 = "Option 4";
+    private static final BallCount tracker = new BallCount();
+    private final Option4 auto4 = new Option4();
+    public static double slowTopRPM, slowBottomRPM;
+    private static int visionCenterY = 360;
+    NetworkTableEntry R_Angle = holo.getR_Angle();
+    NetworkTableEntry distance = holo.getDistance();
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -81,13 +89,14 @@ public class Robot extends TimedRobot {
         netInst = NetworkTableInstance.getDefault();
         table = netInst.getTable("datatable");
         lidarDist = table.getEntry("distance");
+        // lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-        m_chooser.addOption("My Auto", kCustomAuto);
+        m_chooser.addOption("Option 4", option4);
         SmartDashboard.putData("Auto choices", m_chooser);
-
-
+        R_Angle = table.getEntry("Lidar Angle");
+        distance = table.getEntry("Lidar Distance");
         kP = 0;
-        //kP = 6e-5;
+        // kP = 6e-5;
         kI = 0;
         kD = 0;
         kIz = 0;
@@ -167,8 +176,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-            case kCustomAuto:
+            case option4:
                 // Put custom auto code here
+                auto4.start();
                 break;
             case kDefaultAuto:
             default:
@@ -183,9 +193,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();
-
-            hopper.runMotors();
-            climber.runClimb();
+        hopper.runMotors();
+        climber.runClimb();
         try {
             shooter.runShooter();
         } catch (final InterruptedException e) {
@@ -196,7 +205,6 @@ public class Robot extends TimedRobot {
         driveTrain.driveTank();
         pi.switchCameras();
 
-      
         /*
          * if (gamepad1.getXButtonPressed()) { cameraSelect.setDouble(2); }
          */
@@ -217,6 +225,4 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
 
     }
-
-    
 }
