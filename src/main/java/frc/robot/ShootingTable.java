@@ -53,6 +53,10 @@ public class ShootingTable {
     }
 
     public double getMultiplier(double distance){
+        if(distance > 360){
+            return 0.9;
+        }
+
         System.out.println("Distance " + distance);
         System.out.println("CURRENT TABLE INDEX: " + (int)(((int) distance) - ( ((int)distance) % 24)));
         distanceSh = (int)(((int) distance) - ( ((int)distance) % 24));
