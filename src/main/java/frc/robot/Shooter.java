@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     public boolean shooterOff;
     HoloTable holo = HoloTable.getInstance();
-    private ShootingTable shTable = ShootingTable.getInstance();
     public XboxController gamepad1 = holo.getController();
     public Joystick joystick = holo.getJoystickRight();
     public WPI_TalonSRX ejector = holo.getEjector();
@@ -19,11 +18,7 @@ public class Shooter {
     public CANSparkMax rightFront = holo.getDriveRightFront();
     public WPI_TalonSRX hopper = holo.getHopper();
 
-    private double mult = 1.0;
-    private double shootSpeed = 1.0;
-    
-    public void runShooter() throws InterruptedException{
-
+    public void runShooter() throws InterruptedException {
 
         // read PID coefficients from SmartDashboard
         double p = SmartDashboard.getNumber("P Gain", 0.0);
@@ -66,27 +61,10 @@ public class Shooter {
             hopper.set(-0.5);
         }
         if (joystick.getTriggerPressed()) {
-            //Robot.setTop = (Robot.fastTopRPM  * shTable.getMultiplier(holo.getDistance0()));
-            //Robot.setBottom = (Robot.fastBottomRPM  * shTable.getMultiplier(holo.getDistance0()));
-            //Robot.setTop = -100;
-            //Robot.setBottom = 100;
-            mult = shTable.getMultiplier(holo.getDistance0());
-            //shootSpeed = mult * 5700; 
-            shootSpeed = 255.0 * mult;
-
-
-            holo.topPID.setReference(-shootSpeed, ControlType.kVelocity);
-            holo.bottomPID.setReference(shootSpeed, ControlType.kVelocity);
-
-
-
-            System.out.println("speed" + shootSpeed);
-            System.out.println("mult" + mult);
-
-
+            Robot.setTop = Robot.fastTopRPM;
+            Robot.setBottom = Robot.fastBottomRPM;
             shooterOff = false;
             ejector.set(0.25);
-
             System.out.println("@@@@@@");
             /*
              * while(shooterOff = false){ Thread.sleep(1000); ejector.set(1);
@@ -100,11 +78,7 @@ public class Shooter {
         if (joystick.getTriggerReleased()) {
             Robot.setTop = 0;
             Robot.setBottom = 0;
-
-            ejector.set(0);
-
-            holo.topPID.setReference(0 , ControlType.kVelocity);
-            holo.bottomPID.setReference(0, ControlType.kVelocity);
+            ejector.set(0.0);
 
         }
         if (joystick.getRawButtonPressed(3)) {
@@ -117,11 +91,7 @@ public class Shooter {
             Robot.setBottom = 0;
             ejector.set(0.0);
         }
-        
-        //holo.topPID.setReference(Robot.setTop , ControlType.kVelocity);
-        //holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
-        //holo.topPID.setReference(-100 , ControlType.kVelocity);
-        //holo.bottomPID.setReference(100, ControlType.kVelocity);
-
+        holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+        holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
     }
 }

@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -190,6 +191,7 @@ public final class HoloTable {
     }
     public NetworkTableEntry getDistance(){
         return distance;
+    }
     public double getDistance0(){
         return ((double) table.getEntry("distance0").getNumber(-1.0));
     }

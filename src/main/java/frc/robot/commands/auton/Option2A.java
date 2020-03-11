@@ -37,7 +37,7 @@ public class Option2A extends Command {
         gyro.setYaw(angle, 0);
         super.initialize();
     }
-    protected void execute(){
+    public void execute(){
         try{
             Thread.sleep(6000);
         }
@@ -89,7 +89,7 @@ public class Option2A extends Command {
         }
         double rotations = encoder.getPosition(); //Relies on a CANEncoder, hopefully this works otherwise use LIDAR data
         while(rotations*(2*Math.PI*radius) < distance){
-            differentialDrive.tankDrive(.4, .4);
+            differentialDrive.tankDrive(.4, 0);
             rotations = encoder.getPosition();
         }
         differentialDrive.tankDrive(0,0);

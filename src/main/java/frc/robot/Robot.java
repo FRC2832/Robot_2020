@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.auton.Option2A;
 import frc.robot.commands.auton.Option4;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
     private Climber climber = new Climber();
+    private Option2A option2A = new Option2A();
 
       private final Pi pi = new Pi();
     private String m_autoSelected;
@@ -166,6 +168,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+        option2A.execute();
         switch (m_autoSelected) {
             case kCustomAuto:
                 // Put custom auto code here
@@ -181,6 +184,14 @@ public class Robot extends TimedRobot {
     /**
      * This function is called periodically during operator control.
      */
+
+     @Override
+     public void teleopInit() {
+         // TODO Auto-generated method stub
+         super.teleopInit();
+         driveTrain.stopDrive();
+         
+     }
     @Override
     public void teleopPeriodic() {
         ingestor.runIngestor();

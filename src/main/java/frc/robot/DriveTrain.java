@@ -73,6 +73,9 @@ public class DriveTrain extends Subsystem {
     differentialDrive.tankDrive(driveCoeff * Math.pow(joystickLeft.getY(), 1), driveCoeff * Math.pow(joystickRight.getY(), 1) , false);
   }
 
+  public void stopDrive(){
+    differentialDrive.tankDrive(0,0);
+  }
   public void rotate(double rotateSpeed) {
     //differentialDrive.arcadeDrive(0, rotateSpeed);
   }
