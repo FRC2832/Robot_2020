@@ -22,9 +22,7 @@ public final class Climber {
     }
 
     public void runClimb() {
-        if (Timer.getMatchTime() <= 30.0) {
-            rightClimber.set(gamepad1.getY(Hand.kRight));
-            leftClimber.set(gamepad1.getY(Hand.kLeft));
-        }
+        rightClimber.set(gamepad1.getY(Hand.kRight));
+        leftClimber.set(gamepad1.getY(Hand.kLeft));
     }
 }
