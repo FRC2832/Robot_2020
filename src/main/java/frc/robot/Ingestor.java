@@ -31,7 +31,8 @@ public class Ingestor {
             dropIntake.set(Value.kReverse);
         }
     }
-    public void stopIngestor(){
+
+    public void stopIngestor() {
         intake.set(0);
     }
 }

@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public final class BallCount{
+public final class BallCount {
 
     HoloTable table;
 
@@ -14,12 +14,12 @@ public final class BallCount{
     DigitalInput infraredHopper4;
     DigitalInput infraredHopper5;
     DigitalInput infraredIntake;
-    
+
     WPI_TalonSRX intake;
     WPI_TalonSRX hopper;
     WPI_TalonSRX color;
 
-    public BallCount(){
+    public BallCount() {
         table = HoloTable.getInstance();
         infraredHopper1 = table.getInfraredHopper1();
         infraredHopper2 = table.getInfraredHopper2();
@@ -30,17 +30,15 @@ public final class BallCount{
     }
 
     public String ballCount(DigitalInput dI) {
-        if (dI.get()){
-
+        if (dI.get()) {
             return "On";
         }
         return "Off";
-        
     }
 
-    public void saftyCheck(){
-        if (!infraredHopper1.get()){
-            if (!infraredHopper2.get()){
+    public void safetyCheck() {
+        if (!infraredHopper1.get()) {
+            if (!infraredHopper2.get()) {
                 intake.set(0);
             }
         }

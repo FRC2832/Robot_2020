@@ -15,9 +15,16 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.auton.Option1;
+import frc.robot.commands.auton.Option2A;
+import frc.robot.commands.auton.Option2B;
+import frc.robot.commands.auton.Option2C;
+import frc.robot.commands.auton.Option3A;
+import frc.robot.commands.auton.Option3B;
 import frc.robot.commands.auton.Option4;
 
 /**
@@ -70,10 +77,18 @@ public class Robot extends TimedRobot {
 
     private UsbCamera piCamera1;
     private UsbCamera piCamera2;
+    private UsbCamera piCamera3;
     private VideoSink server;
+    private static final String option1 = "Option 1";
+    private static final String option2A = "Option 2A";
+    private static final String option2B = "Option 2B";
+    private static final String option2C = "Option 2C";
+    private static final String option3A = "Option 3A";
+    private static final String option3B = "Option 3B";
     private static final String option4 = "Option 4";
     private static final BallCount tracker = new BallCount();
-    private final Option4 auto4 = new Option4();
+    private static Command autonCommand;
+    ;private final Option4 auto4 = new Option4();
     public static double slowTopRPM, slowBottomRPM;
     private static int visionCenterY = 360;
     NetworkTableEntry R_Angle = holo.getR_Angle();
@@ -91,6 +106,12 @@ public class Robot extends TimedRobot {
         lidarDist = table.getEntry("distance");
         // lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+        m_chooser.addOption("Option 1", option1);
+        m_chooser.addOption("Option 2A", option2A);
+        m_chooser.addOption("Option 2B", option2B);
+        m_chooser.addOption("Option 2C", option2C);
+        m_chooser.addOption("Option 3A", option3A);
+        m_chooser.addOption("Option 3B", option3B);
         m_chooser.addOption("Option 4", option4);
         SmartDashboard.putData("Auto choices", m_chooser);
         R_Angle = table.getEntry("Lidar Angle");
@@ -134,6 +155,7 @@ public class Robot extends TimedRobot {
         // camera1 = CameraServer.getInstance().startAutomaticCapture(0);
         piCamera1 = CameraServer.getInstance().startAutomaticCapture(0);
         piCamera2 = CameraServer.getInstance().startAutomaticCapture(1);
+        piCamera3 = CameraServer.getInstance().startAutomaticCapture(2);
         server = CameraServer.getInstance().getServer();
     }
 
@@ -168,6 +190,36 @@ public class Robot extends TimedRobot {
         m_autoSelected = m_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
+        switch (m_autoSelected) {
+            case option1:
+                autonCommand = new Option1();
+                break;
+            case option2A:
+                autonCommand = new Option2A();
+                // Put custom auto code here
+                break;
+            case option2B:
+                autonCommand = new Option2B();
+                break;
+            case option2C:
+                autonCommand = new Option2C();
+                break;
+            case option3A:
+                autonCommand = new Option3A();
+                break;
+            case option3B:
+                autonCommand = new Option3B();
+                break;
+            case option4:
+                autonCommand = new Option4();
+                break;
+            case kDefaultAuto:
+            default:
+                // Put default auto code here
+                break;
+        }
+        autonCommand.start();
+
     }
 
     /**
@@ -175,16 +227,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        switch (m_autoSelected) {
-            case option4:
-                // Put custom auto code here
-                auto4.start();
-                break;
-            case kDefaultAuto:
-            default:
-                // Put default auto code here
-                break;
-        }
+
     }
 
     /**

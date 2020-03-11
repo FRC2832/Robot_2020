@@ -1,41 +1,30 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
-public final class Climber{
+public final class Climber {
 
-    HoloTable table = HoloTable.getInstance();
+    private HoloTable table = HoloTable.getInstance();
 
-    CANSparkMax climberTop;
-    CANSparkMax climberBottom;
+    private CANSparkMax leftClimber;
+    private CANSparkMax rightClimber;
 
-    XboxController gamepad1;
+    private XboxController gamepad1;
 
-    Climber(){
-        climberTop = table.getTopClimber();
-        climberBottom = table.getBottomClimber();
+    public Climber() {
+        leftClimber = table.getLeftClimber();
+        rightClimber = table.getRightClimber();
         gamepad1 = table.getController();
-
     }
 
-    public void runClimb(){
-        if (gamepad1.getPOV() == 180){
-            climberBottom.set(.50);
-            
-        }else if (gamepad1.getPOV() == 270) {
-            climberTop.set(-.50);
-        }else if (gamepad1.getPOV() == 90){
-            climberBottom.set(-.5);
-        }else if (gamepad1.getPOV() == 0){
-            climberTop.set(.5);
-        }else {
-            climberTop.set(0);
-            climberBottom.set(0);
+    public void runClimb() {
+        if (Timer.getMatchTime() <= 30.0) {
+            rightClimber.set(gamepad1.getY(Hand.kRight));
+            leftClimber.set(gamepad1.getY(Hand.kLeft));
         }
     }
-
-
-   
-
 }

@@ -14,13 +14,13 @@ public final class Hopper {
     WPI_TalonSRX hopper;
     XboxController gamepad1;
     WPI_TalonSRX ejector;
-    
+
     DigitalInput infraredHopper1;
     DigitalInput infraredHopper2;
     DigitalInput infraredIntake;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    Hopper() {
+    public Hopper() {
 
         hopper = table.getHopper();
         gamepad1 = table.getController();
@@ -29,33 +29,31 @@ public final class Hopper {
         infraredIntake = table.getInfraredIntake();
         ejector = table.getEjector();
 
-
     }
 
-    public void runMotors() {    
-        if (!infraredIntake.get()){
-            if (!infraredHopper1.get()){
-                if (!infraredHopper2.get()){
-                    hopper.set(0);
-                }else {
-                    hopper.set(-.5);
+    public void runMotors() {
+        if (!infraredIntake.get()) {
+            if (!infraredHopper1.get()) {
+                if (!infraredHopper2.get()) {
+                    hopper.set(0.0);
+                } else {
+                    hopper.set(-0.5);
                 }
-            }else {
-                hopper.set(-.5);
+            } else {
+                hopper.set(-0.5);
             }
-        }else {
-            hopper.set(0);
+        } else {
+            hopper.set(0.0);
         }
         if (gamepad1.getBumper(Hand.kLeft)) {
-            hopper.set(.5);
+            hopper.set(0.5);
             logger.warning("Backwards");
-            
-        }
-        else if (gamepad1.getBumper(Hand.kRight)) {
-            hopper.set(-.5);
+
+        } else if (gamepad1.getBumper(Hand.kRight)) {
+            hopper.set(-0.5);
             logger.warning("Fowards");
-        } 
-       
+        }
+
     }
 
 }
