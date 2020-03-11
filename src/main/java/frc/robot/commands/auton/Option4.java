@@ -59,13 +59,11 @@ public class Option4 extends Command {
 
         // TODO Auto-generated method stub
         super.initialize();
-        leftMotors.set(1);
-
     }
 
     @Override
     protected void execute() {
-        /*if (Timer.getFPGATimestamp() >= 0 && Timer.getFPGATimestamp() <= 4) {
+        if (Timer.getFPGATimestamp() >= 0 && Timer.getFPGATimestamp() <= 4) {
             
             if (visionCenter - targetPixel >= 10) {
                 while (visionCenter - targetPixel >= 10) {
@@ -225,7 +223,7 @@ public class Option4 extends Command {
 
             hopper.set(0);
             ejector.set(0);
-        }*/
+        }
 
         // TODO Auto-generated method stub
         super.execute();
