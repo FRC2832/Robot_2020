@@ -47,14 +47,14 @@ public class ShootingTable {
         if (instance == null) {
             instance = new ShootingTable();
         }
-        if(distance > 360){
-            return 0.9;
-        }
+        
         return instance;
 
     }
-
     public double getMultiplier(double distance){
+        if(distance > 360){
+            return 0.9;
+        }
         System.out.println("Distance " + distance);
         System.out.println("CURRENT TABLE INDEX: " + (int)(((int) distance) - ( ((int)distance) % 24)));
         distanceSh = (int)(((int) distance) - ( ((int)distance) % 24));
