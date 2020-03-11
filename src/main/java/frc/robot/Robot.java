@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auton.Option2A;
 import frc.robot.commands.auton.Option4;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.auton.Option1A;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,7 +34,7 @@ public class Robot extends TimedRobot {
     private static final String kCustomAuto = "My Auto";
 
     private HoloTable holo = HoloTable.getInstance();
-    private ShootingTable shTable = ShootingTable.getInstance();
+    //private ShootingTable shTable = ShootingTable.getInstance();
     private Shooter shooter = new Shooter();
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
 
       private final Pi pi = new Pi();
     private String m_autoSelected;
+    private final Option1A option1a = new Option1A();
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, fastTopRPM, fastBottomRPM, emptyTopRPM,
             emptyBottomRPM, setTop, setBottom;
@@ -85,6 +87,7 @@ public class Robot extends TimedRobot {
         table = netInst.getTable("datatable");
         lidarDist = table.getEntry("distance");
         m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+        m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
 
 
@@ -229,6 +232,4 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
 
     }
-
-    
 }

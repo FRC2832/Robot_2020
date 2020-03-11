@@ -42,8 +42,8 @@ public final class HoloTable {
     private static Joystick joystickLeft;
     private static Joystick joystickRight;
 
-    public NetworkTableEntry R_Angle;
-    public NetworkTableEntry distance;
+    //public NetworkTableEntry R_Angle;
+    //public NetworkTableEntry distance;
     private static CANSparkMax climberTop;
     private static CANSparkMax climberBottom;
    
@@ -186,12 +186,11 @@ public final class HoloTable {
     public WPI_TalonSRX getColor() {
         return color;
     }
-    public NetworkTableEntry getR_Angle(){
+   /* public NetworkTableEntry getR_Angle(){
         return R_Angle;
     }
     public NetworkTableEntry getDistance(){
-        return distance;
-    }
+        return distance;*/
     public double getDistance0(){
         return ((double) table.getEntry("distance0").getNumber(-1.0));
     }
