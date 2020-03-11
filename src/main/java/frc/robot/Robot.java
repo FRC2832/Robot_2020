@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     private Ingestor ingestor = new Ingestor();
     private Hopper hopper = new Hopper();
     private Climber climber = new Climber();
-    private Option2A option2A = new Option2A();
+    
 
     private final Pi pi = new Pi();
     private String m_autoSelected;
@@ -194,7 +194,7 @@ public class Robot extends TimedRobot {
         System.out.println("Auto selected: " + m_autoSelected);
         switch (m_autoSelected) {
             case option1:
-                autonCommand = new Option1();
+                autonCommand = new Option1A();
                 break;
             case option2A:
                 autonCommand = new Option2A();
