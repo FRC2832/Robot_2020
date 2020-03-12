@@ -47,7 +47,9 @@ public class ShootingTable {
         if (instance == null) {
             instance = new ShootingTable();
         }
-
+        if(distance > 360){
+            return 0.9;
+        }
         return instance;
 
     }
