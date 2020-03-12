@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.HoloTable;
 import frc.robot.Robot;
 
@@ -29,6 +30,7 @@ public class Option4 extends Command {
     CANSparkMax rightRear = holo.getDriveRightRear();
     SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftFront, leftRear);
     SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightFront, rightRear);
+    DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
     CANEncoder encoder = leftFront.getEncoder();
 
@@ -41,15 +43,18 @@ public class Option4 extends Command {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("datatable");
     NetworkTableEntry R_Angle = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Angle");
 
-    double distance = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar Distance").getDouble(-1);
+    double lidarDistance = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Lidar lidarDistance").getDouble(-1);
     double lazerAngle;
     double radius = 7.56;
     double circumfrance = Math.PI * radius * 2;
     double length = 84;
-    double revolutions = length / circumfrance;
+    double distance = 204;
+    double lengthRevolutions = length / circumfrance;
+    double distanceRevolutions = distance / circumfrance;
     int targetPixel = 640;
-    int visionCenter;
     boolean lie = true;
+    boolean first = true;
+    boolean seconded = false;
 
     @Override
     protected void initialize() {
@@ -65,41 +70,49 @@ public class Option4 extends Command {
 
     @Override
     protected void execute() {
-        if (Timer.getFPGATimestamp() >= 0 && Timer.getFPGATimestamp() <= 4) {
-            
-            if (visionCenter - targetPixel >= 10) {
-                while (visionCenter - targetPixel >= 10) {
-                    leftMotors.set(0.2);
-                    rightMotors.set(-0.2);
-                }
-            }
-            if (visionCenter - targetPixel <= -10) {
-                while (visionCenter - targetPixel <= -10) {
-                    leftMotors.set(-0.2);
-                    rightMotors.set(0.2);
-                }
-            }
-
-            if (Math.abs(visionCenter - targetPixel) <= 10) {
-                if(lie == true){
-                    gyro.setYaw(90 - lazerAngle);
-                    gyro.setFusedHeading(90 - lazerAngle);
-                    lie = false;
-                }
-                leftMotors.set(0);
-                rightMotors.set(0);
-
+        if (first) {
+            double visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+            if (visionCenter == -1){
                 Robot.setTop = Robot.fastTopRPM;
                 Robot.setBottom = Robot.fastBottomRPM;
                 holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
                 holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
-
-                hopper.set(0.5);
-                ejector.set(1);
+                first = false;
+            }
+            else{
+                if (visionCenter - targetPixel >= 10) {
+                    while (visionCenter - targetPixel >= 10) {
+                        visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+                        drive.tankDrive(0.2, -0.2, false);
+                    }
                 }
+                else if (visionCenter - targetPixel <= -10) {
+                    while (visionCenter - targetPixel <= -10) {
+                        visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+                        drive.tankDrive(-0.2, 0.2, false);
+                    }
+                }
+
+                if (Math.abs(visionCenter - targetPixel) <= 10) {
+                    if (lie == true) {
+                        gyro.setYaw(90 - lazerAngle);
+                        gyro.setFusedHeading(90 - lazerAngle);
+                        lie = false;
+                    }
+                    drive.tankDrive(0, 0, false);
+
+                    Robot.setTop = Robot.fastTopRPM;
+                    Robot.setBottom = Robot.fastBottomRPM;
+                    holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+                    holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+
+                    hopper.set(0.5);
+                    ejector.set(1);
+                }
+            }
         }
-        
-        if(Timer.getFPGATimestamp() >= 4 && Timer.getFPGATimestamp() <= 7) {
+
+        if (Timer.getMatchTime() >= 11 && Timer.getMatchTime() <= 8) {
 
             Robot.setTop = 0;
             Robot.setBottom = 0;
@@ -112,101 +125,96 @@ public class Option4 extends Command {
             double[] ypr = new double[3];
             gyro.getYawPitchRoll(ypr);
             double yaw = ypr[0];
-            
-            if(yaw <= 45 && yaw >= 8){
-                leftMotors.set(0.4);
-                rightMotors.set(-0.4);
-            }
-            if(yaw <= 8 && yaw > 3){
-                leftMotors.set(0.15);
-                rightMotors.set(-0.15);
-            }
-            if(yaw < 3 && yaw > -3){
-                leftMotors.set(0);
-                
-                rightMotors.set(0);
-            }
-            if(yaw <= -8 && yaw > -3){
-                leftMotors.set(-0.15);
-                rightMotors.set(0.15);
-            }
-            if(yaw <= -45 && yaw >= -8){
-                leftMotors.set(-0.4);
-                rightMotors.set(0.4);
-            }
-        }
-        if(Timer.getFPGATimestamp() >= 7 && Timer.getFPGATimestamp() <= 9) {
-            if(distance >= 100 && distance <= 275 ){
-                leftMotors.set(1);
-                rightMotors.set(1);
-            }
-            if(distance >= 275 && distance <= 292){
-                leftMotors.set(.5);
-                rightMotors.set(.5);
-            }
-            if(distance >= 292 && distance <= 306){
-                leftMotors.set(.25);
-                rightMotors.set(.25);
-            }
-            if(distance >= 306 && distance <= 310){
-                leftMotors.set(0);
-                rightMotors.set(0);
-            }
-        }
-        if(Timer.getFPGATimestamp() >= 9 && Timer.getFPGATimestamp() <= 11){
-            if(gyro.getFusedHeading() >= 45 && gyro.getFusedHeading() <= 28){
-                leftMotors.set(0.4);
-                rightMotors.set(-0.4);
-            }
-            if(gyro.getFusedHeading() >= 28 && gyro.getFusedHeading() <= 16){
-                leftMotors.set(0.15);
-                rightMotors.set(-0.15);
-            }
-            if(gyro.getFusedHeading() >= 16 && gyro.getFusedHeading() <= 12){
-                leftMotors.set(0);
-                rightMotors.set(0);
-            }
-            if(gyro.getFusedHeading() >= 12 && gyro.getFusedHeading() <= 0){
-                leftMotors.set(0.15);
-                rightMotors.set(-0.15);
-            }
-            if(gyro.getFusedHeading() >= 0 && gyro.getFusedHeading() <= -45){
-                leftMotors.set(0.4);
-                rightMotors.set(-0.4);
-            }
-        }
-        if(Timer.getFPGATimestamp() >= 11 && Timer.getFPGATimestamp() <= 12){
-            if(revolutions > encoder.getCountsPerRevolution()){
-                leftMotors.set(.5);
-                rightMotors.set(.5);
-            }
-            if(revolutions <= encoder.getCountsPerRevolution()){
-                leftMotors.set(0);
-                rightMotors.set(0 );
-            }
-        }
-        if(Timer.getFPGATimestamp() >= 13 && Timer.getFPGATimestamp() <= 14.75){
-            if (visionCenter - targetPixel >= 10) {
-                while (visionCenter - targetPixel >= 10) {
-                    leftMotors.set(0.2);
-                    rightMotors.set(-0.2);
-                }
-            }
-            if (visionCenter - targetPixel <= -10) {
-                while (visionCenter - targetPixel <= -10) {
-                    leftMotors.set(-0.2);
-                    rightMotors.set(0.2);
-                }
-            }
 
-            if (Math.abs(visionCenter - targetPixel) <= 10) {
-                if(lie == true){
-                    gyro.setYaw(90 - lazerAngle);
-                    gyro.setFusedHeading(90 - lazerAngle);
-                    lie = false;
+            if (yaw <= 45 && yaw >= 8) {
+                drive.tankDrive(0.4, 0.4, false);
+            }
+            if (yaw <= 8 && yaw > 3) {
+                drive.tankDrive(0.15, 0.15, false);
+            }
+            if (yaw < 3 && yaw > -3) {
+                drive.tankDrive(0, 0, false);
+            }
+            if (yaw <= -8 && yaw > -3) {
+                drive.tankDrive(-0.15, -0.15, false);
+            }
+            if (yaw <= -45 && yaw >= -8) {
+                drive.tankDrive(-0.4, -0.4, false);
+            }
+        }
+        if (Timer.getMatchTime() >= 8 && Timer.getMatchTime() <= 6) {
+            if (lidarDistance != -1) {
+                if (lidarDistance >= 100 && lidarDistance <= 275) {
+                    drive.tankDrive(1, 1, false);
                 }
-                leftMotors.set(0);
-                rightMotors.set(0);
+                if (lidarDistance >= 275 && lidarDistance <= 292) {
+                    drive.tankDrive(0.5, 0.5, false);
+                }
+                if (lidarDistance >= 292 && lidarDistance <= 306) {
+                    drive.tankDrive(0.25, 0.25, false);
+                }
+                if (lidarDistance >= 306 && lidarDistance <= 310) {
+                    drive.tankDrive(0, 0, false);
+                }
+            }
+            if (lidarDistance == -1){
+                if (distanceRevolutions > encoder.getCountsPerRevolution()) {
+                    drive.tankDrive(-0.5, -0.5, false);
+                }
+                if (distanceRevolutions <= encoder.getCountsPerRevolution()) {
+                    drive.tankDrive(0, 0, false);
+                }
+            }
+        }
+        if (Timer.getMatchTime() >= 6 && Timer.getMatchTime() <= 4) {
+            if (gyro.getFusedHeading() >= 45 && gyro.getFusedHeading() <= 28) {
+                drive.tankDrive(0.4, 0.4, false);
+            }
+            if (gyro.getFusedHeading() >= 28 && gyro.getFusedHeading() <= 16) {
+                drive.tankDrive(0.15, 0.15, false);
+            }
+            if (gyro.getFusedHeading() >= 16 && gyro.getFusedHeading() <= 12) {
+                drive.tankDrive(0, 0, false);
+            }
+            if (gyro.getFusedHeading() >= 12 && gyro.getFusedHeading() <= 0) {
+                drive.tankDrive(-0.15, -0.15, false);
+            }
+            if (gyro.getFusedHeading() >= 0 && gyro.getFusedHeading() <= -45) {
+                drive.tankDrive(-0.4, -0.4, false);
+            }
+        }
+        if (Timer.getMatchTime() >= 4 && Timer.getMatchTime() <= 3) {
+            if (lengthRevolutions > encoder.getCountsPerRevolution()) {
+                drive.tankDrive(0.5, 0.5, false);
+            }
+            if (lengthRevolutions <= encoder.getCountsPerRevolution()) {
+                drive.tankDrive(0, 0, false);
+            }
+        }
+        if (Timer.getMatchTime() >= 3 && Timer.getMatchTime() <= 1.75) {
+            double visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+            if (visionCenter == -1){
+                Robot.setTop = Robot.fastTopRPM;
+                Robot.setBottom = Robot.fastBottomRPM;
+                holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
+                holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+            }
+            else{
+                if (visionCenter - targetPixel >= 10) {
+                    while (visionCenter - targetPixel >= 10) {
+                        visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+                        drive.tankDrive(0.2, 0.2, false);
+                    }
+                }
+                else if (visionCenter - targetPixel <= -10) {
+                    while (visionCenter - targetPixel <= -10) {
+                        visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
+                        drive.tankDrive(-0.2, -0.2, false);
+                    }
+                }
+            }
+            if (Math.abs(visionCenter - targetPixel) <= 10) {
+                drive.tankDrive(0, 0, false);
 
                 Robot.setTop = Robot.fastTopRPM;
                 Robot.setBottom = Robot.fastBottomRPM;
@@ -215,9 +223,9 @@ public class Option4 extends Command {
 
                 hopper.set(0.5);
                 ejector.set(1);
-                }
+            }
         }
-        if(Timer.getFPGATimestamp() == 14.9){
+        if (Timer.getMatchTime() >= 1.75) {
             Robot.setTop = 0;
             Robot.setBottom = 0;
             holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
@@ -239,7 +247,10 @@ public class Option4 extends Command {
 
     @Override
     public boolean isFinished() {
+        if(Timer.getMatchTime() >= 1.9){
         // TODO Auto-generated method stub
         return true;
+        }
+        return false;
     }
 }

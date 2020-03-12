@@ -16,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -189,6 +190,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        Scheduler.getInstance().removeAll();
         m_autoSelected = m_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
@@ -220,7 +222,9 @@ public class Robot extends TimedRobot {
                 // Put default auto code here
                 break;
         }
-        autonCommand.start();
+        if (m_autoSelected != null){
+            autonCommand.start();
+        }
 
     }
 
@@ -229,7 +233,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-
+        Scheduler.getInstance().run();
     }
 
     /**
@@ -238,6 +242,7 @@ public class Robot extends TimedRobot {
 
      @Override
      public void teleopInit() {
+        Scheduler.getInstance().removeAll();
          // TODO Auto-generated method stub
          super.teleopInit();
          driveTrain.stopDrive();
