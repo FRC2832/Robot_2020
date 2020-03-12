@@ -47,10 +47,10 @@ public class ShootingTable {
         if (instance == null) {
             instance = new ShootingTable();
         }
+        
         return instance;
 
     }
-
     public double getMultiplier(double distance){
         if(distance > 360){
             return 0.9;
