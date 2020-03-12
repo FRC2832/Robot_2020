@@ -54,7 +54,12 @@ public class Option4 extends Command {
     int targetPixel = 640;
     boolean lie = true;
     boolean first = true;
-    boolean seconded = false;
+    boolean second = false;
+    boolean third = false;
+    boolean fourth = false;
+    boolean fifth = false;
+    boolean sixth = false;
+    boolean seventh = false;
 
     @Override
     protected void initialize() {
@@ -77,7 +82,9 @@ public class Option4 extends Command {
                 Robot.setBottom = Robot.fastBottomRPM;
                 holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
                 holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+                Timer.delay(3);
                 first = false;
+                second = true;
             }
             else{
                 if (visionCenter - targetPixel >= 10) {
@@ -108,11 +115,15 @@ public class Option4 extends Command {
 
                     hopper.set(0.5);
                     ejector.set(1);
+                    Timer.delay(3);
+                    first = false;
+                    second = true;
+                    
                 }
             }
         }
 
-        if (Timer.getMatchTime() >= 11 && Timer.getMatchTime() <= 8) {
+        else if (second) {
 
             Robot.setTop = 0;
             Robot.setBottom = 0;
@@ -134,6 +145,9 @@ public class Option4 extends Command {
             }
             if (yaw < 3 && yaw > -3) {
                 drive.tankDrive(0, 0, false);
+                Timer.delay(.25);
+                second = false;
+                third = true;
             }
             if (yaw <= -8 && yaw > -3) {
                 drive.tankDrive(-0.15, -0.15, false);
@@ -142,7 +156,7 @@ public class Option4 extends Command {
                 drive.tankDrive(-0.4, -0.4, false);
             }
         }
-        if (Timer.getMatchTime() >= 8 && Timer.getMatchTime() <= 6) {
+        else if (third) {
             if (lidarDistance != -1) {
                 if (lidarDistance >= 100 && lidarDistance <= 275) {
                     drive.tankDrive(1, 1, false);
@@ -155,6 +169,9 @@ public class Option4 extends Command {
                 }
                 if (lidarDistance >= 306 && lidarDistance <= 310) {
                     drive.tankDrive(0, 0, false);
+                    Timer.delay(.25);
+                    third = false;
+                    fourth = true;
                 }
             }
             if (lidarDistance == -1){
@@ -163,10 +180,13 @@ public class Option4 extends Command {
                 }
                 if (distanceRevolutions <= encoder.getCountsPerRevolution()) {
                     drive.tankDrive(0, 0, false);
+                    Timer.delay(.25);
+                    third = false;
+                    fourth = true;
                 }
             }
         }
-        if (Timer.getMatchTime() >= 6 && Timer.getMatchTime() <= 4) {
+        else if (fourth) {
             if (gyro.getFusedHeading() >= 45 && gyro.getFusedHeading() <= 28) {
                 drive.tankDrive(0.4, 0.4, false);
             }
@@ -175,6 +195,9 @@ public class Option4 extends Command {
             }
             if (gyro.getFusedHeading() >= 16 && gyro.getFusedHeading() <= 12) {
                 drive.tankDrive(0, 0, false);
+                Timer.delay(.25);
+                    fourth = false;
+                    fifth = true;
             }
             if (gyro.getFusedHeading() >= 12 && gyro.getFusedHeading() <= 0) {
                 drive.tankDrive(-0.15, -0.15, false);
@@ -183,21 +206,27 @@ public class Option4 extends Command {
                 drive.tankDrive(-0.4, -0.4, false);
             }
         }
-        if (Timer.getMatchTime() >= 4 && Timer.getMatchTime() <= 3) {
+        else if (fifth) {
             if (lengthRevolutions > encoder.getCountsPerRevolution()) {
                 drive.tankDrive(0.5, 0.5, false);
             }
             if (lengthRevolutions <= encoder.getCountsPerRevolution()) {
                 drive.tankDrive(0, 0, false);
+                Timer.delay(.25);
+                    fifth = false;
+                    sixth = true;
             }
         }
-        if (Timer.getMatchTime() >= 3 && Timer.getMatchTime() <= 1.75) {
+        if (sixth) {
             double visionCenter = NetworkTableInstance.getDefault().getTable("datatable").getEntry("x").getDouble(-1);
             if (visionCenter == -1){
                 Robot.setTop = Robot.fastTopRPM;
                 Robot.setBottom = Robot.fastBottomRPM;
                 holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
                 holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
+                Timer.delay(3);
+                    sixth = false;
+                    seventh = true;
             }
             else{
                 if (visionCenter - targetPixel >= 10) {
@@ -223,9 +252,12 @@ public class Option4 extends Command {
 
                 hopper.set(0.5);
                 ejector.set(1);
+                Timer.delay(3);
+                    sixth = false;
+                    seventh = true;
             }
         }
-        if (Timer.getMatchTime() >= 1.75) {
+        if (seventh) {
             Robot.setTop = 0;
             Robot.setBottom = 0;
             holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
@@ -233,6 +265,8 @@ public class Option4 extends Command {
 
             hopper.set(0);
             ejector.set(0);
+            Timer.delay(.25);
+            seventh = false;
         }
 
         // TODO Auto-generated method stub
@@ -247,7 +281,7 @@ public class Option4 extends Command {
 
     @Override
     public boolean isFinished() {
-        if(Timer.getMatchTime() >= 1.9){
+        if(!seventh){
         // TODO Auto-generated method stub
         return true;
         }
