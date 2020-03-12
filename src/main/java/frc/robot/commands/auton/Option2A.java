@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.HoloTable;
 import frc.robot.Robot;
 import frc.robot.DriveTrain;
+
 //Top Position
 public class Option2A extends Command {
     HoloTable holo = HoloTable.getInstance();
@@ -31,13 +32,14 @@ public class Option2A extends Command {
     Timer timer = new Timer();
     CANEncoder encoder = new CANEncoder(leftFront);
     NetworkTable table = NetworkTableInstance.getDefault().getTable("datatable");
-    double[] defaultValue = {-1};
+    double[] defaultValue = { -1 };
     WPI_TalonSRX hopper = holo.getHopper();
     WPI_TalonSRX ejector = holo.getEjector();
     NetworkTableEntry lidarValue;
-    double radius = 7.56; //(In cm)
-    double distance = 151.8; //Distance to travel after shooting (In cm) 
-    protected void initialize(){
+    double radius = 7.56; // (In cm)
+    double distance = 151.8; // Distance to travel after shooting (In cm)
+
+    protected void initialize() {
         timer.reset();
         timer.start();
         leftMotors.setInverted(true);
@@ -45,76 +47,77 @@ public class Option2A extends Command {
         gyro.setYaw(208.0);
         super.initialize();
     }
-    public void execute(){
-        try{
+
+    public void execute() {
+        try {
             Thread.sleep(6000);
+        } catch (Exception e) {
         }
-        catch(Exception e){}
-        
-                Robot.setTop = Robot.fastTopRPM;
-                Robot.setBottom = Robot.fastBottomRPM;
-                hopper.set(0.5);
-                ejector.set(1);
-        
+
+        Robot.setTop = Robot.fastTopRPM;
+        Robot.setBottom = Robot.fastBottomRPM;
+        hopper.set(0.5);
+        ejector.set(1);
+
         holo.topPID.setReference(Robot.setTop, ControlType.kVelocity);
         holo.bottomPID.setReference(Robot.setBottom, ControlType.kVelocity);
-        try{
+        try {
             Thread.sleep(3000);
+        } catch (Exception e) {
         }
-        catch(Exception e){}
 
         hopper.set(0);
         ejector.set(0);
         holo.topPID.setReference(0, ControlType.kVelocity);
         holo.bottomPID.setReference(0, ControlType.kVelocity);
-        
+
         double[] ypr = new double[3];
         gyro.getYawPitchRoll(ypr);
-        while(ypr[0] > 175.0){
+        while (ypr[0] > 175.0) {
             gyro.getYawPitchRoll(ypr);
             differentialDrive.arcadeDrive(0, .5);
         }
-        while(ypr[0] > 178.0){
+        while (ypr[0] > 178.0) {
             gyro.getYawPitchRoll(ypr);
             differentialDrive.arcadeDrive(0, .3);
         }
         differentialDrive.arcadeDrive(0, 0);
         double rotations = encoder.getPosition();
-        //In order to read distance to the wall, the robot will face backwards and back up into the correct
-        //position, then rotate back forward at the end
+        // In order to read distance to the wall, the robot will face backwards and back
+        // up into the correct
+        // position, then rotate back forward at the end
         lidarValue = table.getEntry("distance0");
         double lidarDistance = lidarValue.getDouble(-1);
-        if(lidarDistance != -1){
-            while(lidarDistance < distance){
+        if (lidarDistance != -1) {
+            while (lidarDistance < distance) {
                 differentialDrive.tankDrive(-.4, -.4);
                 lidarDistance = table.getEntry("distance0").getDouble(-1);
             }
         }
-       
+
         else {
-            //Uses Encoders when lidar data is unavailable
-            while(rotations * 2 * Math.PI * radius < distance)
+            // Uses Encoders when lidar data is unavailable
+            while (rotations * 2 * Math.PI * radius < distance)
                 differentialDrive.tankDrive(-.4, -.4);
-                rotations = encoder.getPosition();
+            rotations = encoder.getPosition();
         }
-        differentialDrive.tankDrive(0,0);
-        
-        while(ypr[0] > 5.0){
+        differentialDrive.tankDrive(0, 0);
+
+        while (ypr[0] > 5.0) {
             gyro.getYawPitchRoll(ypr);
             differentialDrive.arcadeDrive(0, .5);
         }
-        while(ypr[0] > 1.0){
+        while (ypr[0] > 1.0) {
             gyro.getYawPitchRoll(ypr);
             differentialDrive.arcadeDrive(0, .3);
         }
         differentialDrive.arcadeDrive(0, 0);
-        
+
     }
+
     @Override
     protected boolean isFinished() {
         return true;
     }
-
-
 
 }
